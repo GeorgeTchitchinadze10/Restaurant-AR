@@ -433,6 +433,20 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
 .vp-play svg{ width:34px; height:34px; margin-left:4px; }
 .vp-label{ font-family:'Clash Display'; font-weight:500; font-size:20px; color:#fff; }
 .vp-sub{ font-family:'JetBrains Mono'; font-size:12px; color:var(--dim); margin-top:8px; letter-spacing:.03em; }
+
+/* ---------- FAQ ---------- */
+.faq-list{ max-width:820px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
+.faq-item{ border:1px solid var(--line); border-radius:16px; padding:0 24px;
+  background:linear-gradient(180deg,var(--panel),var(--panel2)); transition:.3s var(--ease); }
+.faq-item[open]{ border-color:var(--line2); }
+.faq-item summary{ cursor:pointer; list-style:none; padding:22px 0; gap:16px;
+  font-family:'Clash Display'; font-weight:500; font-size:18px; color:#fff;
+  display:flex; justify-content:space-between; align-items:center; }
+.faq-item summary::-webkit-details-marker{ display:none; }
+.faq-item summary::after{ content:'+'; font-size:26px; line-height:1; color:var(--blue2);
+  transition:transform .3s var(--ease); }
+.faq-item[open] summary::after{ transform:rotate(45deg); }
+.faq-a{ padding:0 0 22px; color:var(--soft); font-size:15.5px; max-width:72ch; }
 </style>
 </head>
 <body>
@@ -450,6 +464,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
       <a href="#who">Use cases</a>
       <a href="#product">Product</a>
       <a href="#offer">The offer</a>
+      <a href="#faq">FAQ</a>
     </nav>
     <div class="nav-cta">
       <a class="btn btn-ghost demo-btn" href="https://3darmenu.pages.dev" target="_blank" rel="noopener">
@@ -471,6 +486,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
       <span class="kicker rv in">Tbilisi · WebAR menu platform</span>
       <h1 class="rv in d1">Help your guests <span class="gradtext">order more</span> — by letting them see the dish first.</h1>
       <p class="lead rv in d2">BetaReal turns your dishes into interactive 3D models guests place on their own table in AR — right in the phone browser. They order with confidence, try more dishes, and spend more per table. No app. Just a QR code.</p>
+      <p class="rv in d2" style="margin-top:16px; font-family:'Clash Display'; font-weight:500; font-size:clamp(17px,1.7vw,22px); color:#fff; max-width:52ch;">Your featured dish outsells its twin in 60 days — or you don't pay.</p>
       <div class="hero-cta rv in d3">
         <a class="btn btn-primary" href="#contact">Start your 60-day test <span class="arr">→</span></a>
         <a class="btn btn-ghost" href="https://3darmenu.pages.dev" target="_blank" rel="noopener">See the live menu</a>
@@ -609,6 +625,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
         <p>Tap "View on table" and the dish appears at true size on the real table. Works on any iPhone or Android — no app to download.</p>
       </div>
     </div>
+    <div style="text-align:center; margin-top:44px"><a class="btn btn-primary rv" href="#contact">Start your 60-day test <span class="arr">→</span></a></div>
   </div>
 </section>
 
@@ -622,27 +639,6 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
     </div>
     <div class="persona-grid">
       <div class="persona rv d1">
-        <div class="pic">🧳</div>
-        <span class="ptag">The tourist</span>
-        <h3>New country, unfamiliar cuisine</h3>
-        <p>Doesn't recognize a single dish on the menu. Sees it in 3D and placed on the table — understanding exactly what arrives, past any language barrier.</p>
-        <div class="out"><span class="up">↑</span> Orders authentic local dishes instead of defaulting to the one safe thing they recognize.</div>
-      </div>
-      <div class="persona rv d2">
-        <div class="pic">🍽️</div>
-        <span class="ptag">The first-timer</span>
-        <h3>A new-concept restaurant</h3>
-        <p>Fusion, fine dining, or unusual plating they've never encountered. Previews the real portion and presentation before committing to it.</p>
-        <div class="out"><span class="up">↑</span> Tries the signature dish instead of playing it safe with the familiar option.</div>
-      </div>
-      <div class="persona rv d3">
-        <div class="pic">🔁</div>
-        <span class="ptag">The regular</span>
-        <h3>Knows the classics by heart</h3>
-        <p>Always orders the same two things. The 3D menu surfaces dishes they've scrolled past for months and finally makes them look worth trying.</p>
-        <div class="out"><span class="up">↑</span> Branches out and adds items they'd normally never order — 56% told our survey they would.</div>
-      </div>
-      <div class="persona rv d1">
         <div class="pic">📏</div>
         <span class="ptag">The portion-anxious</span>
         <h3>"How big is it, really?"</h3>
@@ -655,6 +651,27 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
         <h3>A group deciding together</h3>
         <p>Everyone passes the phone, inspecting dishes in 3D before the table commits. The menu becomes the centre of the decision, not an afterthought.</p>
         <div class="out"><span class="up">↑</span> Larger, better-coordinated shared orders with fewer "I'll just get nothing."</div>
+      </div>
+      <div class="persona rv d3">
+        <div class="pic">🔁</div>
+        <span class="ptag">The regular</span>
+        <h3>Knows the classics by heart</h3>
+        <p>Always orders the same two things. The 3D menu surfaces dishes they've scrolled past for months and finally makes them look worth trying.</p>
+        <div class="out"><span class="up">↑</span> Branches out and adds items they'd normally never order — 59% told our survey they would.</div>
+      </div>
+      <div class="persona rv d1">
+        <div class="pic">🍽️</div>
+        <span class="ptag">The first-timer</span>
+        <h3>A new-concept restaurant</h3>
+        <p>Fusion, fine dining, or unusual plating they've never encountered. Previews the real portion and presentation before committing to it.</p>
+        <div class="out"><span class="up">↑</span> Tries the signature dish instead of playing it safe with the familiar option.</div>
+      </div>
+      <div class="persona rv d2">
+        <div class="pic">🧳</div>
+        <span class="ptag">The tourist</span>
+        <h3>New country, unfamiliar cuisine</h3>
+        <p>Doesn't recognize a single dish on the menu. Sees it in 3D and placed on the table — understanding exactly what arrives, past any language barrier.</p>
+        <div class="out"><span class="up">↑</span> Orders authentic local dishes instead of defaulting to the one safe thing they recognize.</div>
       </div>
       <div class="persona rv d3">
         <div class="pic">📸</div>
@@ -738,6 +755,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
         <div class="cap"><b>Croissant</b><span>Drag to rotate</span></div>
       </div>
     </div>
+    <div style="text-align:center; margin-top:44px"><a class="btn btn-primary rv" href="#contact">Start your 60-day test <span class="arr">→</span></a></div>
   </div>
 </section>
 
@@ -779,7 +797,23 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
       <span class="limited"><span class="dot"></span> Founding cohort: ₾0 onboarding · 60-day money-back guarantee · ₾450/mo locked for life</span>
     </div>
     <div style="text-align:center; margin-top:24px">
-      <a class="btn btn-primary rv" href="#contact">Claim a founding-cohort spot <span class="arr">→</span></a>
+      <a class="btn btn-primary rv" href="#contact">Start your 60-day test <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head rv" style="text-align:center; margin:0 auto 44px">
+      <span class="kicker" style="justify-content:center">FAQ</span>
+      <h2>Questions owners ask us.</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item rv d1"><summary>Do my guests need to download an app?</summary><div class="faq-a">No. The menu opens straight from the phone's browser the moment they scan the QR code — nothing to install, for them or for you.</div></details>
+      <details class="faq-item rv d1"><summary>Does it work on iPhone?</summary><div class="faq-a">Yes — iPhone and Android both. The 3D view and the "place it on your table" AR work on any modern smartphone.</div></details>
+      <details class="faq-item rv d1"><summary>How long does it take to set up?</summary><div class="faq-a">We come to you, photograph your 5 featured dishes, and your AR menu goes live within about two weeks. You don't touch anything technical.</div></details>
+      <details class="faq-item rv d1"><summary>What happens after the 60 days?</summary><div class="faq-a">If the test worked, you continue at ₾450/month — locked for life as a founding restaurant. If your featured dish didn't outsell its twin, you get your money back.</div></details>
     </div>
   </div>
 </section>

@@ -238,8 +238,13 @@ section{ padding:96px 0; }
 .step h3{ font-size:23px; margin:14px 0 10px; }
 .step p{ color:var(--soft); font-size:15.5px; margin:0; }
 .step .em{ font-size:30px; margin-bottom:8px; display:block; }
-.step-img{ width:100%; height:190px; object-fit:cover; border-radius:14px; display:block;
-  margin-bottom:22px; border:1px solid var(--line); background:#0A1020; }
+.step-img{ width:100%; height:210px; object-fit:cover; object-position:50% 50%;
+  border-radius:14px; display:block; margin-bottom:22px; border:1px solid var(--line);
+  background:#0A1020; }
+/* per-photo crop focus so the subject (phone / burger) sits on the same horizontal line in all three */
+.step-img.s1{ object-position:50% 50%; }   /* phone — centered */
+.step-img.s2{ object-position:50% 30%; }   /* burger sits high in frame — pull the crop up */
+.step-img.s3{ object-position:50% 64%; }   /* burger sits low on the plate — pull the crop down */
 
 /* personas / use cases */
 .persona-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
@@ -586,22 +591,22 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
     </div>
     <div class="steps rv d1">
       <div class="step">
-        <img class="step-img" src="assets/step-scan.webp" alt="A phone scanning a QR code on the table" width="768" height="466" loading="lazy">
+        <img class="step-img s1" src="assets/step-scan.webp" alt="A phone scanning a QR code on the table" width="768" height="466" loading="lazy">
         <div class="no">STEP 01</div>
         <h3>Scan the QR code</h3>
         <p>A code on the table opens the menu instantly — categories, prices, and a live 3D thumbnail of every dish. Nothing to install.</p>
       </div>
       <div class="step">
-        <img class="step-img" src="assets/step-inspect.webp" alt="Rotating a burger as an interactive 3D model" width="900" height="711" loading="lazy">
+        <img class="step-img s2" src="assets/step-inspect.webp" alt="Rotating a burger as an interactive 3D model" width="900" height="711" loading="lazy">
         <div class="no">STEP 02</div>
         <h3>Inspect in 3D</h3>
         <p>Tap any dish to rotate and zoom a photoreal model under realistic lighting. See the real layering and presentation, not a flattering photo.</p>
       </div>
       <div class="step">
-        <img class="step-img" src="assets/step-table.webp" alt="A burger placed on the real table in AR at true size" width="900" height="819" loading="lazy">
+        <img class="step-img s3" src="assets/step-table.webp" alt="A burger placed on the real table in AR at true size" width="900" height="819" loading="lazy">
         <div class="no">STEP 03</div>
         <h3>Place it on your table</h3>
-        <p>Tap "View on table" and the dish appears in AR at true size on the real table — Android WebXR or iOS Quick Look, straight from the browser.</p>
+        <p>Tap "View on table" and the dish appears at true size on the real table. Works on any iPhone or Android — no app to download.</p>
       </div>
     </div>
   </div>
@@ -676,7 +681,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
       <div class="card rv d3"><div class="ic">🌐</div><h3>Bilingual, app-free</h3><p>Georgian and English with live switching, tuned for a tourism-heavy market. Loads in ~3 seconds from a QR scan.</p></div>
       <div class="card rv d1"><div class="ic">🛠️</div><h3>Self-service admin</h3><p>Items, categories, prices, per-item AR scale, visibility, sort order, and thumbnails — edits go live instantly. No reprinting menus.</p></div>
       <div class="card rv d2"><div class="ic">🎨</div><h3>White-label theming</h3><p>Day/night palettes, Google Fonts, and branding so each restaurant's menu matches its own identity.</p></div>
-      <div class="card rv d3"><div class="ic">⚡</div><h3>Lightweight & fast</h3><p>Static, CDN-served, offline-precached. 3D libraries load lazily so the menu never blocks on the AR engine.</p></div>
+      <div class="card rv d3"><div class="ic">⚡</div><h3>Fast, even on weak signal</h3><p>Loads in about 3 seconds from a QR scan — no waiting, no frustrated guests, even on a busy phone network.</p></div>
     </div>
   </div>
 </section>
@@ -687,7 +692,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
     <div class="sec-head rv">
       <span class="kicker">Real dishes, really scanned</span>
       <h2>Every model is a real dish from a real kitchen.</h2>
-      <p class="lead">Lightbox photoshoot → photogrammetry → Blender cleanup → optimized GLB. Drag any model below to inspect it the way a guest would.</p>
+      <p class="lead">Drag any model below and inspect it the way your guests will — rotate it, zoom in, see it from every angle.</p>
     </div>
     <div class="gal">
       <div class="gal-item rv d1">
@@ -702,7 +707,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
           loading="lazy" reveal="auto">
           <button slot="ar-button" class="ar-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
         </model-viewer>
-        <div class="cap"><b>Hot Dog</b><span>GLB · ~5.9 MB</span></div>
+        <div class="cap"><b>Hot Dog</b><span>Drag to rotate</span></div>
       </div>
       <div class="gal-item rv d2">
         <model-viewer data-src="https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/donut_draco.glb"
@@ -716,7 +721,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
           loading="lazy" reveal="auto">
           <button slot="ar-button" class="ar-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
         </model-viewer>
-        <div class="cap"><b>Donut</b><span>GLB · ~6.3 MB</span></div>
+        <div class="cap"><b>Donut</b><span>Drag to rotate</span></div>
       </div>
       <div class="gal-item rv d3">
         <model-viewer data-src="https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/croissant_draco.glb"
@@ -730,7 +735,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
           loading="lazy" reveal="auto">
           <button slot="ar-button" class="ar-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
         </model-viewer>
-        <div class="cap"><b>Croissant</b><span>GLB · ~8.2 MB</span></div>
+        <div class="cap"><b>Croissant</b><span>Drag to rotate</span></div>
       </div>
     </div>
   </div>
@@ -742,13 +747,12 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
     <div class="sec-head rv">
       <span class="kicker">Validation</span>
       <h2>The problem is real — and the solution resonates.</h2>
-      <p class="lead">Early signal from a bilingual diner survey, plus a working product instrumented end-to-end. The model is proven globally — and resonates with the diners we surveyed here at home.</p>
+      <p class="lead">Early signal from a bilingual diner survey — plus a working product you can try right now. The model is proven globally, and it resonates with the diners we surveyed here at home.</p>
     </div>
-    <div class="grid4">
+    <div class="grid3">
       <div class="card rv d1"><div class="ic">⭐</div><h3>4.4 / 5</h3><p>average rating for the "view on table" AR experience — 85% gave it 4–5★.</p></div>
       <div class="card rv d2"><div class="ic">📈</div><h3>87%</h3><p>said seeing the dish in 3D made them more likely to order than a photo (47% "significantly").</p></div>
       <div class="card rv d3"><div class="ic">🔁</div><h3>96%</h3><p>said it would change how they order vs a normal QR menu — 56% would try dishes they normally wouldn't.</p></div>
-      <div class="card rv d4"><div class="ic">🧪</div><h3>MVP live</h3><p>Three real AR render paths, self-service admin, and a full analytics funnel — built by the founders in ~1 month.</p></div>
     </div>
     <p class="honest rv">* Benchmark figures (AOV uplift, upsell effectiveness) are reported by QReal/Kabaq, the global category leader — cited as proof the model works, not as BetaReal's own results.<br>** Survey figures are from BetaReal's ongoing bilingual diner survey (early sample) — directional indicators.</p>
   </div>

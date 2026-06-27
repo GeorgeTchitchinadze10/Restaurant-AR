@@ -393,7 +393,39 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
   .tier{ padding:26px; }
   .cta{ padding:74px 0; } .cta-card{ padding:48px 24px; border-radius:24px; }
   .moat .fw-orbit{ max-width:300px; margin:0 auto; }
+  .video-ph .vp-play{ width:68px; height:68px; } .video-ph .vp-play svg{ width:28px; height:28px; }
+  .vp-label{ font-size:18px; }
 }
+
+/* ---------- limited / scarcity pill ---------- */
+.limited{ display:inline-flex; align-items:center; gap:9px; font-family:'JetBrains Mono';
+  font-size:12px; letter-spacing:.04em; color:var(--warn);
+  background:rgba(255,177,85,0.10); border:1px solid rgba(255,177,85,0.34);
+  padding:8px 14px; border-radius:999px; }
+.limited .dot{ width:7px; height:7px; border-radius:50%; background:var(--warn);
+  box-shadow:0 0 10px var(--warn); }
+
+/* ---------- video placeholder ---------- */
+.video-ph{ position:relative; aspect-ratio:16/9; border-radius:24px; cursor:pointer;
+  border:1px solid var(--line2); overflow:hidden; display:grid; place-items:center;
+  background:radial-gradient(120% 90% at 50% 0%, rgba(47,107,255,0.18), transparent 60%),
+    linear-gradient(180deg,#0A1020,#070B16);
+  box-shadow:0 40px 90px -50px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.05);
+  transition:.35s var(--ease); }
+.video-ph::before{ content:''; position:absolute; inset:0;
+  background-image:linear-gradient(rgba(140,170,255,0.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(140,170,255,0.06) 1px,transparent 1px);
+  background-size:42px 42px; mask-image:radial-gradient(circle at 50% 50%,#000,transparent 75%); }
+.video-ph:hover{ border-color:var(--blue2); transform:translateY(-3px); }
+.video-ph:focus-visible{ outline:2px solid var(--blue2); outline-offset:3px; }
+.vp-inner{ position:relative; z-index:2; text-align:center; padding:20px; }
+.vp-play{ width:84px; height:84px; border-radius:50%; margin:0 auto 20px; display:grid; place-items:center;
+  background:linear-gradient(180deg,var(--blue2),var(--blue)); color:#fff;
+  box-shadow:0 16px 40px -10px var(--glow), inset 0 1px 0 rgba(255,255,255,.3); transition:.3s var(--ease); }
+.video-ph:hover .vp-play{ transform:scale(1.06); }
+.vp-play svg{ width:34px; height:34px; margin-left:4px; }
+.vp-label{ font-family:'Clash Display'; font-weight:500; font-size:20px; color:#fff; }
+.vp-sub{ font-family:'JetBrains Mono'; font-size:12px; color:var(--dim); margin-top:8px; letter-spacing:.03em; }
 </style>
 </head>
 <body>
@@ -407,11 +439,10 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
       <img src="assets/logo-dark.png" alt="BetaReal" width="158" height="56">
     </a>
     <nav class="nav-links">
+      <a href="#video">Demo</a>
       <a href="#who">Use cases</a>
       <a href="#product">Product</a>
-      <a href="#proof">Results</a>
-      <a href="#model">Pricing</a>
-      <a href="#team">Team</a>
+      <a href="#offer">Free pilot</a>
     </nav>
     <div class="nav-cta">
       <a class="btn btn-ghost demo-btn" href="https://3darmenu.pages.dev" target="_blank" rel="noopener">
@@ -436,6 +467,9 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
       <div class="hero-cta rv in d3">
         <a class="btn btn-primary" href="#contact">Get your free 30-day pilot <span class="arr">→</span></a>
         <a class="btn btn-ghost" href="https://3darmenu.pages.dev" target="_blank" rel="noopener">See the live menu</a>
+      </div>
+      <div class="rv in d3" style="margin-top:18px">
+        <span class="limited"><span class="dot"></span> Only 5 founding-restaurant pilots open this quarter</span>
       </div>
       <div class="hero-meta rv in d4">
         <div class="m"><b>0 apps</b><span>Runs in the browser</span></div>
@@ -487,8 +521,25 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
     <div class="wrap strip-in">
       <span class="lab">The model is proven globally</span>
       <div class="items">
-        <div class="it"><b>+20–26%</b><span>AOV uplift — QReal*</span></div>
-        <div class="it"><b>3.4×</b><span>more effective than verbal upsell*</span></div>
+        <div class="it"><b>+20–26%</b><span>higher order value*</span></div>
+        <div class="it"><b>3.4×</b><span>more effective than verbal upselling*</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIDEO ============ -->
+<section id="video">
+  <div class="wrap">
+    <div class="sec-head rv" style="text-align:center; margin:0 auto 40px">
+      <span class="kicker" style="justify-content:center">See it in action</span>
+      <h2>Watch a dish land on the table — in 10 seconds.</h2>
+    </div>
+    <div class="video-ph rv d1" role="button" tabindex="0" aria-label="Demo video coming soon">
+      <div class="vp-inner">
+        <div class="vp-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="vp-label">Demo video coming soon</div>
+        <div class="vp-sub">Phone over the table → the dish appears at full size</div>
       </div>
     </div>
   </div>
@@ -700,65 +751,21 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
   </div>
 </section>
 
-<!-- ============ BUSINESS MODEL ============ -->
-<section id="model">
+<!-- ============ OFFER ============ -->
+<section id="offer">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="kicker">Pricing</span>
-      <h2>Simple, honest pricing — we do all the work.</h2>
-      <p class="lead">We scan your dishes, build your menu, host it, and keep it running. Month-to-month, no lock-in. Start with a free 30-day pilot — you only pay if you love it.</p>
+      <span class="kicker">The offer</span>
+      <h2>Try it free for 30 days. Pay nothing until it works.</h2>
+      <p class="lead">We come to you, scan your signature dishes, and set up your full AR menu — free for the first 30 days. If it doesn't get your guests ordering more, you walk away owing nothing and keep the menu live.</p>
     </div>
-    <div class="tiers">
-      <div class="tier rv d1">
-        <h3>AR Menu</h3>
-        <div class="price">₾300<small>/mo</small></div>
-        <div class="muted" style="font-size:14px">5 AR items included</div>
-        <ul>
-          <li>Interactive 3D + AR menu</li>
-          <li>Self-service menu editing</li>
-          <li>QR, app-free, bilingual</li>
-        </ul>
-      </div>
-      <div class="tier feat rv d2">
-        <span class="tag">MOST COMPLETE</span>
-        <h3>Full</h3>
-        <div class="price">₾450<small>/mo</small></div>
-        <div class="muted" style="font-size:14px">5 AR items included</div>
-        <ul>
-          <li>Everything in AR Menu</li>
-          <li>Full analytics funnel</li>
-          <li>Theme &amp; branding editor</li>
-        </ul>
-      </div>
-      <div class="tier rv d3">
-        <h3>Premium</h3>
-        <div class="price">₾900<small>/mo</small></div>
-        <div class="muted" style="font-size:14px">Unlimited AR items</div>
-        <ul>
-          <li>Everything in Full</li>
-          <li>Strategy consultation</li>
-          <li>Custom models &amp; animations</li>
-        </ul>
-      </div>
+    <div class="grid3">
+      <div class="card rv d1"><div class="ic">🎁</div><h3>Free 30-day pilot</h3><p>Your top dishes scanned, modeled, and live on a real AR menu — at zero cost, so you see the impact before you ever pay.</p></div>
+      <div class="card rv d2"><div class="ic">🛡️</div><h3>Zero-risk guarantee</h3><p>If the pilot doesn't lift your orders, you pay nothing and keep the menu. The risk is entirely on us, not you.</p></div>
+      <div class="card rv d3"><div class="ic">⏳</div><h3>Limited places</h3><p>We onboard only <b>5 founding restaurants</b> this quarter — each with founding-partner pricing locked in for good.</p></div>
     </div>
-    <p class="pricing-note">₾500 one-time onboarding (includes your first 5 AR items) · additional dishes from ₾45 each · month-to-month, no lock-in · special pricing for restaurants with multiple locations.</p>
-  </div>
-</section>
-
-<!-- ============ TEAM ============ -->
-<section id="team">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <span class="kicker">The team</span>
-      <h2>The team that builds and runs your AR menu.</h2>
-      <p class="lead">A Tbilisi-based team of five — software, WebAR, AI, 3D scanning, and support — handling everything from the dish photoshoot to your live menu, so you don't have to touch anything technical.</p>
-    </div>
-    <div class="team-grid">
-      <div class="member rv d1"><div class="av">TT</div><b>Temo Tkeshelashvili</b><div class="role">CEO</div><p>Strategy, sales, WebAR dev, finance. TSU Higgs Cleverton accelerator winner.</p></div>
-      <div class="member rv d2"><div class="av">GT</div><b>George Tchitchinadze</b><div class="role">Platform / AI Infra</div><p>Web platform, data engineering, AI training infrastructure.</p></div>
-      <div class="member rv d3"><div class="av">NC</div><b>Nikoloz Chachua</b><div class="role">Sales / AI</div><p>Outreach, marketing, AI development &amp; model fine-tuning.</p></div>
-      <div class="member rv d4"><div class="av">IN</div><b>Ilia Nozadze</b><div class="role">3D / AR</div><p>Dish photoshoots, 3D asset creation, AR integration.</p></div>
-      <div class="member rv d4"><div class="av">DJ</div><b>Davit Jincharadze</b><div class="role">3D Optimization</div><p>Turning real dishes into optimized, interactive assets.</p></div>
+    <div style="text-align:center; margin-top:36px">
+      <a class="btn btn-primary rv" href="#contact">Claim a founding pilot spot <span class="arr">→</span></a>
     </div>
   </div>
 </section>
@@ -770,6 +777,9 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
       <span class="kicker" style="justify-content:center">Free 30-day pilot</span>
       <h2 style="margin-top:18px">Let's put your dishes on the table — in AR.</h2>
       <p>We'll scan your signature dishes and set up your AR menu free for 30 days. See it working before you pay a single lari. Call us or send a message — we'll come to you.</p>
+      <div style="margin:8px 0 24px">
+        <span class="limited"><span class="dot"></span> Only 5 founding pilots open this quarter</span>
+      </div>
       <div class="hero-cta">
         <a class="btn btn-primary" href="tel:+995593191707">Call 593 19 17 07 <span class="arr">→</span></a>
         <a class="btn btn-primary" href="tel:+995599000305">Call 599 00 03 05 <span class="arr">→</span></a>
@@ -778,6 +788,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
         <a class="btn btn-ghost" href="mailto:betareal.ar@gmail.com">Email betareal.ar@gmail.com</a>
         <a class="btn btn-ghost" href="https://3darmenu.pages.dev" target="_blank" rel="noopener">See the live menu</a>
       </div>
+      <p class="honest" style="margin-top:24px; text-align:center">A local Tbilisi team — we come to you, scan everything, and handle all the tech.</p>
     </div>
   </div>
 </section>
@@ -801,9 +812,9 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
         </div>
         <div class="foot-col">
           <h5>Company</h5>
-          <a href="#who">Use cases</a>
-          <a href="#team">Team</a>
-          <a href="#model">Pricing</a>
+          <a href="#video">Demo</a>
+          <a href="#proof">Results</a>
+          <a href="#offer">Free pilot</a>
         </div>
         <div class="foot-col">
           <h5>Contact</h5>

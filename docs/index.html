@@ -115,7 +115,7 @@ header.scrolled{ background:rgba(6,8,15,0.72); backdrop-filter:blur(16px) satura
 @media(max-width:880px){ .nav-links{ display:none; } }
 
 /* ---------- hero ---------- */
-.hero{ padding:72px 0 40px; }
+.hero{ padding:28px 0 36px; }
 .hero-grid{ display:grid; grid-template-columns:1.05fr 0.95fr; gap:48px; align-items:center; }
 .hero-grid > *{ min-width:0; }   /* let grid items shrink below model-viewer's intrinsic width */
 @media(max-width:940px){ .hero-grid{ grid-template-columns:1fr; gap:30px; } }
@@ -129,7 +129,7 @@ header.scrolled{ background:rgba(6,8,15,0.72); backdrop-filter:blur(16px) satura
 .hero-meta .div{ width:1px; background:var(--line); }
 
 /* stage / interactive 3D */
-.stage{ position:relative; aspect-ratio:1/1.02; border-radius:26px; overflow:hidden;
+.stage{ position:relative; aspect-ratio:1/1.02; max-height:calc(100svh - 165px); margin:0 auto; border-radius:26px; overflow:hidden;
   background:
     radial-gradient(120% 90% at 50% 8%, rgba(47,107,255,0.22), transparent 60%),
     linear-gradient(180deg,#0A1020 0%,#070B16 100%);
@@ -377,7 +377,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
   .nav-cta .demo-btn{ display:none; }     /* keep the header to logo + one clear Contact action on phones */
 
   section{ padding:62px 0; }
-  .hero{ padding:40px 0 26px; }
+  .hero{ padding:18px 0 22px; }
   .sec-head{ margin-bottom:34px; }
   .strip-in{ gap:18px; padding:18px 0; }
   .strip .items{ gap:22px; }
@@ -516,7 +516,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
             View on table
           </button>
         </model-viewer>
-        <div class="hint">Real dish · scanned · optimized GLB</div>
+        <div class="hint">Real dish · scanned in our studio</div>
         <div class="float-chip fc1"><b>+20–26%</b><span>avg order value*</span></div>
         <div class="float-chip fc2"><b>87%</b><span>more likely to order**</span></div>
       </div>

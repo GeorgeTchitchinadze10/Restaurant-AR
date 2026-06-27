@@ -447,6 +447,180 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
   transition:transform .3s var(--ease); }
 .faq-item[open] summary::after{ transform:rotate(45deg); }
 .faq-a{ padding:0 0 22px; color:var(--soft); font-size:15.5px; max-width:72ch; }
+        /* ── WebXR overlay ── */
+        #xr-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 51;
+            pointer-events: none;
+        }
+        #xr-gesture-layer {
+            display: none;
+            position: absolute;
+            inset: 0;
+            pointer-events: all;
+            z-index: 1;
+        }
+        #xr-place-hint {
+    position: absolute;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    background: rgba(0,0,0,0.65);
+    padding: 10px 20px;
+    border-radius: 20px;
+    white-space: normal;
+    text-align: center;
+    width: 80%;
+    max-width: 320px;
+}
+        #xr-nav-row {
+            display: none;
+            position: absolute;
+            z-index: 2;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: all;
+            align-items: center;
+            gap: 16px;
+            background: rgba(0,0,0,0.65);
+            padding: 8px 20px;
+            border-radius: 30px;
+        }
+        #xr-nav-row button {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.35);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            pointer-events: all;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #xr-move-hint {
+            display: none;
+            position: absolute;
+            bottom: 36px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.5);
+            font-family: 'Nunito', sans-serif;
+            font-size: 12px;
+            white-space: normal;
+            text-align: center;
+            max-width: 80%;
+        }
+        #xr-exit, #xr-carousel-toggle, #xr-label-toggle, #xr-place-again, #xr-hide-ui {
+            pointer-events: all;
+            position: absolute;
+            z-index: 2;
+            background: rgba(0,0,0,0.65);
+            color: #ccc;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        #xr-exit             { top: 18px; right: 18px; }
+        #xr-place-again      { top: 62px; right: 18px; display: none; }
+        #xr-hide-ui          { top: 18px; left: 18px; display: block; transition: opacity 0.25s; }
+        #xr-carousel-toggle  { top: 62px; left: 18px; display: none; }
+        #xr-label-toggle     { top: 106px; left: 18px; display: none; }
+        #xr-hide-ui.ui-hidden { opacity: 0.35; }
+        #xr-add-btn {
+            display: none;
+            pointer-events: all;
+            position: absolute;
+            z-index: 2;
+            bottom: 55px;
+            right: 18px;
+            background: rgba(0,0,0,0.45);
+            color: rgba(255,255,255,0.55);
+            border: 1.5px solid rgba(255,255,255,0.25);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+        }
+        #xr-add-btn.visible   { display: flex; }
+        #xr-add-btn.in-basket { background: rgba(240,192,64,0.92); color: #0d0d0d; border-color: transparent; }
+        #xr-hint-step {
+            font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+            color: rgba(255,255,255,.5); margin-bottom: 3px;
+        }
+        #xr-hint-main { font-size: 14px; color: #fff; }
+        #xr-scale-gauge {
+            display: none;
+            position: absolute;
+            bottom: 180px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.65);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 8px 16px;
+            pointer-events: none;
+            min-width: 130px;
+            text-align: center;
+        }
+        #xr-scale-track {
+            height: 4px;
+            background: rgba(255,255,255,0.18);
+            border-radius: 2px;
+            position: relative;
+            margin-bottom: 5px;
+        }
+        #xr-scale-fill {
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            background: #f0c040;
+            border-radius: 2px;
+        }
+        #xr-scale-mark {
+            position: absolute;
+            top: -3px;
+            width: 2px;
+            height: 10px;
+            background: rgba(255,255,255,0.55);
+            border-radius: 1px;
+            left: calc(53.7% - 1px);
+        }
+        #xr-scale-pct {
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+/* ---------- imported "view on table" launcher button ---------- */
+.gal-stage{ position:relative; }
+.ar-launch{ display:none; position:absolute; bottom:14px; left:50%; transform:translateX(-50%);
+  z-index:6; align-items:center; gap:8px; cursor:pointer; white-space:nowrap;
+  font-family:'Satoshi'; font-weight:700; font-size:13.5px; letter-spacing:-0.01em; color:#fff;
+  background:linear-gradient(180deg,var(--blue2),var(--blue)); border:1px solid rgba(255,255,255,.28);
+  padding:11px 18px; border-radius:12px;
+  box-shadow:0 12px 30px -10px var(--glow), inset 0 1px 0 rgba(255,255,255,.3);
+  -webkit-tap-highlight-color:transparent; transition:.25s var(--ease); }
+.ar-launch:hover{ transform:translateX(-50%) translateY(-2px); }
+.ar-launch:active{ transform:translateX(-50%); }
+.ar-launch svg{ width:16px; height:16px; }
+body.ar-ok .ar-launch{ display:inline-flex; }      /* only on AR-capable phones */
+body.ar-ok .stage .hint{ display:none; }           /* hide hero caption when the button shows */
+#xr-add-btn{ display:none !important; }             /* basket is menu-only */
 </style>
 </head>
 <body>
@@ -524,15 +698,11 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
           min-camera-orbit="auto 5deg 108%"
           max-camera-orbit="auto 90deg 190%"
           environment-image="neutral"
-          ar
-          ar-modes="webxr scene-viewer quick-look"
-          ar-placement="floor"
-          loading="eager">
-          <button slot="ar-button" class="ar-cta">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg>
-            View on table
-          </button>
-        </model-viewer>
+          loading="eager"></model-viewer>
+        <button class="ar-launch" data-idx="0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg>
+          View on table
+        </button>
         <div class="hint">Real dish · scanned in our studio</div>
         <div class="float-chip fc1"><b>+20–26%</b><span>avg order value*</span></div>
         <div class="float-chip fc2"><b>86%</b><span>more likely to order**</span></div>
@@ -714,6 +884,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
     </div>
     <div class="gal">
       <div class="gal-item rv d1">
+        <div class="gal-stage">
         <model-viewer data-src="https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/hot_dog_draco.glb"
           ios-src="https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/hot_dog.usdz"
           poster="https://xctoxhaahxtcicfgnmme.supabase.co/storage/v1/object/public/thumbnails/thumb_1780046740147.webp"
@@ -721,13 +892,13 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
           interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
           camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
           disable-pan
-          ar ar-modes="webxr scene-viewer quick-look" ar-placement="floor"
-          loading="lazy" reveal="auto">
-          <button slot="ar-button" class="ar-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
-        </model-viewer>
+          loading="lazy" reveal="auto"></model-viewer>
+          <button class="ar-launch" data-idx="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+        </div>
         <div class="cap"><b>Hot Dog</b><span>Drag to rotate</span></div>
       </div>
       <div class="gal-item rv d2">
+        <div class="gal-stage">
         <model-viewer data-src="https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/donut_draco.glb"
           ios-src="https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/donut.usdz"
           poster="https://xctoxhaahxtcicfgnmme.supabase.co/storage/v1/object/public/thumbnails/thumb_1780046956786.webp"
@@ -735,13 +906,13 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
           interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
           camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
           disable-pan
-          ar ar-modes="webxr scene-viewer quick-look" ar-placement="floor"
-          loading="lazy" reveal="auto">
-          <button slot="ar-button" class="ar-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
-        </model-viewer>
+          loading="lazy" reveal="auto"></model-viewer>
+          <button class="ar-launch" data-idx="2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+        </div>
         <div class="cap"><b>Donut</b><span>Drag to rotate</span></div>
       </div>
       <div class="gal-item rv d3">
+        <div class="gal-stage">
         <model-viewer data-src="https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/croissant_draco.glb"
           ios-src="https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/croissant.usdz"
           poster="https://xctoxhaahxtcicfgnmme.supabase.co/storage/v1/object/public/thumbnails/thumb_1780046967707.webp"
@@ -749,10 +920,9 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
           interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
           camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
           disable-pan
-          ar ar-modes="webxr scene-viewer quick-look" ar-placement="floor"
-          loading="lazy" reveal="auto">
-          <button slot="ar-button" class="ar-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
-        </model-viewer>
+          loading="lazy" reveal="auto"></model-viewer>
+          <button class="ar-launch" data-idx="3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+        </div>
         <div class="cap"><b>Croissant</b><span>Drag to rotate</span></div>
       </div>
     </div>
@@ -926,5 +1096,896 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
     }
   })();
 </script>
+    <div id="xr-overlay">
+        <div id="xr-gesture-layer"></div>
+        <div id="xr-place-hint">
+            <div id="xr-hint-step"></div>
+            <div id="xr-hint-main"></div>
+        </div>
+        <div id="xr-nav-row">
+            <button id="xr-prev">&#10094;</button>
+            <button id="xr-next">&#10095;</button>
+        </div>
+        <div id="xr-move-hint">Drag to move &middot; Twist two fingers to rotate</div>
+        <button id="xr-exit">Exit AR</button>
+        <button id="xr-place-again"></button>
+        <button id="xr-carousel-toggle"></button>
+        <button id="xr-label-toggle"></button>
+        <button id="xr-hide-ui">HIDE UI</button>
+        <div id="xr-scale-gauge">
+            <div id="xr-scale-track">
+                <div id="xr-scale-fill"></div>
+                <div id="xr-scale-mark"></div>
+            </div>
+            <span id="xr-scale-pct">100%</span>
+        </div>
+        <button id="xr-add-btn" aria-label="Add to basket">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        </button>
+    </div>
+
+    <script>
+    (function () {
+        let THREE, GLTFLoader, GLTFExporter;
+        let renderer, scene, camera, reticle, xrCanvas;
+        let carouselRoot, slotGroups = [];
+        let gestureLayer, xrOverlay;
+        let hitTestSource = null, xrSession = null, xrStarting = false;
+        let placed = false, isAnimating = false, _ignoreNextSelect = false;
+        let _reticleWasVisible = false;
+        let _xrSingleItem = (localStorage.getItem('bl-xr-view') || 'single') === 'single';
+
+        let MENU = [], N = 0;
+        const mod = i => ((i % N) + N) % N;
+        let currentCenterMenu = 0;
+        let slotOf     = { left: 0, center: 1, right: 2, hidden: 3 };
+        let menuOf     = [0, 0, 0, 0];
+        let hiddenSide = 'farRight';
+        const meshObjs   = [null, null, null, null];
+        const modelGLTFs = {};
+        let loader;
+        let labelMesh = null, labelCanvas = null, labelCtx = null, labelTexture = null;
+        let labelMode = localStorage.getItem('bl-xr-label') || 'float';
+
+        const CFG = {
+            farLeft:  { x: -0.35, z: -0.12, s: 0.85, opacity: 0    },
+            left:     { x: -0.14, z: -0.08, s: 0.85, opacity: 0.65 },
+            center:   { x:  0,    z:  0,    s: 1.0,  opacity: 1.0  },
+            right:    { x:  0.14, z: -0.08, s: 0.85, opacity: 0.65 },
+            farRight: { x:  0.35, z: -0.12, s: 0.85, opacity: 0    },
+        };
+        // Returns target opacity for a role based on current view mode
+        const _roleOp = role => _xrSingleItem ? (role === 'center' ? 1.0 : 0) : CFG[role].opacity;
+
+        const INIT_ROLES    = ['left', 'center', 'right', 'farRight'];
+        const DUR           = 350;
+        const ROTATE_SCALE  = 0.0125;
+        const INERTIA_DAMP  = 0.88;
+        let   _rotVelocity  = 0;
+        const SCALE_MIN     = 0.2;
+        const SCALE_MAX     = 4.0;
+        const DEAD_ZONE     = 3;
+        const MAX_DELTA     = 40;
+        const activeTouches = new Map();
+        let _pinchDist0 = null, _pinchScale0 = null, _scaleHideTimer = null;
+        let _xrUIHidden = false;
+        let _lastTouchStart = null;
+        const _LOG_MIN = Math.log(SCALE_MIN), _LOG_MAX = Math.log(SCALE_MAX);
+        function _showScaleGauge() {
+            if (_xrUIHidden) return;
+            const s = carouselRoot.scale.x;
+            const fill = (Math.log(s) - _LOG_MIN) / (_LOG_MAX - _LOG_MIN) * 100;
+            document.getElementById('xr-scale-fill').style.width = fill.toFixed(1) + '%';
+            document.getElementById('xr-scale-pct').textContent  = Math.round(s * 100) + '%';
+            document.getElementById('xr-scale-gauge').style.display = 'block';
+            if (_scaleHideTimer) { clearTimeout(_scaleHideTimer); _scaleHideTimer = null; }
+        }
+        function _hideScaleGauge(delay) {
+            if (_scaleHideTimer) clearTimeout(_scaleHideTimer);
+            _scaleHideTimer = setTimeout(() => {
+                document.getElementById('xr-scale-gauge').style.display = 'none';
+                _scaleHideTimer = null;
+            }, delay);
+        }
+
+        // ── AR label (museum card) ────────────────────────────────────
+        function _rrPath(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.arcTo(x + w, y,     x + w, y + r,     r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+            ctx.lineTo(x + r, y + h);
+            ctx.arcTo(x,     y + h, x,         y + h - r, r);
+            ctx.lineTo(x, y + r);
+            ctx.arcTo(x,     y,     x + r,     y,         r);
+            ctx.closePath();
+        }
+
+        function _wrapText(ctx, text, x, y, maxW, lh, maxLines) {
+            const words = text.split(' ');
+            let line = '', count = 0;
+            for (const word of words) {
+                const test = line ? line + ' ' + word : word;
+                if (ctx.measureText(test).width > maxW && line) {
+                    ctx.fillText(line, x, y + count * lh);
+                    if (++count >= maxLines) return;
+                    line = word;
+                } else { line = test; }
+            }
+            if (line) ctx.fillText(line, x, y + count * lh);
+        }
+
+        function drawLabel(item) {
+            if (!labelCtx) return;
+            const ctx = labelCtx;
+            const W = labelCanvas.width, H = labelCanvas.height;
+            const lang = window.__lang || 'en';
+            const name = (lang === 'ka' && item.name_ka)        ? item.name_ka        : item.name;
+            const desc = (lang === 'ka' && item.description_ka) ? item.description_ka : item.description;
+
+            ctx.clearRect(0, 0, W, H);
+
+            ctx.fillStyle = 'rgba(8, 8, 8, 0.92)';
+            _rrPath(ctx, 6, 6, W - 12, H - 12, 20);
+            ctx.fill();
+
+            ctx.strokeStyle = 'rgba(240, 192, 64, 0.7)';
+            ctx.lineWidth = 3;
+            _rrPath(ctx, 6, 6, W - 12, H - 12, 20);
+            ctx.stroke();
+
+            ctx.fillStyle = '#f0c040';
+            ctx.font = 'bold 44px Arial, sans-serif';
+            ctx.fillText(name, 28, 52, W - 56);
+
+            ctx.strokeStyle = 'rgba(240, 192, 64, 0.30)';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(28, 66); ctx.lineTo(W - 28, 66); ctx.stroke();
+
+            ctx.fillStyle = '#c0c0c0';
+            ctx.font = '22px Arial, sans-serif';
+            _wrapText(ctx, desc, 28, 88, W - 56, 28, 3);
+
+            ctx.fillStyle = '#f0c040';
+            ctx.font = 'bold 36px Arial, sans-serif';
+            ctx.fillText(item.price, 28, H - 20);
+
+            if (labelTexture) labelTexture.needsUpdate = true;
+        }
+
+        function createLabelMesh() {
+            const W = 512, H = 210;
+            labelCanvas = document.createElement('canvas');
+            labelCanvas.width = W; labelCanvas.height = H;
+            labelCtx = labelCanvas.getContext('2d');
+            labelTexture = new THREE.CanvasTexture(labelCanvas);
+            const mat = new THREE.MeshBasicMaterial({
+                map: labelTexture, transparent: true, depthWrite: false, depthTest: false, side: THREE.DoubleSide
+            });
+            const planeW = 0.15, planeH = planeW * H / W;
+            labelMesh = new THREE.Mesh(new THREE.PlaneGeometry(planeW, planeH), mat);
+            labelMesh.position.set(0, 0.22, 0.015);
+            labelMesh.visible = false;
+            carouselRoot.add(labelMesh);
+        }
+
+        function updateLabelTransform() {
+            if (!labelMesh) return;
+            if (labelMode === 'float') {
+                labelMesh.position.set(0, 0.22, 0.015);
+            }
+            // surface rotation updated per-frame in render loop
+            const btn = document.getElementById('xr-label-toggle');
+            const u = UI[window.__lang || 'en'];
+            if (btn) btn.textContent = labelMode === 'float' ? u.onTable : u.floating;
+        }
+
+        // ── Models ────────────────────────────────────────────────────
+        function preloadModels() {
+            const paths = [...new Set(MENU.map(m => m.model).filter(Boolean))];
+            return Promise.allSettled(paths.map(p => {
+                if (modelGLTFs[p]) return Promise.resolve();
+                if (_modelLoadPromises[p]) return _modelLoadPromises[p];
+                _modelLoadPromises[p] = new Promise((res, rej) =>
+                    loader.load(p, gltf => { modelGLTFs[p] = gltf; res(); }, undefined, rej)
+                );
+                return _modelLoadPromises[p];
+            })).then(results => {
+                const failed = results.filter(r => r.status === 'rejected');
+                if (failed.length) console.warn('Model load failures:', failed.map(f => f.reason));
+            });
+        }
+
+        function cloneModel(menuIdx) {
+            const gltf = modelGLTFs[MENU[menuIdx].model || 'food.glb'];
+            if (!gltf) return null;
+            const obj = gltf.scene.clone(true);
+            obj.traverse(n => { if (n.isMesh && n.material) n.material = n.material.clone(); });
+            return obj;
+        }
+
+        function setSlotModel(slotIdx, menuIdx) {
+            const old = meshObjs[slotIdx];
+            if (old) slotGroups[slotIdx].remove(old);
+            const obj = cloneModel(menuIdx);
+            if (obj) {
+                // Trust the GLB's own scale (1 unit = 1 metre).
+                // ar_scale is an optional per-item override (default 1.0 = no change).
+                const arScale = MENU[menuIdx].ar_scale || 1.0;
+                if (arScale !== 1.0) obj.scale.setScalar(arScale);
+                // Seat the model: bottom of bounding box sits at y=0
+                const seated = new THREE.Box3().setFromObject(obj);
+                if (isFinite(seated.min.y)) obj.position.y = -seated.min.y;
+                slotGroups[slotIdx].add(obj);
+                meshObjs[slotIdx] = obj;
+            }
+        }
+
+        function initSlots() {
+            const c = currentCenterMenu;
+            menuOf = [mod(c - 1), c, mod(c + 1), mod(c + 2)];
+            for (let i = 0; i < 4; i++) setSlotModel(i, menuOf[i]);
+            const opacities = [_roleOp('left'), _roleOp('center'), _roleOp('right'), 0];
+            INIT_ROLES.forEach((role, i) => {
+                slotGroups[i].position.x = CFG[role].x;
+                slotGroups[i].position.z = CFG[role].z;
+                slotGroups[i].scale.setScalar(CFG[role].s);
+                slotGroups[i].rotation.set(0, 0, 0);
+                setOpacity(i, opacities[i]);
+            });
+            _syncXRAddBtn();
+        }
+
+        // ── Opacity ───────────────────────────────────────────────────
+        function setOpacity(idx, opacity) {
+            const obj = meshObjs[idx];
+            if (!obj) return;
+            obj.traverse(n => {
+                if (n.isMesh && n.material) {
+                    n.material.transparent = opacity < 1.0;
+                    n.material.opacity     = Math.max(0, Math.min(1, opacity));
+                    n.material.needsUpdate = true;
+                }
+            });
+        }
+
+        function animOpacity(idx, from, to, dur) {
+            const t0 = performance.now();
+            (function tick(now) {
+                const t = Math.min((now - t0) / dur, 1);
+                const e = t < 0.5 ? 2*t*t : -1 + (4 - 2*t)*t;
+                setOpacity(idx, from + (to - from) * e);
+                if (t < 1) requestAnimationFrame(tick);
+            })(performance.now());
+        }
+
+        // ── Slot animation ────────────────────────────────────────────
+        function snapSlot(idx, role) {
+            slotGroups[idx].position.x = CFG[role].x;
+            slotGroups[idx].position.z = CFG[role].z;
+            slotGroups[idx].scale.setScalar(CFG[role].s);
+        }
+
+        function animSlot(idx, role, dur) {
+            const x0 = slotGroups[idx].position.x, x1 = CFG[role].x;
+            const z0 = slotGroups[idx].position.z, z1 = CFG[role].z;
+            const s0 = slotGroups[idx].scale.x,    s1 = CFG[role].s;
+            const t0 = performance.now();
+            (function tick(now) {
+                const t = Math.min((now - t0) / dur, 1);
+                const e = t < 0.5 ? 2*t*t : -1 + (4 - 2*t)*t;
+                slotGroups[idx].position.x = x0 + (x1 - x0) * e;
+                slotGroups[idx].position.z = z0 + (z1 - z0) * e;
+                slotGroups[idx].scale.setScalar(s0 + (s1 - s0) * e);
+                if (t < 1) requestAnimationFrame(tick);
+            })(performance.now());
+        }
+
+        // ── Navigation ────────────────────────────────────────────────
+        function goNext() {
+            if (isAnimating) return;
+            isAnimating = true;
+            const { left: lIdx, center: cIdx, right: rIdx, hidden: hIdx } = slotOf;
+            if (hiddenSide === 'farLeft') snapSlot(hIdx, 'farRight');
+            menuOf[hIdx] = mod(menuOf[rIdx] + 1);
+            setSlotModel(hIdx, menuOf[hIdx]); setOpacity(hIdx, 0);
+            animSlot(lIdx, 'farLeft', DUR); animSlot(cIdx, 'left',  DUR);
+            animSlot(rIdx, 'center',  DUR); animSlot(hIdx, 'right', DUR);
+            animOpacity(lIdx, _roleOp('left'),    0,                DUR);
+            animOpacity(cIdx, _roleOp('center'),  _roleOp('left'),  DUR);
+            animOpacity(rIdx, _roleOp('right'),   _roleOp('center'), DUR);
+            animOpacity(hIdx, 0,                  _roleOp('right'), DUR);
+            setTimeout(() => {
+                slotOf = { left: cIdx, center: rIdx, right: hIdx, hidden: lIdx };
+                hiddenSide = 'farLeft'; currentCenterMenu = mod(currentCenterMenu + 1);
+                isAnimating = false;
+                if (labelMesh && labelMesh.visible) drawLabel(MENU[currentCenterMenu]);
+                _syncXRAddBtn();
+                const _nItem = MENU[currentCenterMenu];
+                const _nIdx  = (_nItem && window.__menuItems) ? window.__menuItems.indexOf(_nItem) : -1;
+                if (_nIdx >= 0) window._arViewedItems?.add(_nIdx);
+                window.track?.('xr_nav', _nIdx >= 0 ? _nIdx : null, { direction: 'next' });
+            }, DUR + 10);
+        }
+
+        function goPrev() {
+            if (isAnimating) return;
+            isAnimating = true;
+            const { left: lIdx, center: cIdx, right: rIdx, hidden: hIdx } = slotOf;
+            if (hiddenSide === 'farRight') snapSlot(hIdx, 'farLeft');
+            menuOf[hIdx] = mod(menuOf[lIdx] - 1);
+            setSlotModel(hIdx, menuOf[hIdx]); setOpacity(hIdx, 0);
+            animSlot(rIdx, 'farRight', DUR); animSlot(cIdx, 'right', DUR);
+            animSlot(lIdx, 'center',   DUR); animSlot(hIdx, 'left',  DUR);
+            animOpacity(rIdx, _roleOp('right'),   0,                 DUR);
+            animOpacity(cIdx, _roleOp('center'),  _roleOp('right'),  DUR);
+            animOpacity(lIdx, _roleOp('left'),    _roleOp('center'), DUR);
+            animOpacity(hIdx, 0,                  _roleOp('left'),   DUR);
+            setTimeout(() => {
+                slotOf = { left: hIdx, center: lIdx, right: cIdx, hidden: rIdx };
+                hiddenSide = 'farRight'; currentCenterMenu = mod(currentCenterMenu - 1);
+                isAnimating = false;
+                if (labelMesh && labelMesh.visible) drawLabel(MENU[currentCenterMenu]);
+                _syncXRAddBtn();
+                const _pItem = MENU[currentCenterMenu];
+                const _pIdx  = (_pItem && window.__menuItems) ? window.__menuItems.indexOf(_pItem) : -1;
+                if (_pIdx >= 0) window._arViewedItems?.add(_pIdx);
+                window.track?.('xr_nav', _pIdx >= 0 ? _pIdx : null, { direction: 'prev' });
+            }, DUR + 10);
+        }
+
+        // ── Scan/tap hint state ───────────────────────────────────────
+        function _updateScanHint(found) {
+            const stepEl = document.getElementById('xr-hint-step');
+            const mainEl = document.getElementById('xr-hint-main');
+            if (!stepEl) return;
+            const u = UI[window.__lang || 'en'];
+            stepEl.textContent = found ? u.hintStep2 : u.hintStep1;
+            mainEl.textContent = found ? u.hintTap   : u.hintScan;
+        }
+
+        // ── Add-btn basket state sync ─────────────────────────────────
+        function _syncXRAddBtn() {
+            const btn = document.getElementById('xr-add-btn');
+            if (!btn || !window.__menuItems) return;
+            const item = MENU.length ? MENU[currentCenterMenu] : null;
+            const idx  = item ? window.__menuItems.indexOf(item) : -1;
+            const inBasket = idx >= 0 && window._basket && window._basket.has(String(idx));
+            btn.classList.toggle('in-basket', inBasket);
+        }
+
+        function _applyUIHidden(hidden) {
+            _xrUIHidden = hidden;
+            const u = UI[window.__lang || 'en'];
+            const hideBtn = document.getElementById('xr-hide-ui');
+            if (!hideBtn) return;
+            // Hidden: collapse info clutter; keep exit, place-again, arrows, cart visible
+            if (hidden) {
+                document.getElementById('xr-move-hint').style.display      = 'none';
+                document.getElementById('xr-carousel-toggle').style.display = 'none';
+                document.getElementById('xr-label-toggle').style.display    = 'none';
+                document.getElementById('xr-scale-gauge').style.display     = 'none';
+                if (labelMesh) labelMesh.visible = false;
+                hideBtn.textContent = u.showUI;
+            } else {
+                if (placed) {
+                    document.getElementById('xr-move-hint').style.display      = 'block';
+                    document.getElementById('xr-carousel-toggle').style.display = 'block';
+                    document.getElementById('xr-label-toggle').style.display    = 'block';
+                    if (labelMesh) { drawLabel(MENU[currentCenterMenu]); updateLabelTransform(); labelMesh.visible = true; }
+                }
+                hideBtn.textContent = u.hideUI;
+            }
+        }
+
+        // ── Placement ─────────────────────────────────────────────────
+        function onSelect() {
+            if (_ignoreNextSelect) { _ignoreNextSelect = false; return; }
+            if (placed || !reticle.visible) return;
+            carouselRoot.position.setFromMatrixPosition(reticle.matrix);
+            carouselRoot.quaternion.setFromRotationMatrix(reticle.matrix);
+            carouselRoot.visible = true;
+            reticle.visible      = false;
+            placed               = true;
+            const _plItem = MENU[currentCenterMenu];
+            const _plIdx  = (_plItem && window.__menuItems) ? window.__menuItems.indexOf(_plItem) : -1;
+            window.track?.('ar_placed', _plIdx >= 0 ? _plIdx : null);
+            gestureLayer.style.display = 'block';
+            document.getElementById('xr-place-hint').style.display      = 'none';
+            document.getElementById('xr-place-again').style.display     = 'block';
+            document.getElementById('xr-nav-row').style.display          = 'flex';
+            document.getElementById('xr-move-hint').style.display        = 'block';
+            document.getElementById('xr-carousel-toggle').style.display  = 'block';
+            if (labelMesh) { drawLabel(MENU[currentCenterMenu]); updateLabelTransform(); labelMesh.visible = true; }
+            document.getElementById('xr-label-toggle').style.display = 'block';
+            const _hBtn = document.getElementById('xr-hide-ui');
+            _hBtn.textContent = UI[window.__lang || 'en'].hideUI;
+        }
+
+        function _resetPlacement() {
+            _ignoreNextSelect = true;
+            placed = false;
+            carouselRoot.scale.setScalar(1);
+            _pinchDist0 = null; _pinchScale0 = null;
+            if (_scaleHideTimer) { clearTimeout(_scaleHideTimer); _scaleHideTimer = null; }
+            document.getElementById('xr-scale-gauge').style.display = 'none';
+            carouselRoot.visible = false;
+            reticle.visible = false;
+            gestureLayer.style.display = 'none';
+            document.getElementById('xr-place-hint').style.display      = '';
+            _reticleWasVisible = false; _updateScanHint(false);
+            document.getElementById('xr-place-again').style.display     = 'none';
+            document.getElementById('xr-nav-row').style.display          = 'none';
+            document.getElementById('xr-move-hint').style.display        = 'none';
+            document.getElementById('xr-carousel-toggle').style.display  = 'none';
+            document.getElementById('xr-label-toggle').style.display     = 'none';
+            if (labelMesh) labelMesh.visible = false;
+            _xrUIHidden = false;
+            _lastTouchStart = null;
+            const _hBtnR = document.getElementById('xr-hide-ui');
+            _hBtnR.classList.remove('ui-hidden');
+            _hBtnR.textContent = UI[window.__lang || 'en'].hideUI;
+        }
+
+        // ── Loader bootstrap (shared between bg preload and _setup) ───
+        let _setupDone = false;
+        let _loaderPromise = null;
+        const _modelLoadPromises = {};
+
+        async function _ensureLoader() {
+            if (loader) return;
+            if (!_loaderPromise) {
+                _loaderPromise = Promise.all([
+                    import('https://esm.sh/three@0.155.0'),
+                    import('https://esm.sh/three@0.155.0/examples/jsm/loaders/GLTFLoader'),
+                    import('https://esm.sh/three@0.155.0/examples/jsm/exporters/GLTFExporter'),
+                ]);
+            }
+            const [threeNS, loaderMod, exporterMod] = await _loaderPromise;
+            if (loader) return; // concurrent call already finished
+            THREE        = threeNS;
+            GLTFLoader   = loaderMod.GLTFLoader;
+            GLTFExporter = exporterMod.GLTFExporter;
+            loader       = new GLTFLoader();
+        }
+
+        // ── iOS y-offset correction ───────────────────────────────────────────
+        // Quick Look places the GLB's raw origin on the detected surface.
+        // Most 3D tools export with origin at the model centre, so half the model
+        // sinks below the table.  After backgroundPreload decodes every GLB with
+        // Three.js we re-export a seated version (same fix as Android's setSlotModel)
+        // and swap the launcher's src to the corrected blob.
+        const _iosSeatedBlobs = {};
+        let _resolvePreload;
+        const _preloadDone = new Promise(res => { _resolvePreload = res; });
+
+        async function _makeSeatedBlob(modelUrl, arScale) {
+            const gltf = modelGLTFs[modelUrl];
+            if (!gltf || !GLTFExporter) return null;
+            const scale    = arScale || 1.0;
+            const cacheKey = scale !== 1.0 ? `${modelUrl}::${scale}` : modelUrl;
+            if (_iosSeatedBlobs[cacheKey]) return _iosSeatedBlobs[cacheKey];
+            // Clone, apply ar_scale, seat so bottom sits at y=0
+            const root = gltf.scene.clone(true);
+            root.traverse(n => { if (n.isMesh && n.material) n.material = n.material.clone(); });
+            if (scale !== 1.0) root.scale.setScalar(scale);
+            root.updateMatrixWorld(true);
+            const box = new THREE.Box3().setFromObject(root);
+            if (isFinite(box.min.y) && box.min.y < -0.001) {
+                root.position.y = -box.min.y;
+                root.updateMatrixWorld(true);
+            }
+            return new Promise(resolve => {
+                try {
+                    new GLTFExporter().parse(
+                        root,
+                        glb => {
+                            const url = URL.createObjectURL(new Blob([glb], { type: 'model/gltf-binary' }));
+                            _iosSeatedBlobs[cacheKey] = url;
+                            resolve(url);
+                        },
+                        err => { console.warn('iOS seat export:', err); resolve(null); },
+                        { binary: true }
+                    );
+                } catch (e) { console.warn('iOS seat export:', e); resolve(null); }
+            });
+        }
+
+        // ── One-time init — deferred until first AR tap ───────────────
+        async function _setup() {
+            if (_setupDone) return;
+            _setupDone = true;
+
+            await _ensureLoader();
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.xr.enabled = true;
+            renderer.xr.setReferenceSpaceType('local');
+            xrCanvas = renderer.domElement;
+            Object.assign(xrCanvas.style, {
+                position: 'fixed', top: '0', left: '0',
+                zIndex: '50', display: 'none'
+            });
+            document.body.appendChild(xrCanvas);
+
+            scene  = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
+            scene.add(new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1));
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+            dirLight.position.set(0.5, 1, 0.25);
+            scene.add(dirLight);
+
+            reticle = new THREE.Mesh(
+                new THREE.RingGeometry(0.04, 0.07, 32),
+                new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide })
+            );
+            reticle.rotation.x       = -Math.PI / 2;
+            reticle.matrixAutoUpdate = false;
+            reticle.visible          = false;
+            scene.add(reticle);
+
+            carouselRoot = new THREE.Group();
+            scene.add(carouselRoot);
+            carouselRoot.visible = false;
+            slotGroups = Array.from({ length: 4 }, () => {
+                const g = new THREE.Group(); carouselRoot.add(g); return g;
+            });
+            createLabelMesh();
+
+            gestureLayer = document.getElementById('xr-gesture-layer');
+            xrOverlay    = document.getElementById('xr-overlay');
+
+            // Touch gestures on the gesture layer inside dom-overlay.
+            // Canvas touch events are consumed by the XR runtime during a session;
+            // dom-overlay elements receive normal HTML touch events instead.
+            gestureLayer.addEventListener('touchstart', e => {
+                _rotVelocity = 0;
+                for (const t of e.changedTouches)
+                    activeTouches.set(t.identifier, { x: t.clientX, y: t.clientY, prevX: t.clientX, prevY: t.clientY });
+                if (activeTouches.size === 1) {
+                    const t = e.changedTouches[0];
+                    _lastTouchStart = { x: t.clientX, y: t.clientY };
+                } else {
+                    _lastTouchStart = null;
+                }
+                if (activeTouches.size >= 2) {
+                    const [a, b] = [...activeTouches.values()];
+                    _pinchDist0  = Math.hypot(a.x - b.x, a.y - b.y);
+                    _pinchScale0 = carouselRoot.scale.x;
+                }
+            }, { passive: true });
+
+            gestureLayer.addEventListener('touchmove', e => {
+                e.preventDefault();
+                for (const t of e.changedTouches) {
+                    const p = activeTouches.get(t.identifier);
+                    if (p) activeTouches.set(t.identifier, { x: t.clientX, y: t.clientY, prevX: p.x, prevY: p.y });
+                }
+                const all = [...activeTouches.values()];
+                if (all.length === 1) {
+                    let dx = all[0].x - all[0].prevX;
+                    if (Math.abs(dx) < DEAD_ZONE) return;
+                    dx = Math.max(-MAX_DELTA, Math.min(MAX_DELTA, dx));
+                    _rotVelocity = dx * ROTATE_SCALE;
+                    slotGroups[slotOf.center].rotation.y += _rotVelocity;
+                } else if (all.length >= 2 && _pinchDist0) {
+                    const [a, b] = all;
+                    const dist = Math.hypot(a.x - b.x, a.y - b.y);
+                    const s = Math.max(SCALE_MIN, Math.min(SCALE_MAX, _pinchScale0 * (dist / _pinchDist0)));
+                    carouselRoot.scale.setScalar(s);
+                    _showScaleGauge();
+                }
+            }, { passive: false });
+
+            gestureLayer.addEventListener('touchend', e => {
+                for (const t of e.changedTouches) {
+                    if (_xrUIHidden && placed && _lastTouchStart && activeTouches.size === 1) {
+                        const dx = t.clientX - _lastTouchStart.x;
+                        const dy = t.clientY - _lastTouchStart.y;
+                        if (Math.hypot(dx, dy) < 10) _applyUIHidden(false);
+                    }
+                    activeTouches.delete(t.identifier);
+                }
+                if (activeTouches.size < 2) {
+                    _pinchDist0 = null; _pinchScale0 = null;
+                    _lastTouchStart = null;
+                    _hideScaleGauge(1200);
+                }
+            }, { passive: true });
+
+            renderer.xr.addEventListener('sessionstart', async () => {
+                _reticleWasVisible = false;
+                _updateScanHint(false);
+                const _hBtnStart = document.getElementById('xr-hide-ui');
+                if (_hBtnStart) _hBtnStart.textContent = UI[window.__lang || 'en'].hideUI;
+                try {
+                    const session     = renderer.xr.getSession();
+                    const viewerSpace = await session.requestReferenceSpace('viewer');
+                    hitTestSource     = await session.requestHitTestSource({ space: viewerSpace });
+                } catch (e) { console.error('Hit-test setup failed:', e); }
+            });
+
+            renderer.xr.addEventListener('sessionend', () => {
+                hitTestSource = null; placed = false; _reticleWasVisible = false;
+                xrSession = null; xrStarting = false;
+                carouselRoot.visible = false; reticle.visible = false;
+                if (labelMesh) labelMesh.visible = false;
+                xrCanvas.style.display       = 'none';
+                xrOverlay.style.display      = 'none';
+                gestureLayer.style.display   = 'none';
+                document.getElementById('xr-place-hint').style.display     = 'block';
+                document.getElementById('xr-nav-row').style.display         = 'none';
+                document.getElementById('xr-move-hint').style.display       = 'none';
+                document.getElementById('xr-carousel-toggle').style.display = 'none';
+                document.getElementById('xr-label-toggle').style.display    = 'none';
+                _xrUIHidden = false;
+                _lastTouchStart = null;
+                const _hBtnS = document.getElementById('xr-hide-ui');
+                _hBtnS.classList.remove('ui-hidden');
+                activeTouches.clear();
+                _rotVelocity = 0;
+                _xrAddedKeys.clear();
+                _pinchDist0 = null; _pinchScale0 = null;
+                if (_scaleHideTimer) { clearTimeout(_scaleHideTimer); _scaleHideTimer = null; }
+                document.getElementById('xr-scale-gauge').style.display = 'none';
+                carouselRoot.scale.setScalar(1);
+                slotOf = { left: 0, center: 1, right: 2, hidden: 3 };
+                hiddenSide = 'farRight'; isAnimating = false;
+                initSlots();
+                document.dispatchEvent(new CustomEvent('xr-session-end'));
+            });
+
+            renderer.setAnimationLoop((time, frame) => {
+                if (frame && !placed && hitTestSource) {
+                    const refSpace = renderer.xr.getReferenceSpace();
+                    if (refSpace) {
+                        const results = frame.getHitTestResults(hitTestSource);
+                        if (results.length > 0) {
+                            const pose = results[0].getPose(refSpace);
+                            if (pose) { reticle.visible = true; reticle.matrix.fromArray(pose.transform.matrix); }
+                        } else { reticle.visible = false; }
+                    }
+                }
+                const _rvNow = !placed && reticle.visible;
+                if (_rvNow !== _reticleWasVisible) { _reticleWasVisible = _rvNow; _updateScanHint(_rvNow); }
+                if (placed && Math.abs(_rotVelocity) > 0.0001) {
+                    slotGroups[slotOf.center].rotation.y += _rotVelocity;
+                    _rotVelocity *= INERTIA_DAMP;
+                }
+                // Always sync label scale regardless of visibility
+                if (labelMesh) {
+                    const _cs = carouselRoot.scale.x;
+                    labelMesh.scale.setScalar(_cs < 1 ? 1 / _cs : 1);
+                }
+                if (labelMesh && labelMesh.visible) {
+                    const _cs = carouselRoot.scale.x;
+                    if (_cs < 1) {
+                        labelMesh.position.set(0, 0.22 / _cs, 0.015 / _cs);
+                    } else {
+                        labelMesh.position.set(0, 0.22, 0.015);
+                    }
+                    const _camPos = new THREE.Vector3();
+                    camera.getWorldPosition(_camPos);
+                    if (labelMode === 'float') {
+                        const _mPos = new THREE.Vector3();
+                        labelMesh.getWorldPosition(_mPos);
+                        labelMesh.lookAt(new THREE.Vector3(_camPos.x, _mPos.y, _camPos.z));
+                    } else {
+                        const _rPos = new THREE.Vector3();
+                        carouselRoot.getWorldPosition(_rPos);
+                        const _ang = Math.atan2(_camPos.x - _rPos.x, _camPos.z - _rPos.z);
+                        const _r = 0.223, _h = 0.004;
+                        const _lp = new THREE.Vector3(
+                            _rPos.x + Math.sin(_ang) * _r,
+                            _rPos.y + _h,
+                            _rPos.z + Math.cos(_ang) * _r
+                        );
+                        carouselRoot.worldToLocal(_lp);
+                        labelMesh.position.copy(_lp);
+                        // flatten first (Rx -90°), then spin around WORLD Y — quaternion
+                        // composition avoids Euler-order tilt on second axis
+                        const _qFl = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0), -Math.PI/2);
+                        const _qYw = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0), _ang);
+                        const _wQ  = _qYw.clone().multiply(_qFl);
+                        const _pQ  = new THREE.Quaternion();
+                        carouselRoot.getWorldQuaternion(_pQ);
+                        labelMesh.quaternion.multiplyQuaternions(_pQ.clone().invert(), _wQ);
+                    }
+                }
+                renderer.render(scene, camera);
+            });
+
+            document.getElementById('xr-exit').addEventListener('click', () => xrSession?.end());
+            document.getElementById('xr-place-again').addEventListener('click', _resetPlacement);
+            document.getElementById('xr-prev').addEventListener('click', goPrev);
+            document.getElementById('xr-next').addEventListener('click', goNext);
+            document.getElementById('xr-label-toggle').addEventListener('click', () => {
+                labelMode = labelMode === 'float' ? 'surface' : 'float';
+                localStorage.setItem('bl-xr-label', labelMode);
+                updateLabelTransform();
+            });
+            document.getElementById('xr-hide-ui').addEventListener('click', () => _applyUIHidden(!_xrUIHidden));
+
+            function updateXRToggleBtn() {
+    const u = UI[window.__lang || 'en'];
+    document.getElementById('xr-carousel-toggle').textContent =
+        _xrSingleItem ? u.carouselBtn : u.singleBtn;
+}
+            updateXRToggleBtn();
+            updateLabelTransform();
+
+            document.getElementById('xr-carousel-toggle').addEventListener('click', () => {
+                _xrSingleItem = !_xrSingleItem;
+                localStorage.setItem('bl-xr-view', _xrSingleItem ? 'single' : 'multi');
+                updateXRToggleBtn();
+                const { left: lIdx, right: rIdx } = slotOf;
+                const from = _xrSingleItem ? CFG.left.opacity : 0;
+                const to   = _xrSingleItem ? 0 : CFG.left.opacity;
+                animOpacity(lIdx, from, to, DUR);
+                animOpacity(rIdx, from, to, DUR);
+            });
+        }
+
+        // ── Public API ────────────────────────────────────────────────
+        window.XR = {
+            getCurrentItem() { return MENU.length ? MENU[currentCenterMenu] : null; },
+            refreshHint() { if (_setupDone) _updateScanHint(_reticleWasVisible); },
+            _preloadDone,
+            getSeatedBlob: _makeSeatedBlob,
+            // Called right after menu renders — imports Three.js + decodes all models
+            // in the background so the first AR tap finds everything ready.
+            async backgroundPreload(items) {
+                MENU = items; N = MENU.length;
+                try {
+                    await _ensureLoader();
+                    await preloadModels();
+                } catch (e) { console.warn('XR bg preload:', e); } finally {
+                    _resolvePreload?.();
+                }
+            },
+            async start(itemIndex, items) {
+                if (xrStarting || xrSession) return;
+                xrStarting = true;
+
+                MENU = items; N = MENU.length;
+                currentCenterMenu = Math.max(0, Math.min(itemIndex, N - 1));
+
+                await _setup();
+
+                await preloadModels();
+
+                initSlots();
+
+                let _xrReq;
+                try {
+                    _xrReq = navigator.xr.requestSession('immersive-ar', {
+                        requiredFeatures: ['hit-test'],
+                        optionalFeatures: ['dom-overlay'],
+                        domOverlay: { root: xrOverlay }
+                    });
+                    // ARCore needs recovery time after a previous session ends.
+                    // requestSession can hang indefinitely — race it against an 8s timeout.
+                    const _xrTimeout = new Promise((_, rej) =>
+                        setTimeout(() => rej(new Error('xr-timeout')), 8000)
+                    );
+                    xrSession = await Promise.race([_xrReq, _xrTimeout]);
+                } catch (e) {
+                    console.error('XR session failed:', e);
+                    // If the timed-out requestSession eventually resolves, end the ghost session.
+                    if (_xrReq) _xrReq.then(s => s.end()).catch(() => {});
+                    // Clear cache so next page load re-runs detection fresh
+                    localStorage.removeItem('bl-ar-cap');
+                    localStorage.removeItem('bl-ar-cap-ts');
+                    xrStarting = false;
+                    document.dispatchEvent(new CustomEvent('xr-session-end', { detail: { fallbackIdx: itemIndex } }));
+                    return;
+                }
+
+                xrSession.addEventListener('select', onSelect);
+                await renderer.xr.setSession(xrSession);
+                localStorage.setItem('bl-ar-cap', 'webxr');
+                localStorage.setItem('bl-ar-cap-ts', String(Date.now()));
+                xrCanvas.style.display  = 'block';
+                xrOverlay.style.display = 'block';
+                document.dispatchEvent(new CustomEvent('xr-session-start'));
+            }
+        };
+    })();
+    </script>
+
+
+<!-- ============ AR adapter (imported "view on table" from the live menu) ============ -->
+<script>
+  window.__lang = 'en';
+  window._basket = new Set();
+  window.UI = (function(){
+    var en = {
+      tagline:'Taste the Wild', viewAR:'VIEW ON TABLE', view3D:'VIEW IN 3D', loading:'Loading...',
+      close:'Close', tip:'Drag to rotate', placeHint:'Point at a flat surface, then tap to place',
+      moveHint:'Drag to rotate \u00b7 Pinch to scale', exitAR:'Exit', placeAgain:'Place Again',
+      hintStep1:'STEP 1 OF 2', hintScan:'Move slowly over a table or floor',
+      hintStep2:'STEP 2 OF 2', hintTap:'Tap to place your dish',
+      coachScan:'Find a Surface', coachScanSub:'Slowly move your phone over a flat surface',
+      coachFound:'Surface Found!', coachFoundSub:'Ready to place your dish',
+      langBtn:'\u10e5\u10d0\u10e0', themeDay:'Day', themeNight:'Night',
+      carouselBtn:'CAROUSEL', singleBtn:'SINGLE ITEM', onTable:'ON TABLE', floating:'FLOATING',
+      addBtn:'ADD', basketTitle:'Basket', emptyBasket:'Your basket is empty', total:'Total',
+      clearBasket:'Clear', readyBtn:'Ready to Order', readyDone:'Order Noted!',
+      hideUI:'HIDE UI', showUI:'SHOW UI'
+    };
+    return { en: en, ka: en };
+  })();
+
+  const AR_MENU = [
+    { name:'Featured Burger', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/druidi_balanced_30k_2k.glb', model_usdz:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/druidi_balanced_30k_2k.usdz' },
+    { name:'Hot Dog', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/hot_dog_draco.glb', model_usdz:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/hot_dog.usdz' },
+    { name:'Donut', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/donut_draco.glb', model_usdz:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/donut.usdz' },
+    { name:'Croissant', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/croissant_draco.glb', model_usdz:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/croissant.usdz' },
+  ];
+  window.__menuItems = AR_MENU;
+
+  let __arOpening = false;
+  function _setBtns(loading){
+    document.querySelectorAll('.ar-launch').forEach(b => { b.disabled = loading; b.style.opacity = loading ? '0.6' : ''; });
+  }
+  async function _detectAR(){
+    const cached = localStorage.getItem('bl-ar-cap');
+    const ts = parseInt(localStorage.getItem('bl-ar-cap-ts') || '0');
+    if (cached && (Date.now() - ts < 7*864e5)) { window.__arCap = cached; return cached; }
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    let cap = 'none';
+    if (navigator.xr) { try { if (await navigator.xr.isSessionSupported('immersive-ar')) cap = 'webxr'; } catch(e){} }
+    if (cap === 'none' && isIOS) cap = 'arkit';
+    window.__arCap = cap;
+    localStorage.setItem('bl-ar-cap', cap);
+    localStorage.setItem('bl-ar-cap-ts', String(Date.now()));
+    return cap;
+  }
+  function _launchQuickLook(usdzUrl){
+    const a = document.createElement('a');
+    a.setAttribute('rel', 'ar'); a.href = usdzUrl;
+    a.appendChild(document.createElement('img'));
+    document.body.appendChild(a); a.click();
+    setTimeout(() => a.remove(), 1000);
+    _setBtns(false); __arOpening = false;
+  }
+  async function openTableAR(idx){
+    if (__arOpening) return;
+    __arOpening = true; _setBtns(true);
+    const cap = window.__arCap ?? await _detectAR();
+    const item = AR_MENU[idx];
+    if (!item) { _setBtns(false); __arOpening = false; return; }
+    if (cap === 'webxr' && window.XR) {
+      try { await window.XR.start(0, [item]); }
+      catch(e){ console.error('XR start failed', e); }
+      _setBtns(false); __arOpening = false;
+    } else if (cap === 'arkit' && item.model_usdz) {
+      _launchQuickLook(item.model_usdz);
+    } else {
+      _setBtns(false); __arOpening = false;
+    }
+  }
+  document.addEventListener('xr-session-start', () => { _setBtns(false); __arOpening = false; });
+  document.addEventListener('xr-session-end',   () => { _setBtns(false); __arOpening = false; });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.ar-launch').forEach(b => {
+      b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); openTableAR(parseInt(b.dataset.idx || '0')); });
+    });
+    const u = window.UI.en, setT = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+    setT('xr-exit', u.exitAR); setT('xr-place-again', u.placeAgain); setT('xr-hide-ui', u.hideUI); setT('xr-move-hint', u.moveHint);
+    _detectAR().then(cap => { if (cap !== 'none') document.body.classList.add('ar-ok'); });
+  });
+</script>
+
 </body>
 </html>

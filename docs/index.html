@@ -622,6 +622,7 @@ body.ar-ok .ar-launch{ display:inline-flex; }      /* only on AR-capable phones 
 body.ar-ok .stage .hint{ display:none; }           /* hide hero caption when the button shows */
 #xr-add-btn{ display:none !important; }             /* basket is menu-only */
 #xr-carousel-toggle, #xr-label-toggle{ display:none !important; }   /* single-dish demo: no carousel / label toggle */
+#xr-hide-ui{ display:none !important; }              /* always show UI on the landing demo */
 </style>
 </head>
 <body>
@@ -1601,8 +1602,8 @@ body.ar-ok .stage .hint{ display:none; }           /* hide hero caption when the
 
             await _ensureLoader();
 
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.xr.enabled = true;
             renderer.xr.setReferenceSpaceType('local');

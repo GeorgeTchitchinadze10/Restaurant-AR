@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BetaReal — See the dish before you order</title>
+<title>BetaReal — AR menus that help restaurants sell more</title>
 <meta name="description" content="BetaReal turns real dishes into interactive 3D models diners place on their own table in Augmented Reality — in the browser, no app. A Tbilisi-based WebAR menu platform for restaurants.">
 
 <!-- Open Graph -->
@@ -367,6 +367,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
   header.scrolled{ backdrop-filter:blur(14px) saturate(140%); }
   .btn{ padding:12px 18px; font-size:14.5px; }
   .nav-cta .btn{ padding:10px 15px; font-size:14px; }
+  .nav-cta .demo-btn{ display:none; }     /* keep the header to logo + one clear Contact action on phones */
 
   section{ padding:62px 0; }
   .hero{ padding:40px 0 26px; }
@@ -408,13 +409,16 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
     <nav class="nav-links">
       <a href="#who">Use cases</a>
       <a href="#product">Product</a>
-      <a href="#proof">Traction</a>
-      <a href="#moat">The Moat</a>
+      <a href="#proof">Results</a>
+      <a href="#model">Pricing</a>
       <a href="#team">Team</a>
     </nav>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="https://3darmenu.pages.dev" target="_blank" rel="noopener">
+      <a class="btn btn-ghost demo-btn" href="https://3darmenu.pages.dev" target="_blank" rel="noopener">
         Live demo <span class="arr">→</span>
+      </a>
+      <a class="btn btn-primary" href="#contact">
+        Contact us <span class="arr">→</span>
       </a>
     </div>
   </div>
@@ -427,11 +431,11 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <span class="kicker rv in">Tbilisi · WebAR menu platform</span>
-      <h1 class="rv in d1">Let guests <span class="gradtext">see the dish</span> on their table — before they order.</h1>
-      <p class="lead rv in d2">BetaReal turns real dishes into interactive 3D models. Diners rotate, inspect, and place them in Augmented Reality — right in the phone browser. No app. Just a QR code on the table.</p>
+      <h1 class="rv in d1">Help your guests <span class="gradtext">order more</span> — by letting them see the dish first.</h1>
+      <p class="lead rv in d2">BetaReal turns your dishes into interactive 3D models guests place on their own table in AR — right in the phone browser. They order with confidence, try more dishes, and spend more per table. No app. Just a QR code.</p>
       <div class="hero-cta rv in d3">
-        <a class="btn btn-primary" href="https://3darmenu.pages.dev" target="_blank" rel="noopener">Open the live menu <span class="arr">→</span></a>
-        <a class="btn btn-ghost" href="#how">How it works</a>
+        <a class="btn btn-primary" href="#contact">Get your free 30-day pilot <span class="arr">→</span></a>
+        <a class="btn btn-ghost" href="https://3darmenu.pages.dev" target="_blank" rel="noopener">See the live menu</a>
       </div>
       <div class="hero-meta rv in d4">
         <div class="m"><b>0 apps</b><span>Runs in the browser</span></div>
@@ -684,7 +688,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
     <div class="sec-head rv">
       <span class="kicker">Validation</span>
       <h2>The problem is real — and the solution resonates.</h2>
-      <p class="lead">Early signal from a bilingual diner survey, plus a working MVP instrumented end-to-end. Honest stage: pre-revenue, MVP live, validation in progress.</p>
+      <p class="lead">Early signal from a bilingual diner survey, plus a working product instrumented end-to-end. The model is proven globally — and resonates with the diners we surveyed here at home.</p>
     </div>
     <div class="grid4">
       <div class="card rv d1"><div class="ic">⭐</div><h3>4.4 / 5</h3><p>average rating for the "view on table" AR experience — 85% gave it 4–5★.</p></div>
@@ -692,33 +696,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
       <div class="card rv d3"><div class="ic">🔁</div><h3>96%</h3><p>said it would change how they order vs a normal QR menu — 56% would try dishes they normally wouldn't.</p></div>
       <div class="card rv d4"><div class="ic">🧪</div><h3>MVP live</h3><p>Three real AR render paths, self-service admin, and a full analytics funnel — built by the founders in ~1 month.</p></div>
     </div>
-    <p class="honest rv">* Benchmark figures (AOV uplift, upsell effectiveness) are reported by QReal/Kabaq, the global category leader — cited as proof the model works, not as BetaReal's own results.<br>** Survey figures are from BetaReal's ongoing bilingual diner survey (early, warm sample) — directional, not conclusive. We are pre-revenue with no paying clients yet.</p>
-  </div>
-</section>
-
-<!-- ============ THE MOAT ============ -->
-<section class="moat" id="moat">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <span class="kicker">The moat</span>
-      <h2>Every dish we scan trains the AI that makes the next one nearly free.</h2>
-      <p class="lead">Manual photogrammetry doesn't scale. The winner is whoever produces good 3D food models fastest and cheapest — so we're building that capability into a data flywheel we own.</p>
-    </div>
-    <div class="flywheel">
-      <div class="fw-steps">
-        <div class="fw-step rv d1"><span class="k">01</span><div><b>Land restaurants</b><p>Every onboarding is a paid service — and a data-collection event.</p></div></div>
-        <div class="fw-step rv d2"><span class="k">02</span><div><b>Capture (photos → 3D) pairs</b><p>Each dish produces a training pair: source photos mapped to a finished, optimized model.</p></div></div>
-        <div class="fw-step rv d3"><span class="k">03</span><div><b>Fine-tune image-to-3D AI</b><p>At ~500 unique models — enough variety to train a model that generalizes to almost any dish — we fine-tune an open-source model on rented GPUs.</p></div></div>
-        <div class="fw-step rv d4"><span class="k">04</span><div><b>Production cost collapses</b><p>Cheaper, faster models let us undercut and out-scale anyone doing this by hand → more clients → more data.</p></div></div>
-      </div>
-      <div class="fw-orbit rv d2">
-        <div class="orb a"></div><div class="orb b"></div><div class="orb c"></div><div class="orb d"></div>
-        <div class="fw-core">
-          <div class="n">500</div>
-          <div class="l">unique models to cover the market</div>
-        </div>
-      </div>
-    </div>
+    <p class="honest rv">* Benchmark figures (AOV uplift, upsell effectiveness) are reported by QReal/Kabaq, the global category leader — cited as proof the model works, not as BetaReal's own results.<br>** Survey figures are from BetaReal's ongoing bilingual diner survey (early sample) — directional indicators.</p>
   </div>
 </section>
 
@@ -726,9 +704,9 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
 <section id="model">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="kicker">Business model</span>
-      <h2>B2B SaaS: onboarding + per-item production + monthly recurring.</h2>
-      <p class="lead">Full-service and recurring. High gross margin once a menu is built — and a production cost curve that bends down over time as the AI takes over scanning.</p>
+      <span class="kicker">Pricing</span>
+      <h2>Simple, honest pricing — we do all the work.</h2>
+      <p class="lead">We scan your dishes, build your menu, host it, and keep it running. Month-to-month, no lock-in. Start with a free 30-day pilot — you only pay if you love it.</p>
     </div>
     <div class="tiers">
       <div class="tier rv d1">
@@ -763,7 +741,7 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
         </ul>
       </div>
     </div>
-    <p class="pricing-note">₾500 one-time onboarding (includes the first 5 AR items) · extra items ₾50–70/mo · month-to-month, no lock-in · per-location pricing for chains. <span class="muted">≈ ₾100 = $37.</span></p>
+    <p class="pricing-note">₾500 one-time onboarding (includes your first 5 AR items) · additional dishes from ₾45 each · month-to-month, no lock-in · special pricing for restaurants with multiple locations.</p>
   </div>
 </section>
 
@@ -772,8 +750,8 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
   <div class="wrap">
     <div class="sec-head rv">
       <span class="kicker">The team</span>
-      <h2>Five founders. One month. A live product.</h2>
-      <p class="lead">Computer Science students at Ivane Javakhishvili Tbilisi State University, friends for 3+ years — software, WebAR, AI, 3D content, and business development under one roof.</p>
+      <h2>The team that builds and runs your AR menu.</h2>
+      <p class="lead">A Tbilisi-based team of five — software, WebAR, AI, 3D scanning, and support — handling everything from the dish photoshoot to your live menu, so you don't have to touch anything technical.</p>
     </div>
     <div class="team-grid">
       <div class="member rv d1"><div class="av">TT</div><b>Temo Tkeshelashvili</b><div class="role">CEO</div><p>Strategy, sales, WebAR dev, finance. TSU Higgs Cleverton accelerator winner.</p></div>
@@ -786,15 +764,19 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
 </section>
 
 <!-- ============ CTA ============ -->
-<section class="cta">
+<section class="cta" id="contact">
   <div class="wrap">
     <div class="cta-card rv">
-      <span class="kicker" style="justify-content:center">Tbilisi → Georgia → international</span>
-      <h2 style="margin-top:18px">AR menus for restaurants everywhere — starting now.</h2>
-      <p>First-mover in Georgia, benchmarked against the global leader, with a data moat that compounds with every dish. See it working on a real restaurant's menu.</p>
+      <span class="kicker" style="justify-content:center">Free 30-day pilot</span>
+      <h2 style="margin-top:18px">Let's put your dishes on the table — in AR.</h2>
+      <p>We'll scan your signature dishes and set up your AR menu free for 30 days. See it working before you pay a single lari. Call us or send a message — we'll come to you.</p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="https://3darmenu.pages.dev" target="_blank" rel="noopener">Open the live demo <span class="arr">→</span></a>
-        <a class="btn btn-ghost" href="mailto:betareal.ar@gmail.com">Talk to the team</a>
+        <a class="btn btn-primary" href="tel:+995593191707">Call 593 19 17 07 <span class="arr">→</span></a>
+        <a class="btn btn-primary" href="tel:+995599000305">Call 599 00 03 05 <span class="arr">→</span></a>
+      </div>
+      <div class="hero-cta" style="margin-top:14px">
+        <a class="btn btn-ghost" href="mailto:betareal.ar@gmail.com">Email betareal.ar@gmail.com</a>
+        <a class="btn btn-ghost" href="https://3darmenu.pages.dev" target="_blank" rel="noopener">See the live menu</a>
       </div>
     </div>
   </div>
@@ -819,21 +801,22 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
         </div>
         <div class="foot-col">
           <h5>Company</h5>
-          <a href="#moat">The moat</a>
+          <a href="#who">Use cases</a>
           <a href="#team">Team</a>
           <a href="#model">Pricing</a>
         </div>
         <div class="foot-col">
           <h5>Contact</h5>
-          <a href="mailto:betareal.ar@gmail.com">Email us</a>
-          <span style="display:block; color:var(--dim); font-size:14.5px; margin:9px 0; user-select:all; -webkit-user-select:all; cursor:text;">betareal.ar@gmail.com</span>
+          <a href="tel:+995593191707">593 19 17 07</a>
+          <a href="tel:+995599000305">599 00 03 05</a>
+          <a href="mailto:betareal.ar@gmail.com">betareal.ar@gmail.com</a>
           <a href="https://3darmenu.pages.dev" target="_blank" rel="noopener">3darmenu.pages.dev</a>
         </div>
       </div>
     </div>
     <div class="foot-bot">
       <span>© 2026 BetaReal · Tbilisi, Georgia</span>
-      <span>Pre-revenue · MVP live · validation in progress</span>
+      <span>WebAR menus for restaurants · betareal.ar@gmail.com</span>
     </div>
   </div>
 </footer>

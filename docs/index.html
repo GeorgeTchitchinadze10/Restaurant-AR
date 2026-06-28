@@ -623,6 +623,7 @@ body.ar-ok .stage .hint{ display:none; }           /* hide hero caption when the
 #xr-add-btn{ display:none !important; }             /* basket is menu-only */
 #xr-carousel-toggle, #xr-label-toggle{ display:none !important; }   /* single-dish demo: no carousel / label toggle */
 #xr-hide-ui{ display:none !important; }              /* always show UI on the landing demo */
+body.in-ar main{ display:none !important; }          /* pause page 3D rendering during an AR session (frees the GPU) */
 </style>
 </head>
 <body>
@@ -1128,7 +1129,7 @@ body.ar-ok .stage .hint{ display:none; }           /* hide hero caption when the
 
     <script>
     (function () {
-        let THREE, GLTFLoader, GLTFExporter;
+        let THREE, GLTFLoader, GLTFExporter, DRACOLoader;
         let renderer, scene, camera, reticle, xrCanvas;
         let carouselRoot, slotGroups = [];
         let gestureLayer, xrOverlay;
@@ -1543,14 +1544,20 @@ body.ar-ok .stage .hint{ display:none; }           /* hide hero caption when the
                     import('https://esm.sh/three@0.155.0'),
                     import('https://esm.sh/three@0.155.0/examples/jsm/loaders/GLTFLoader'),
                     import('https://esm.sh/three@0.155.0/examples/jsm/exporters/GLTFExporter'),
+                    import('https://esm.sh/three@0.155.0/examples/jsm/loaders/DRACOLoader'),
                 ]);
             }
-            const [threeNS, loaderMod, exporterMod] = await _loaderPromise;
+            const [threeNS, loaderMod, exporterMod, dracoMod] = await _loaderPromise;
             if (loader) return; // concurrent call already finished
             THREE        = threeNS;
             GLTFLoader   = loaderMod.GLTFLoader;
             GLTFExporter = exporterMod.GLTFExporter;
+            DRACOLoader  = dracoMod.DRACOLoader;
             loader       = new GLTFLoader();
+            // Draco decoder (worker thread) so the compressed *_draco.glb dishes load in AR
+            const _draco = new DRACOLoader();
+            _draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+            loader.setDRACOLoader(_draco);
         }
 
         // ── iOS y-offset correction ───────────────────────────────────────────
@@ -1976,8 +1983,8 @@ body.ar-ok .stage .hint{ display:none; }           /* hide hero caption when the
       _setBtns(false); __arOpening = false;
     }
   }
-  document.addEventListener('xr-session-start', () => { _setBtns(false); __arOpening = false; });
-  document.addEventListener('xr-session-end',   () => { _setBtns(false); __arOpening = false; });
+  document.addEventListener('xr-session-start', () => { _setBtns(false); __arOpening = false; document.body.classList.add('in-ar'); });
+  document.addEventListener('xr-session-end',   () => { _setBtns(false); __arOpening = false; document.body.classList.remove('in-ar'); });
 
   window.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.ar-launch').forEach(b => {

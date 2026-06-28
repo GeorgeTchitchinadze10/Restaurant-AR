@@ -1974,7 +1974,7 @@ body.in-ar main{ display:none !important; }          /* pause page 3D rendering 
     const item = AR_MENU[idx];
     if (!item) { _setBtns(false); __arOpening = false; return; }
     if (cap === 'webxr' && window.XR) {
-      try { await window.XR.start(0, [item]); }
+      try { await window.XR.start(idx, AR_MENU); }
       catch(e){ console.error('XR start failed', e); }
       _setBtns(false); __arOpening = false;
     } else if (cap === 'arkit' && item.model_usdz) {

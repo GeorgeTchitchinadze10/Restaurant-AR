@@ -579,6 +579,25 @@
             transition: color var(--t);
         }
 
+        /* Monday Greens · day theme · 3D modal:
+           the title/price use a light gradient fill and the description/tip the
+           light --dim colour, so on the light day background they wash out to
+           near-white on near-white. Keep the text colour as-is but add a black
+           outline so it stays legible. Scoped to day + monday_greens only —
+           night mode (dark backdrop, white text) is untouched. */
+        [data-theme="day"][data-template="monday_greens"] #modal-title,
+        [data-theme="day"][data-template="monday_greens"] #modal-title-d,
+        [data-theme="day"][data-template="monday_greens"] #modal-price,
+        [data-theme="day"][data-template="monday_greens"] #modal-description,
+        [data-theme="day"][data-template="monday_greens"] .tip {
+            text-shadow:
+                -1px -1px 0 #000, 1px -1px 0 #000,
+                -1px  1px 0 #000, 1px  1px 0 #000,
+                 0   -1px 0 #000, 0    1px 0 #000,
+                -1px  0   0 #000, 1px  0   0 #000,
+                 0    2px 4px rgba(0,0,0,0.55);
+        }
+
         .nav-arrow {
             position: absolute;
             top: 50%;

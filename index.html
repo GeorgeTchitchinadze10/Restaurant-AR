@@ -1826,11 +1826,15 @@
             letter-spacing: 0.3px;
             font-size: 0.9rem;
         }
-        /* Food & Market: show the real wordmark logo once a kitchen is chosen (the
-           kitchen-picker landing page carries its own art and doesn't need it) and
-           drop the plain text title in favour of it, matching the burger_bar/
-           gochit_monster convention below. */
-        [data-tenant="food-market-main"] #tenant-logo[src] ~ #brand-title { display: none; }
+        /* Food & Market: every kitchen tile art (and the in-kitchen category art)
+           already carries the "FOOD & MARKET" wordmark, so the generic header
+           logo is a redundant duplicate on top of it -- keep it hidden on every
+           Food & Market view, landing page and in-kitchen alike. */
+        [data-tenant="food-market-main"] #tenant-logo { display: none; }
+        /* Food & Market: management asked to remove the night theme option --
+           the menu is forced to day theme in JS (see applyTheme's initial call),
+           this just hides the now-inert toggle button. */
+        [data-tenant="food-market-main"] #theme-toggle { display: none; }
         [data-tenant="food-market-main"] .menu-groups {
             max-width: 450px;
             gap: 8px;
@@ -1870,7 +1874,13 @@
         [data-tenant="food-market-main"] .group-btn[data-group="drinks"] {
             background-repeat: no-repeat;
             background-size: cover;
-            background-position: center;
+            /* These tiles are ~94px tall but the source art is a tall poster with the
+               "FOOD" wordmark right at the top -- centering the cover-crop (the old
+               `center` value) ate straight into "FOOD", clipping it. Anchoring to the
+               top keeps the wordmark whole and lets the crop eat into the bottom
+               subtitle/decoration instead, which the label text below the tile
+               already repeats in words. */
+            background-position: top center;
             color: #fff;
             text-shadow: 0 1px 3px rgba(0,0,0,0.85);
         }
@@ -2063,6 +2073,10 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            /* Same top-anchoring as the small kitchen-tab icons below: the source
+               art's "FOOD" wordmark sits at the top, so bias any cover-crop toward
+               the bottom instead of splitting it evenly and clipping "FOOD". */
+            object-position: top;
             display: block;
         }
         .fm-kitchen-tile-japanese {
@@ -11668,7 +11682,23 @@
         }
         const _DEFAULT_THEME_BY_TENANT_SLUG = { 'rhythm-main': 'day', 'b-main': 'day' };
         const _initialStoredTheme = _storedThemeForCurrentScope();
-        applyTheme(_initialStoredTheme || _DEFAULT_THEME_BY_TENANT_SLUG[_tenantSlugFromHost()] || (_tenantSlugFromHost() === _MUGSY_RESTAURANT_SLUG ? 'day' : 'night'), false);
+        // Unpersisted escape hatch (any tenant): ?theme=day / ?theme=night on the
+        // URL wins over everything below, including a hard tenant lock. Doesn't
+        // touch localStorage, so it only affects the tab it's opened in -- useful
+        // for staff/preview to still reach a theme that's hidden from regular
+        // visitors (e.g. Food & Market's night lock right below) without a deploy.
+        const _urlThemeOverride = (() => {
+            const t = new URLSearchParams(location.search).get('theme');
+            return (t === 'day' || t === 'night') ? t : null;
+        })();
+        // Food & Market: management asked for the night theme option to be removed
+        // entirely -- it was never reskinned (only day theme got the print-menu
+        // redesign, see the [data-theme="day"] block above), so it's forced to day
+        // unconditionally here, overriding even a theme a visitor toggled to before
+        // this shipped. The toggle button itself is hidden via CSS (search
+        // `#theme-toggle { display: none` for the food-market-main rule); the
+        // ?theme= override above is the only way back in now.
+        applyTheme(_urlThemeOverride || (_isFoodMarketTenant() ? 'day' : (_initialStoredTheme || _DEFAULT_THEME_BY_TENANT_SLUG[_tenantSlugFromHost()] || (_tenantSlugFromHost() === _MUGSY_RESTAURANT_SLUG ? 'day' : 'night'))), false);
         themeBtn.addEventListener('click', () => {
             const _from = html.getAttribute('data-theme'), _to = _from === 'night' ? 'day' : 'night';
             track('theme_change', null, { from: _from, to: _to });
@@ -13010,7 +13040,7 @@
                 _applyMugsyCopy();
                 const logoUrl = _safeAssetUrl(cfg.logo_url);
                 const logo = document.getElementById('tenant-logo');
-                if (logo && logoUrl) {
+                if (logo && logoUrl && !_isFoodMarketTenant()) {
                     logo.src = logoUrl;
                     logo.alt = _isBaomaTenant() ? _localizedBrandTitle() : (cfg.site_name || tenant.restaurant_name || 'Restaurant logo');
                     logo.style.display = 'block';

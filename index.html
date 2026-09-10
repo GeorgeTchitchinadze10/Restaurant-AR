@@ -1882,14 +1882,11 @@
         [data-tenant="food-market-main"] .group-btn[data-group="drinks"] {
             background-repeat: no-repeat;
             background-size: cover;
-            /* These tiles are ~94px tall but the source art is a tall poster with the
-               "FOOD (of) MARKET" wordmark starting right at the top. Pure `center`
-               clipped "FOOD"; a full `top` anchor (tried first) fixed that but then
-               clipped "MARKET" on the Thai tile instead, whose art is the most
-               elongated of the three (551x355, vs. ~514x447/540x459 for the other
-               two -- their crop is mild enough that this barely moves them). 17%
-               from the top is the sweet spot for Thai: both words fully in frame,
-               wordmark reads centered, only the subtitle below it gets cropped. */
+            /* These tiles are ~94px tall but the Georgian/Drinks source art is a tall
+               poster with the "FOOD (of) MARKET" wordmark starting right at the top.
+               Pure `center` clipped "FOOD"; 17% from the top keeps both words in
+               frame without clipping either. (Thai gets its own rule below -- its
+               source art is a dedicated pre-cropped tab image now, not this poster.) */
             background-position: center 17%;
             color: #fff;
             text-shadow: 0 1px 3px rgba(0,0,0,0.85);
@@ -1898,7 +1895,13 @@
             background-image: linear-gradient(rgba(0,0,0,0.22), rgba(0,0,0,0.52)), url('./img/food-market-georgian-more.png');
         }
         [data-tenant="food-market-main"] .group-btn[data-group="thai"] {
-            background-image: linear-gradient(rgba(0,0,0,0.22), rgba(0,0,0,0.52)), url('./img/food-market-asian.png');
+            /* Dedicated near-square crop (food-market-thai-tab.png) instead of the tall
+               food-market-asian.png poster used by the landing-page tile -- that art's
+               aspect ratio was so far off this ~94px-tall button's that no single
+               background-position kept both "FOOD" and "MARKET" framed well. This crop
+               already matches the button's proportions, so plain `center` just works. */
+            background-image: linear-gradient(rgba(0,0,0,0.22), rgba(0,0,0,0.52)), url('./img/food-market-thai-tab.png');
+            background-position: center;
         }
         [data-tenant="food-market-main"] .group-btn[data-group="drinks"] {
             background-image: linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.46)), url('./img/food-market-drinks.png');

@@ -1835,6 +1835,14 @@
            the menu is forced to day theme in JS (see applyTheme's initial call),
            this just hides the now-inert toggle button. */
         [data-tenant="food-market-main"] #theme-toggle { display: none; }
+        /* Food & Market: nothing wanted between the hero photo and the kitchen
+           tiles -- the "FOOD & MARKET" title (already redundant with the hero and
+           every kitchen tile's own wordmark), its underline, and the "Back to
+           kitchens" pill all go. Switching kitchens is already one tap away on
+           the tile row itself, so the pill isn't needed for that either. */
+        [data-tenant="food-market-main"] #brand-title,
+        [data-tenant="food-market-main"] .header::after,
+        [data-tenant="food-market-main"] #fm-back-to-kitchens { display: none; }
         [data-tenant="food-market-main"] .menu-groups {
             max-width: 450px;
             gap: 8px;
@@ -1875,12 +1883,14 @@
             background-repeat: no-repeat;
             background-size: cover;
             /* These tiles are ~94px tall but the source art is a tall poster with the
-               "FOOD" wordmark right at the top -- centering the cover-crop (the old
-               `center` value) ate straight into "FOOD", clipping it. Anchoring to the
-               top keeps the wordmark whole and lets the crop eat into the bottom
-               subtitle/decoration instead, which the label text below the tile
-               already repeats in words. */
-            background-position: top center;
+               "FOOD (of) MARKET" wordmark starting right at the top. Pure `center`
+               clipped "FOOD"; a full `top` anchor (tried first) fixed that but then
+               clipped "MARKET" on the Thai tile instead, whose art is the most
+               elongated of the three (551x355, vs. ~514x447/540x459 for the other
+               two -- their crop is mild enough that this barely moves them). 17%
+               from the top is the sweet spot for Thai: both words fully in frame,
+               wordmark reads centered, only the subtitle below it gets cropped. */
+            background-position: center 17%;
             color: #fff;
             text-shadow: 0 1px 3px rgba(0,0,0,0.85);
         }

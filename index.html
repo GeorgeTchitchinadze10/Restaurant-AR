@@ -13527,16 +13527,17 @@
                         // Photo-only item: tap the image to expand it. In twin phone
                         // layout and Burger Planet it opens the rich popup (name + photo +
                         // description + price + add-to-cart) -- the plain image alone left
-                        // most of the screen empty below it; Monday Greens keeps the plain
-                        // image. Checked at click time, after the remote theme has set the
-                        // data-template / data-tenant / data-phone-layout attributes.
+                        // most of the screen empty below it; Monday Greens and Food & Market
+                        // keep the plain image. Checked at click time, after the remote theme
+                        // has set the data-template / data-tenant / data-phone-layout attributes.
                         thumbImg.addEventListener('click', e => {
                             if (document.documentElement.dataset.phoneLayout === 'twin'
                                 || document.documentElement.dataset.tenant === 'burger-planet-main'
                                 || document.documentElement.dataset.template === 'elegant_black') {
                                 e.stopPropagation();
                                 openLightbox(thumbSrc, itemName, item, globalIdx);
-                            } else if (document.documentElement.dataset.template === 'monday_greens') {
+                            } else if (document.documentElement.dataset.template === 'monday_greens'
+                                || document.documentElement.dataset.tenant === 'food-market-main') {
                                 e.stopPropagation();
                                 openLightbox(thumbSrc, itemName);
                             }

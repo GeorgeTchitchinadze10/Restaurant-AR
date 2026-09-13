@@ -108,6 +108,12 @@ export default function ThemePage() {
   const [tab, setTab]         = useState<ThemeTab>('night')
   const [loadedTemplateKey, setLoadedTemplateKey] = useState<string | undefined>()
   const showTemplateControls = canManageThemeTemplates(plan.role)
+  // Announcement (event/promo banner) is scoped to this one tenant for now --
+  // it's a bespoke feature built for Corner at Tabidze's recurring jazz
+  // nights, not yet offered platform-wide. Gate on the tenant slug the same
+  // way the Monday Greens-only approved reset does, so other tenants' theme
+  // editors are completely unaffected.
+  const showAnnouncementTab = plan.restaurantSlug === 'corner-by-eleven-main'
 
   const load = useCallback(async () => {
     if (plan.loading || !plan.canUseTheme || !plan.restaurantId) {
@@ -295,7 +301,7 @@ export default function ThemePage() {
     { id: 'background', label: T.tabBackground },
     { id: 'fonts',     label: T.tabFonts },
     { id: 'branding',  label: T.tabBranding },
-    { id: 'announcement', label: T.tabAnnouncement },
+    showAnnouncementTab ? { id: 'announcement', label: T.tabAnnouncement } : null,
   ].filter((item): item is { id: ThemeTab; label: string } => Boolean(item))
 
   if (!plan.loading && !plan.restaurantId) {
@@ -465,7 +471,7 @@ export default function ThemePage() {
                               onRemove={removeHeroImage} onMove={moveHeroImage} />
             </>
           )}
-          {tab === 'announcement' && (
+          {tab === 'announcement' && showAnnouncementTab && (
             <>
               <div className="p-4 rounded-xl text-sm leading-6"
                    style={{ background: 'var(--card)', border: '1px solid var(--border)', color: 'var(--dim)' }}>

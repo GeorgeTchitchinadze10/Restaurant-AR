@@ -1,0 +1,42 @@
+name: Update sitemap lastmod
+
+# Keeps docs/sitemap.xml's <lastmod> pointing at the actual last content
+# change instead of the date whoever last hand-edited the file happened to
+# type in. A stale lastmod is a signal to crawlers that the page hasn't
+# changed and can be skipped on re-index, which is how outdated copy keeps
+# getting served by search/AI tools long after the live page has moved on.
+
+on:
+  push:
+    branches: [landing-page]
+    paths:
+      - 'docs/**'
+      - '!docs/sitemap.xml'
+
+permissions:
+  contents: write
+
+jobs:
+  bump-lastmod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: landing-page
+
+      - name: Set lastmod to today (UTC)
+        run: |
+          TODAY=$(date -u +%Y-%m-%d)
+          sed -i "s#<lastmod>.*</lastmod>#<lastmod>${TODAY}</lastmod>#" docs/sitemap.xml
+
+      - name: Commit if it actually changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- docs/sitemap.xml; then
+            echo "sitemap.xml already current, nothing to commit"
+          else
+            git add docs/sitemap.xml
+            git commit -m "chore: bump sitemap lastmod to $(date -u +%Y-%m-%d) [skip ci]"
+            git push
+          fi

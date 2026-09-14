@@ -25,6 +25,7 @@ const PRECACHE = [
     './assets/mugsy/deliveries/glovo.png',
     './assets/pipes/items-webp/pipes-signature-burger.webp',
     './assets/showcase/mingleyard/editorial.css',
+    './assets/food-market/hero-desktop.png',
 ];
 
 // NOTE: models are intentionally NOT mass-precached on install anymore.

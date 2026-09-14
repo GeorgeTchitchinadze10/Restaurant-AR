@@ -2405,6 +2405,44 @@
         [data-template="minimal_sushi"] {
             --card-radius: 14px;
         }
+        /* Food & Market: use the supplied campaign image as a desktop-only hero.
+           The mobile rule intentionally keeps the shared hero hidden, so the phone
+           composition remains exactly the existing minimal menu. */
+        @media (min-width: 641px) {
+            [data-tenant="food-market-main"][data-template="minimal_sushi"] .mg-hero {
+                display: flex;
+                position: relative;
+                width: 100vw;
+                margin-left: calc(50% - 50vw);
+                margin-right: calc(50% - 50vw);
+                min-height: clamp(420px, 56vw, 720px);
+                overflow: hidden;
+                align-items: center;
+                justify-content: center;
+                isolation: isolate;
+            }
+            [data-tenant="food-market-main"][data-template="minimal_sushi"] .mg-hero-photo {
+                position: absolute;
+                inset: 0;
+                z-index: 0;
+                background: #101415 url('./assets/food-market/hero-desktop.png') center / cover no-repeat;
+            }
+            [data-tenant="food-market-main"][data-template="minimal_sushi"] .mg-hero-next {
+                display: none;
+            }
+            [data-tenant="food-market-main"][data-template="minimal_sushi"] .mg-hero-veil {
+                position: absolute;
+                inset: 0;
+                z-index: 1;
+                background: linear-gradient(180deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,.12) 46%, rgba(16,20,21,.78) 100%);
+            }
+            [data-tenant="food-market-main"][data-template="minimal_sushi"] .mg-hero-brand,
+            [data-tenant="food-market-main"][data-template="minimal_sushi"] .mg-hero-tagline,
+            [data-tenant="food-market-main"][data-template="minimal_sushi"] .mg-hero-logo {
+                position: relative;
+                z-index: 2;
+            }
+        }
         [data-template="minimal_sushi"] .menu-item::before {
             width: 2px;
         }

@@ -59,6 +59,8 @@
                 'iakobis-ezo-main': 'iakobis_garden',
                 'food-market-main': 'minimal_sushi',
                 'foodandmarket': 'minimal_sushi',
+                'corner-by-eleven-main': 'elegant_black',
+                'corner-at-tabidze': 'elegant_black',
                 // The four segment demo templates. Two publish on their own slug
                 // (luxury.betareal.ge, cafe.betareal.ge). The other two publish on a
                 // hostname SHORTER than their slug — casual.betareal.ge for
@@ -10775,6 +10777,11 @@
             const urlSlug = _tenantSlugFromUrl();
             if (urlSlug) return urlSlug;
             const host = location.hostname.toLowerCase();
+            const customHostTenant = {
+                'foodandmarket.betareal.ge': 'food-market-main',
+                'corner-at-tabidze.betareal.ge': 'corner-by-eleven-main',
+            }[host];
+            if (customHostTenant) return customHostTenant;
             if ((host === 'localhost' || host === '127.0.0.1' || host === 'restaurant-ar.pages.dev') && _DEFAULT_RESTAURANT_SLUG) {
                 return _DEFAULT_RESTAURANT_SLUG;
             }

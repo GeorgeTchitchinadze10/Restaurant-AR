@@ -828,6 +828,17 @@
             overflow-wrap: break-word;
         }
 
+        .additional-info,
+        #modal-additional-info {
+            color: #d62424;
+            font-size: 0.72rem;
+            font-weight: 800;
+            line-height: 1.3;
+            overflow-wrap: break-word;
+        }
+        .additional-info { margin: 4px 0 0; }
+        #modal-additional-info { margin: 7px 0 0; }
+
         .price {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.15rem;
@@ -9085,6 +9096,7 @@
             <div id="modal-drawer-body">
                 <div>
                     <p id="modal-description"></p>
+                    <p id="modal-additional-info" hidden></p>
                     <div id="modal-qty-wrap">
                         <div class="qty-ctrl" id="modal-qty-ctrl" data-idx="0">
                             <button class="qty-add-btn" aria-label="Add to basket"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></button>
@@ -10224,6 +10236,18 @@
         function _isFoodMarketTenant() {
             const tenant = window.__tenant || _tenant || {};
             return _FOOD_MARKET_TENANT_SLUGS.includes(tenant.restaurant_slug || _tenantSlugFromHost());
+        }
+        function _foodMarketAdditionalInfo(item) {
+            if (!_isFoodMarketTenant()) return '';
+            const en = _cleanText(item && item.additional_info_en);
+            const ka = _cleanText(item && item.additional_info_ka);
+            return window.__lang === 'ka' ? (ka || en) : (en || ka);
+        }
+        function _foodMarketAdditionalInfoHtml(item) {
+            const additionalInfo = _foodMarketAdditionalInfo(item);
+            return additionalInfo
+                ? `<p class="additional-info">${_escapeHtml(additionalInfo)}</p>`
+                : '';
         }
         // The whole Food & Market redesign is keyed off [data-tenant="food-market-main"]
         // CSS selectors. Rather than duplicate every one of those selectors for the
@@ -11823,6 +11847,7 @@
         modalSpinBtn.addEventListener('click', e => { e.stopPropagation(); _modalSpin = !_modalSpin; _applyModalSpin(); });
         const modalTitle  = document.getElementById('modal-title');
         const modalPrice  = document.getElementById('modal-price');
+        const modalAdditionalInfo = document.getElementById('modal-additional-info');
 
         /* Long dish names ("Beef Stroganoff, garnish: potatoes / chips / rice") used to
            overflow the mobile title and get sliced in half by the 3D viewer below.
@@ -11930,6 +11955,9 @@
             document.getElementById('modal-title-d').textContent = t(item, 'name');
             _setPriceWithOld(modalPrice, item.price, item.price_old);
             document.getElementById('modal-description').textContent = t(item, 'description') || '';
+            const additionalInfo = _foodMarketAdditionalInfo(item);
+            modalAdditionalInfo.textContent = additionalInfo;
+            modalAdditionalInfo.hidden = !additionalInfo;
             const msgEl = document.getElementById('modal-message');
             msgEl.textContent = modalMessage;
             msgEl.style.display = modalMessage ? 'block' : 'none';
@@ -13253,6 +13281,8 @@
                             description:    _cleanText(r.description_en),
                             description_ka: _cleanText(r.description_ka),
                             description_ru: _cleanText(r.description_ru),
+                            additional_info_en: _cleanText(r.additional_info_en),
+                            additional_info_ka: _cleanText(r.additional_info_ka),
                             price:          _cleanText(r.price),
                             price_old:      _cleanText(r.price_old),
                             featured:       r.featured === true,
@@ -13519,6 +13549,7 @@
                 const itemName = t(item, 'name');
                 const itemNameHtml = _escapeHtml(itemName);
                 const itemDescHtml = _escapeHtml(t(item, 'description'));
+                const additionalInfoHtml = _foodMarketAdditionalInfoHtml(item);
                 // Variant-priced items (e.g. Glass / Bottle) show the SELECTED variant's
                 // price here, not the raw item.price (which may be a "16 / 70 ₾" string).
                 const _hasVariants = !!(item.variants && item.variants.length);
@@ -13548,6 +13579,7 @@
                     </div>`}
                     ${noImage ? `
                     <p class="ingredients" data-field="description" data-idx="${globalIdx}">${itemDescHtml}</p>
+                    ${additionalInfoHtml}
                     <div class="item-right">
                         <div class="item-actions">
                             <p class="price">${priceWasHtml}${itemPriceHtml}</p>
@@ -13557,6 +13589,7 @@
                     ${noImageExtra ? `<div class="no-image-extra">${noImageExtra}</div>` : ''}` : `
                     <div class="item-right">
                         <p class="ingredients" data-field="description" data-idx="${globalIdx}">${itemDescHtml}</p>
+                        ${additionalInfoHtml}
                         <div class="item-actions">
                             <p class="price">${priceWasHtml}${itemPriceHtml}</p>
                             ${_qtyCtrlHtml(globalIdx)}

@@ -11698,7 +11698,11 @@
                 localStorage.setItem(_isMugsyThemeScope() ? _mugsyScopedThemeKey() : 'bl-theme', theme);
             }
         }
-        const _DEFAULT_THEME_BY_TENANT_SLUG = { 'rhythm-main': 'day', 'b-main': 'day' };
+        const _DEFAULT_THEME_BY_TENANT_SLUG = {
+            'rhythm-main': 'day',
+            'food-market-main': 'day',
+            'foodandmarket': 'day',
+        };
         const _initialStoredTheme = _storedThemeForCurrentScope();
         // Unpersisted escape hatch (any tenant): ?theme=day / ?theme=night on the
         // URL wins over everything below, including a hard tenant lock. Doesn't

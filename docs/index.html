@@ -320,82 +320,6 @@ section{ padding:96px 0; }
 .card h3{ font-size:21px; margin-bottom:8px; }
 .card p{ font-size:15.5px; color:var(--soft); margin:0; }
 
-/* ---------- template menus ---------- */
-/* The whole card is the link, so the "button" is a styled span — an <a> inside
-   an <a> is invalid and browsers unnest it. Screenshot and button therefore
-   share one target and one hover state. */
-.tpl-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
-.tpl-card{ display:flex; flex-direction:column; text-decoration:none; color:inherit;
-  background:linear-gradient(180deg,var(--panel),var(--panel2));
-  border:1px solid var(--line); border-radius:20px; overflow:hidden;
-  transition:.35s var(--ease); }
-.tpl-card:hover{ border-color:var(--line2); transform:translateY(-4px);
-  box-shadow:0 30px 60px -30px rgba(0,0,0,.8); }
-.tpl-card:focus-visible{ outline:2px solid var(--blue2); outline-offset:3px; }
-/* Fixed ratio so four different menus line up even before the images decode. */
-.tpl-shot{ display:block; aspect-ratio:39/72; background:#05070d; overflow:hidden; }
-.tpl-shot img{ width:100%; height:100%; object-fit:cover; object-position:top center;
-  display:block; transition:transform .5s var(--ease); }
-.tpl-card:hover .tpl-shot img{ transform:scale(1.03); }
-/* flex:1 + margin-top:auto pins every button to the bottom of its card. Without
-   it the buttons step out of line as soon as one label wraps — and in Georgian
-   "Fine dining" is two lines while "Café" is one. */
-.tpl-body{ display:flex; flex-direction:column; flex:1; gap:5px; padding:18px 18px 20px; }
-.tpl-type{ font-family:'Clash Display',sans-serif; font-size:19px; color:#fff; line-height:1.2; }
-.tpl-host{ font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.05em;
-  color:var(--dim); margin-bottom:8px; }
-.tpl-go{ margin-top:auto; align-self:flex-start; display:inline-flex; align-items:center; gap:8px;
-  font-weight:700; font-size:14px; padding:10px 16px; border-radius:11px;
-  background:rgba(47,107,255,0.12); border:1px solid var(--line2); color:var(--blue-ink);
-  transition:.28s var(--ease); }
-.tpl-card:hover .tpl-go{ background:linear-gradient(180deg,var(--blue2),var(--blue)); color:#fff;
-  border-color:transparent; box-shadow:0 10px 30px -8px var(--glow); }
-.tpl-go .arr{ transition:transform .28s var(--ease); }
-.tpl-card:hover .tpl-go .arr{ transform:translateX(4px); }
-@media (max-width:980px){ .tpl-grid{ grid-template-columns:repeat(2,1fr); } }
-@media (max-width:560px){ .tpl-grid{ grid-template-columns:1fr; gap:18px; } }
-@media (prefers-reduced-motion: reduce){
-  .tpl-card,.tpl-card:hover,.tpl-shot img,.tpl-card:hover .tpl-shot img{
-    transform:none; transition:none; }
-}
-
-/* ---------- demo picker dialog ---------- */
-/* Native <dialog> on purpose: showModal() gives the focus trap, the inert
-   background and Escape-to-close for free, and gets them right. The triggers
-   are plain links to #templates, so with no JS — or on a browser without
-   showModal — clicking still lands on the section showing the same four. */
-#demo-picker{
-  width:min(560px,calc(100vw - 32px)); padding:0; border:1px solid var(--line2);
-  border-radius:22px; background:linear-gradient(180deg,var(--panel),var(--panel2));
-  color:var(--text); box-shadow:0 40px 90px -30px rgba(0,0,0,.9);
-  font-family:'Satoshi',-apple-system,sans-serif; overflow:hidden; }
-#demo-picker::backdrop{ background:rgba(3,5,12,.72); backdrop-filter:blur(6px); }
-.dp-head{ padding:26px 26px 18px; border-bottom:1px solid var(--line); position:relative; }
-.dp-head h3{ font-family:'Clash Display',sans-serif; font-weight:600; font-size:24px;
-  line-height:1.15; letter-spacing:-0.01em; margin:0 40px 8px 0; color:#fff; }
-.dp-head p{ margin:0; font-size:14.5px; color:var(--soft); max-width:42ch; }
-.dp-close{ position:absolute; top:20px; right:20px; width:34px; height:34px; border-radius:10px;
-  display:grid; place-items:center; cursor:pointer; font-size:20px; line-height:1;
-  background:rgba(255,255,255,.05); border:1px solid var(--line); color:var(--soft);
-  transition:.2s var(--ease); }
-.dp-close:hover{ background:rgba(255,255,255,.1); color:#fff; }
-.dp-list{ display:flex; flex-direction:column; padding:12px; gap:6px; }
-.dp-opt{ display:flex; align-items:center; gap:14px; padding:10px; border-radius:14px;
-  text-decoration:none; color:inherit; border:1px solid transparent; transition:.22s var(--ease); }
-.dp-opt:hover,.dp-opt:focus-visible{ background:rgba(47,107,255,.1); border-color:var(--line2);
-  outline:none; }
-.dp-opt img{ width:44px; height:60px; object-fit:cover; object-position:top center;
-  border-radius:8px; border:1px solid var(--line); flex:none; background:#05070d; }
-.dp-txt{ display:flex; flex-direction:column; gap:2px; min-width:0; flex:1; }
-.dp-txt b{ font-size:16px; color:#fff; font-weight:700; }
-.dp-txt span{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.04em;
-  color:var(--dim); }
-.dp-opt .arr{ color:var(--blue-ink); font-size:18px; flex:none; transition:transform .22s var(--ease); }
-.dp-opt:hover .arr{ transform:translateX(4px); }
-html.dp-open{ overflow:hidden; }
-@media (prefers-reduced-motion: reduce){
-  .dp-opt,.dp-opt .arr,.dp-opt:hover .arr{ transition:none; transform:none; }
-}
 
 /* ---------- before / after comparison ---------- */
 .cmp{ display:grid; grid-template-columns:1fr auto 1fr; gap:26px; align-items:center;
@@ -466,6 +390,27 @@ html.dp-open{ overflow:hidden; }
   font-size:16px; line-height:1.6; }
 .why-free b{ color:#fff; font-weight:700; }
 
+/* ---------- real tenant case studies ---------- */
+.tenant-case{ display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:center;
+  margin-bottom:64px; padding-bottom:56px; border-bottom:1px solid var(--line); }
+.tenant-case:last-of-type{ margin-bottom:0; padding-bottom:0; border-bottom:none; }
+.tenant-photo{ border-radius:20px; overflow:hidden; aspect-ratio:4/3; border:1px solid var(--line2);
+  background:#0A1020; }
+.tenant-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+.tenant-body{ display:flex; flex-direction:column; gap:6px; }
+.tenant-type{ font-family:'JetBrains Mono'; font-size:11px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--blue2); }
+.tenant-body h3{ font-size:clamp(24px,3vw,32px); color:#fff; margin-top:4px; }
+.tenant-desc{ color:var(--soft); font-size:15.5px; margin:10px 0 0; }
+.tenant-body > .btn{ align-self:flex-start; margin-top:6px; }
+.tenant-gal{ grid-column:1/-1; margin-top:8px; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+@media(max-width:900px){
+  .tenant-case{ grid-template-columns:1fr; gap:26px; }
+  .tenant-gal{ grid-template-columns:repeat(3,1fr); }
+}
+@media(max-width:640px){ .tenant-gal{ grid-template-columns:1fr 1fr; } }
+@media(max-width:420px){ .tenant-gal{ grid-template-columns:1fr; } }
+
 /* ---------- partners / live now ---------- */
 .partners-grid{ display:flex; flex-wrap:wrap; gap:22px; justify-content:center; }
 .partner-card{ display:flex; align-items:center; gap:32px; width:100%; max-width:640px;
@@ -475,7 +420,7 @@ html.dp-open{ overflow:hidden; }
   transition:border-color .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease); }
 .partner-card:hover{ border-color:var(--line2); transform:translateY(-4px);
   box-shadow:0 26px 60px -30px var(--glow); }
-.partner-logo{ height:84px; width:auto; flex:none; }
+.partner-logo{ height:84px; width:auto; max-width:84px; flex:none; border-radius:12px; }
 .partner-info{ display:flex; flex-direction:column; gap:5px; min-width:0; }
 .partner-live{ display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono';
   font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--good); }
@@ -484,7 +429,12 @@ html.dp-open{ overflow:hidden; }
 @keyframes pplive{ 0%{box-shadow:0 0 0 0 rgba(62,217,160,.5);}
   70%{box-shadow:0 0 0 8px rgba(62,217,160,0);} 100%{box-shadow:0 0 0 0 rgba(62,217,160,0);} }
 .partner-name{ font-family:'Clash Display'; font-weight:600; font-size:22px; color:#fff; }
-.partner-meta{ font-size:14px; color:var(--dim); }
+/* Country flag next to the city — the point is to make it visually obvious,
+   at a glance, that partners span multiple countries as we sign clients
+   outside Georgia. Not decorative: add the new country's flag the day the
+   first client from it goes live, same pattern as the existing ones. */
+.partner-meta{ font-size:14px; color:var(--dim); display:inline-flex; align-items:center; gap:6px; }
+.partner-flag{ font-size:15px; line-height:1; }
 .partner-link{ display:inline-flex; align-items:center; gap:8px; margin-top:8px;
   font-weight:700; font-size:15px; color:var(--blue-ink); }
 .partner-link .arr{ transition:transform .28s var(--ease); }
@@ -532,25 +482,6 @@ html.dp-open{ overflow:hidden; }
 .step-img.s1{ object-position:50% 50%; }   /* phone — centered */
 .step-img.s2{ object-position:50% 30%; }   /* burger sits high in frame — pull the crop up */
 .step-img.s3{ object-position:50% 64%; }   /* burger sits low on the plate — pull the crop down */
-
-/* personas / use cases */
-.persona-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-@media(max-width:860px){ .persona-grid{ grid-template-columns:1fr 1fr; } }
-@media(max-width:560px){ .persona-grid{ grid-template-columns:1fr; } }
-.persona{ display:flex; flex-direction:column; position:relative; overflow:hidden;
-  background:linear-gradient(180deg,var(--panel),var(--panel2)); border:1px solid var(--line);
-  border-radius:20px; padding:28px; transition:.35s var(--ease); }
-.persona:hover{ border-color:var(--line2); transform:translateY(-4px);
-  box-shadow:0 30px 60px -30px rgba(0,0,0,.8); }
-.persona .pic{ width:48px; height:48px; border-radius:13px; display:grid; place-items:center;
-  font-size:24px; background:rgba(47,107,255,0.12); border:1px solid var(--line2); margin-bottom:18px; }
-.persona .ptag{ font-family:'JetBrains Mono'; font-size:11px; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--blue2); }
-.persona h3{ font-size:20px; margin:7px 0 9px; }
-.persona p{ font-size:15px; color:var(--soft); margin:0; flex:1; }
-.persona .out{ margin-top:18px; padding-top:16px; border-top:1px solid var(--line);
-  display:flex; gap:9px; align-items:flex-start; font-size:14px; color:var(--text); line-height:1.45; }
-.persona .out .up{ color:var(--good); font-weight:800; flex-shrink:0; font-family:'Clash Display'; }
 
 /* moat / flywheel */
 .moat{ background:
@@ -689,14 +620,11 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
   .float-chip span{ font-size:10.5px; }
 
   .card{ padding:24px; } .card h3{ font-size:19px; }
-  .persona{ padding:24px; }
   .stat-big{ padding:28px 24px; }
   .steps{ border-radius:18px; } .step{ padding:30px 24px; }
   .tier{ padding:26px; }
   .cta{ padding:74px 0; } .cta-card{ padding:48px 24px; border-radius:24px; }
   .moat .fw-orbit{ max-width:300px; margin:0 auto; }
-  .video-ph .vp-play{ width:68px; height:68px; } .video-ph .vp-play svg{ width:28px; height:28px; }
-  .vp-label{ font-size:18px; }
 }
 
 /* ---------- limited / scarcity pill ---------- */
@@ -706,32 +634,6 @@ footer{ border-top:1px solid var(--line); padding:50px 0 60px; }
   padding:8px 14px; border-radius:999px; }
 .limited .dot{ width:7px; height:7px; border-radius:50%; background:var(--warn);
   box-shadow:0 0 10px var(--warn); }
-
-/* ---------- video placeholder ---------- */
-.video-ph{ position:relative; aspect-ratio:16/9; border-radius:24px; cursor:pointer;
-  border:1px solid var(--line2); overflow:hidden; display:grid; place-items:center;
-  background:radial-gradient(120% 90% at 50% 0%, rgba(47,107,255,0.18), transparent 60%),
-    linear-gradient(180deg,#0A1020,#070B16);
-  box-shadow:0 40px 90px -50px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.05);
-  transition:.35s var(--ease); }
-.video-ph::before{ content:''; position:absolute; inset:0;
-  background-image:linear-gradient(rgba(140,170,255,0.06) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(140,170,255,0.06) 1px,transparent 1px);
-  background-size:42px 42px; mask-image:radial-gradient(circle at 50% 50%,#000,transparent 75%); }
-.video-ph:hover{ border-color:var(--blue2); transform:translateY(-3px); }
-.video-ph:focus-visible{ outline:2px solid var(--blue2); outline-offset:3px; }
-.vp-inner{ position:relative; z-index:2; text-align:center; padding:20px; }
-.vp-play{ width:84px; height:84px; border-radius:50%; margin:0 auto 20px; display:grid; place-items:center;
-  background:linear-gradient(180deg,var(--blue2),var(--blue)); color:#fff;
-  box-shadow:0 16px 40px -10px var(--glow), inset 0 1px 0 rgba(255,255,255,.3); transition:.3s var(--ease); }
-.video-ph:hover .vp-play{ transform:scale(1.06); }
-.vp-play svg{ width:34px; height:34px; margin-left:4px; }
-.vp-label{ font-family:'Clash Display'; font-weight:500; font-size:20px; color:#fff; }
-.vp-sub{ font-family:'JetBrains Mono'; font-size:12px; color:var(--dim); margin-top:8px; letter-spacing:.03em; }
-/* actual demo video — keep its native vertical ratio (574x1280) */
-.video-ph.has-video{ aspect-ratio:574/1280; max-width:360px; margin-inline:auto; cursor:default; }
-.video-ph.has-video .demo-vid{ position:absolute; inset:0; width:100%; height:100%;
-  object-fit:cover; display:block; border:0; background:#000; }
 
 /* ---------- FAQ ---------- */
 .faq-list{ max-width:820px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
@@ -938,7 +840,7 @@ body.in-ar main{ display:none !important; }          /* pause page 3D rendering 
     </a>
     <nav class="nav-links">
       <a href="#partners">Partners</a>
-      <a href="#video">Demo</a>
+      <a href="#tenants">Demo</a>
       <a href="#process">How we work</a>
       <a href="#product">Product</a>
       <a href="#offer">The offer</a>
@@ -957,7 +859,7 @@ body.in-ar main{ display:none !important; }          /* pause page 3D rendering 
         </a>
       </div>
       <button id="lang-toggle" class="btn btn-ghost lang-btn" type="button">EN</button>
-      <a class="btn btn-ghost demo-btn" href="#templates" data-demo-picker>
+      <a class="btn btn-ghost demo-btn" href="#tenants">
         Live demo <span class="arr">→</span>
       </a>
       <a class="btn btn-primary" href="#contact">
@@ -978,7 +880,7 @@ body.in-ar main{ display:none !important; }          /* pause page 3D rendering 
       <p class="lead rv in d2">Real dishes as interactive 3D, placed on the guest's own table — in the browser, no app. Just a QR code.</p>
       <div class="hero-cta rv in d3">
         <a class="btn btn-primary" href="#contact">See it at your restaurant <span class="arr">→</span></a>
-        <a class="btn btn-ghost" href="#templates" data-demo-picker>See the live menu</a>
+        <a class="btn btn-ghost" href="#tenants">See the live menu</a>
       </div>
       <p class="offer-line rv in d3">Free setup · From 300 ₾ / month</p>
       <div class="hero-meta rv in d4">
@@ -1055,20 +957,24 @@ body.in-ar main{ display:none !important; }          /* pause page 3D rendering 
           <span class="partner-link">View live menu <span class="arr">→</span></span>
         </span>
       </a>
-    </div>
-  </div>
-</section>
-
-<!-- ============ VIDEO ============ -->
-<section id="video">
-  <div class="wrap">
-    <div class="sec-head rv" style="text-align:center; margin:0 auto 40px">
-      <span class="kicker" style="justify-content:center">See it in action</span>
-      <h2>Watch a dish land on the table.</h2>
-    </div>
-    <div class="video-ph has-video rv d1">
-      <video class="demo-vid" src="assets/demo.mp4" controls playsinline preload="metadata"
-             aria-label="BetaReal demo: a dish lands on the table in AR"></video>
+      <a class="partner-card" href="https://corner-at-tabidze.betareal.ge/" target="_blank" rel="noopener">
+        <img class="partner-logo" src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1788365856075_ChatGPT_Image_Sep_2__2026__08_17_24_PM.webp" alt="Corner at Tabidze logo" width="84" height="84" loading="lazy" decoding="async">
+        <span class="partner-info">
+          <span class="partner-live"><span class="pdot"></span> Live menu</span>
+          <span class="partner-name">Corner at Tabidze</span>
+          <span class="partner-meta">Georgian &amp; Italian · <span class="partner-flag" role="img" aria-label="Georgia">🇬🇪</span> Tbilisi</span>
+          <span class="partner-link">View live menu <span class="arr">→</span></span>
+        </span>
+      </a>
+      <a class="partner-card" href="https://foodandmarket.betareal.ge/" target="_blank" rel="noopener">
+        <img class="partner-logo" src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1787745174329_F_D.webp" alt="Food & Market logo" width="84" height="84" loading="lazy" decoding="async">
+        <span class="partner-info">
+          <span class="partner-live"><span class="pdot"></span> Live menu</span>
+          <span class="partner-name">Food &amp; Market</span>
+          <span class="partner-meta">Asian &amp; global · <span class="partner-flag" role="img" aria-label="Georgia">🇬🇪</span> Tbilisi</span>
+          <span class="partner-link">View live menu <span class="arr">→</span></span>
+        </span>
+      </a>
     </div>
   </div>
 </section>
@@ -1167,40 +1073,6 @@ body.in-ar main{ display:none !important; }          /* pause page 3D rendering 
   </div>
 </section>
 
-<!-- ============ WHO IT'S FOR ============ -->
-<section id="who">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <span class="kicker">Who it's for</span>
-      <h2>Every kind of guest orders with more confidence.</h2>
-      <p class="lead">One menu, very different guests. Each is a reason an order gets bigger — or happens at all.</p>
-    </div>
-    <div class="persona-grid">
-      <div class="persona rv d1">
-        <div class="pic">📏</div>
-        <span class="ptag">The portion-anxious</span>
-        <h3>"How big is it, really?"</h3>
-        <p>Can't judge size or whether it's enough from a flat photo — the #1 problem in our survey. Sees true-to-life scale on their own table in AR.</p>
-        <div class="out"><span class="up">↑</span> Orders the right amount with confidence — often an extra side or dish.</div>
-      </div>
-      <div class="persona rv d2">
-        <div class="pic">🔁</div>
-        <span class="ptag">The regular</span>
-        <h3>Knows the classics by heart</h3>
-        <p>Always orders the same two things. The 3D menu surfaces dishes they've scrolled past for months and finally makes them look worth trying.</p>
-        <div class="out"><span class="up">↑</span> Branches out and adds items they'd normally never order — 59% told our survey they would.</div>
-      </div>
-      <div class="persona rv d3">
-        <div class="pic">🧳</div>
-        <span class="ptag">The tourist</span>
-        <h3>New country, unfamiliar cuisine</h3>
-        <p>Doesn't recognize a single dish on the menu. Sees it in 3D and placed on the table — understanding exactly what arrives, past any language barrier.</p>
-        <div class="out"><span class="up">↑</span> Orders authentic local dishes instead of defaulting to the one safe thing they recognize.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ============ PRODUCT ============ -->
 <section id="product">
   <div class="wrap">
@@ -1217,118 +1089,372 @@ body.in-ar main{ display:none !important; }          /* pause page 3D rendering 
   </div>
 </section>
 
-<!-- ============ GALLERY ============ -->
-<section id="gallery">
+<!-- ============ LIVE MENUS (real tenant case studies) ============ -->
+<section id="tenants">
   <div class="wrap">
-    <div class="sec-head rv">
-      <span class="kicker">Real, scanned dishes</span>
-      <h2>Every model is a real dish.</h2>
-      <p class="lead">Drag any model below — rotate, zoom, see it from every angle.</p>
+    <div class="sec-head rv" style="text-align:center; margin:0 auto 52px">
+      <span class="kicker" style="justify-content:center">Live now · Tbilisi</span>
+      <h2>Real restaurants, on the table right now.</h2>
+      <p class="lead" style="margin-left:auto; margin-right:auto">Not renders. Not a demo kitchen. Open any menu below on your own phone.</p>
     </div>
-    <div class="gal">
-      <div class="gal-item rv d1">
-        <div class="gal-stage">
-        <model-viewer data-src="https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/hot_dog_draco.glb"
-          ios-src="https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/hot_dog.usdz"
-          poster="https://xctoxhaahxtcicfgnmme.supabase.co/storage/v1/object/public/thumbnails/thumb_1780046740147.webp"
-          alt="Hot dog 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
-          interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
-          camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
-          disable-pan
-          loading="lazy" reveal="auto"></model-viewer>
-          <button class="ar-launch" data-idx="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
-        </div>
-        <div class="cap"><b>Hot Dog</b><span>Drag to rotate</span></div>
+
+    <!-- Monday Greens -->
+    <article class="tenant-case rv d1">
+      <div class="tenant-photo">
+        <img src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784643083301_WhatsApp_Image_2026-07-21_at_6.06.34_PM.webp" alt="Monday Greens café interior, Tbilisi" loading="lazy" decoding="async">
       </div>
-      <div class="gal-item rv d2">
-        <div class="gal-stage">
-        <model-viewer data-src="https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/donut_draco.glb"
-          ios-src="https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/donut.usdz"
-          poster="https://xctoxhaahxtcicfgnmme.supabase.co/storage/v1/object/public/thumbnails/thumb_1780046956786.webp"
-          alt="Donut 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
-          interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
-          camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
-          disable-pan
-          loading="lazy" reveal="auto"></model-viewer>
-          <button class="ar-launch" data-idx="2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
-        </div>
-        <div class="cap"><b>Donut</b><span>Drag to rotate</span></div>
+      <div class="tenant-body">
+        <span class="tenant-type">Café</span>
+        <h3>Monday Greens</h3>
+        <p class="tenant-desc">Brunch bowls, sandwiches, and house drinks — with creams and dreams.</p>
+        <a class="btn btn-ghost" href="https://monday-greens.betareal.ge/" target="_blank" rel="noopener">Open live menu <span class="arr">→</span></a>
       </div>
-      <div class="gal-item rv d3">
-        <div class="gal-stage">
-        <model-viewer data-src="https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/croissant_draco.glb"
-          ios-src="https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/croissant.usdz"
-          poster="https://xctoxhaahxtcicfgnmme.supabase.co/storage/v1/object/public/thumbnails/thumb_1780046967707.webp"
-          alt="Croissant 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
-          interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
-          camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
-          disable-pan
-          loading="lazy" reveal="auto"></model-viewer>
-          <button class="ar-launch" data-idx="3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+      <div class="gal tenant-gal">
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784565245600_eggs-benedict-with-ham-28cm.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784565253451_eggs-benedict-with-ham-28cm.usdz"
+              poster="https://wolt-menu-images-cdn.wolt.com/menu-images/61f8e7d903bbc86d6fdd56c1/f3073162-c4e9-11ee-bcc0-96b5e0412694_161a2156.jpg"
+              alt="Benedict with Bacon and Cheese, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Benedict with Bacon &amp; Cheese</b><span>Drag to rotate</span></div>
         </div>
-        <div class="cap"><b>Croissant</b><span>Drag to rotate</span></div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784568034954_chia-pudding-with-fruit-10cm.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784568040220_chia-pudding-with-fruit-10cm.usdz"
+              poster="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784571289548_65f7117e-ccc9-11ee-ba70-66a2d29ff1ee_tempimage0ibqbx.webp"
+              alt="Chia Pudding with Fruits, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Chia Pudding with Fruits</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1783171248044_intwork.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1783171259665_intwork.usdz"
+              poster="https://wolt-menu-images-cdn.wolt.com/menu-images/61f8e7d903bbc86d6fdd56c1/83e8faa2-c4eb-11ee-aa55-a61f1ebcc6a9_161a1982.jpg"
+              alt="Tuna Sandwich, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Tuna Sandwich</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1783171297845_intwork1.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1783171563587_intwork1.usdz"
+              poster="https://imageproxy.wolt.com/assets/6751cd6145c73a0e1dc4c273"
+              alt="Chicken Wrap, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Chicken Wrap</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1783171659948_withplateavocadoes_draco_min.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1783171675489_withplateavocadoes_min.usdz"
+              poster="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1783171698884_Gemini_Generated_Image_ia17g1ia17g1ia17.webp"
+              alt="Bagel with Avocado, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Bagel with Avocado</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784567265438_steak-with-mushroom-sauce-28cm.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784567271842_steak-with-mushroom-sauce-28cm.usdz"
+              poster="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784797864072_IMG_4409.webp"
+              alt="Beef Steak with Mushrooms and Cream Sauce, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Beef Steak, Mushroom Cream Sauce</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784567548808_loaded-fries-with-pickles-30cm.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784567555015_loaded-fries-with-pickles-30cm.usdz"
+              poster="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784569139014_Beef_Stroganoff.webp"
+              alt="Beef Stroganoff, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Beef Stroganoff</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784567975846_tomato-soup-with-bread-30cm.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784567982900_tomato-soup-with-bread-30cm.usdz"
+              poster="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784569119150_Tomato_cream_soup.webp"
+              alt="Gazpacho, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Gazpacho</b><span>Drag to rotate</span></div>
+        </div>
       </div>
-    </div>
-    <div style="text-align:center; margin-top:44px"><a class="btn btn-primary rv" href="#contact">See it at your restaurant <span class="arr">→</span></a></div>
-  </div>
-</section>
+    </article>
 
-<!-- ============ TEMPLATE MENUS ============ -->
-<section id="templates">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <span class="kicker">Four ready designs</span>
-      <h2>A menu that already looks like your place.</h2>
-      <p class="lead">These are live, working menus — not pictures of menus. Open one on your phone and use it exactly the way your guests would.</p>
-    </div>
+    <!-- Corner at Tabidze -->
+    <article class="tenant-case rv d2">
+      <div class="tenant-photo">
+        <img src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1788345083421_Screenshot_2026-09-02_142818.webp" alt="Corner at Tabidze interior, Tbilisi" loading="lazy" decoding="async">
+      </div>
+      <div class="tenant-body">
+        <span class="tenant-type">Georgian &amp; Italian</span>
+        <h3>Corner at Tabidze</h3>
+        <p class="tenant-desc">A cozy Tbilisi bistro known for its ambience — and live jazz nights.</p>
+        <a class="btn btn-ghost" href="https://corner-at-tabidze.betareal.ge/" target="_blank" rel="noopener">Open live menu <span class="arr">→</span></a>
+      </div>
+      <div class="gal tenant-gal">
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789243494089_khinkali_draco.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789243505421_khinkali.usdz"
+              poster="https://lwdpegloznhpcecivhfy.supabase.co/storage/v1/object/public/thumbnails/corner-by-eleven-main/khinkluka-with-georgian-cheese-sauce-10-pcs.jpg"
+              alt="Khinkali with Georgian Cheese Sauce, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="9"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Khinkali, Georgian Cheese Sauce</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789247113251_caesar_draco.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789247119647_caesar.usdz"
+              poster="https://lwdpegloznhpcecivhfy.supabase.co/storage/v1/object/public/thumbnails/corner-by-eleven-main/chicken-caesar.jpg"
+              alt="Chicken Caesar, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="10"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Chicken Caesar</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789242741669_burrata_salad_draco.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789242749160_burrata_salad.usdz"
+              poster="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789244991649_burrata_salad_thumb_800.webp"
+              alt="Burrata Salad, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="11"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Burrata Salad</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789242649028_acharuliCornerByTabidze.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789242684314_acharuliCornerByTabidze.usdz"
+              poster="https://lwdpegloznhpcecivhfy.supabase.co/storage/v1/object/public/thumbnails/corner-by-eleven-main/acharuli-khachapuri.jpg"
+              alt="Acharuli Khachapuri, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="12"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Acharuli Khachapuri</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789243577453_pear_draco.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789243583957_pear.usdz"
+              poster="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789244964585_pear_thumb_800.webp"
+              alt="Boiled Pear or Quince with Walnuts and Cream, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="13"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Boiled Pear or Quince, Walnuts &amp; Cream</b><span>Drag to rotate</span></div>
+        </div>
+      </div>
+    </article>
 
-    <div class="tpl-grid">
-      <a class="tpl-card rv d1" href="https://luxury.betareal.ge/" target="_blank" rel="noopener">
-        <span class="tpl-shot">
-          <img src="./assets/templates/menu-luxury.webp" width="780" height="1440" loading="lazy" decoding="async" alt="Fine dining menu design, dark and gold, with dishes in 3D">
-        </span>
-        <span class="tpl-body">
-          <span class="tpl-type">Fine dining</span>
-          <span class="tpl-host">luxury.betareal.ge</span>
-          <span class="tpl-go">Open live menu <span class="arr">→</span></span>
-        </span>
-      </a>
+    <!-- Food & Market -->
+    <article class="tenant-case rv d3">
+      <div class="tenant-photo">
+        <img src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1788559693529_L_height.webp" alt="Food & Market interior, Tbilisi" loading="lazy" decoding="async">
+      </div>
+      <div class="tenant-body">
+        <span class="tenant-type">Asian &amp; global</span>
+        <h3>Food &amp; Market</h3>
+        <p class="tenant-desc">Sushi, noodles, burgers, and pizza — one menu, every craving covered.</p>
+        <a class="btn btn-ghost" href="https://foodandmarket.betareal.ge/" target="_blank" rel="noopener">Open live menu <span class="arr">→</span></a>
+      </div>
+      <div class="gal tenant-gal">
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1787818013846_burrata_salad_opt.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1787818016905_burrata_salad.usdz"
+              poster="https://restaurant-ar.pages.dev/assets/food-market/items/burrata-salad.webp"
+              alt="Burrata Salad, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="14"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Burrata Salad</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789376359682_chicken_balls_shkmeruli_15pct.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789376333703_chicken_balls_shkmeruli_15pct.usdz"
+              poster="https://restaurant-ar.pages.dev/assets/food-market/items/chicken-balls.webp"
+              alt="Chicken Balls in Shkmeruli Sauce, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="15"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Chicken Balls, Shkmeruli Sauce</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789299374691_sushi_half_compact.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789299364413_sushi_half_compact.usdz"
+              poster="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1787819264838_sushi.webp"
+              alt="Unagi Philadelphia, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="16"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Unagi Philadelphia</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789127524895_FOodANDMARKETBURGER.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789246998910_market_burger_enhanced.usdz"
+              poster="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1788464104974_Copy_of____________.webp"
+              alt="Chef Burger, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="17"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Chef Burger</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789380206986_tacobetterwithAIIMO.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789376453816_tortillas_lime.usdz"
+              poster="https://restaurant-ar.pages.dev/assets/food-market/catalogue/georgian-appetizer-pulled-bbq-pork-taco-2288c30e.webp"
+              alt="Pulled BBQ Pork Taco, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="18"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Pulled BBQ Pork Taco</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789294491888_khachapuri_enhanced_half_size.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789294515939_khachapuri_enhanced_half_size.usdz"
+              poster="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1788464911301_Copy_of_________________.webp"
+              alt="Adjarian Khachapuri, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="19"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Adjarian Khachapuri</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789379891768_glass_noodles_50pct.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789379880273_glass_noodles_60pct_BAKED.usdz"
+              poster="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789125284493_ChatGPT_Image_Sep_11__2026__03_08_09_PM.webp"
+              alt="Stir Fried Glass Noodles, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="20"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Stir Fried Glass Noodles</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789377415757_shrimp_noodles_50pct_compressed.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789377447371_shrimp_noodles_50pct_compressed.usdz"
+              poster="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789079717080_Pad_Thai_Shrimp_Noodles.webp"
+              alt="Pad Thai Noodles, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="21"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Pad Thai Noodles</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789249071033_unagitestW_OSauce.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789249430329_unagitestW_OSauce.usdz"
+              poster="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789078261482_ChatGPT_Image_Sep_11__2026__02_10_52_AM.webp"
+              alt="Crab Uramaki, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="22"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Crab Uramaki</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789072760565_Sushi-repaired.glb"
+              poster="https://restaurant-ar.pages.dev/assets/food-market/catalogue/asian-uramaki-roll-spicy-salmon-14f590ef.webp"
+              alt="Spicy Salmon, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="23"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Spicy Salmon</b><span>Drag to rotate</span></div>
+        </div>
+        <div class="gal-item">
+          <div class="gal-stage">
+            <model-viewer data-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789298753095_burger_fries_repaired_half_size.glb"
+              ios-src="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789298775265_burger_fries_repaired_half_size.usdz"
+              poster="https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789128214765_ChatGPT_Image_Sep_11__2026__04_03_30_PM.webp"
+              alt="Chef's Burger with Fries, 3D model" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="20deg"
+              interaction-prompt="none" shadow-intensity="1" exposure="1.05" environment-image="neutral"
+              camera-orbit="0deg 80deg 120%" min-camera-orbit="auto 5deg 100%" max-camera-orbit="auto 90deg 165%"
+              disable-pan loading="lazy" reveal="auto"></model-viewer>
+            <button class="ar-launch" data-idx="24"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/></svg> View on table</button>
+          </div>
+          <div class="cap"><b>Chef's Burger with Fries</b><span>Drag to rotate</span></div>
+        </div>
+      </div>
+    </article>
 
-      <a class="tpl-card rv d2" href="https://cafe.betareal.ge/" target="_blank" rel="noopener">
-        <span class="tpl-shot">
-          <img src="./assets/templates/menu-cafe.webp" width="780" height="1440" loading="lazy" decoding="async" alt="Café menu design with a food and drinks switch">
-        </span>
-        <span class="tpl-body">
-          <span class="tpl-type">Café</span>
-          <span class="tpl-host">cafe.betareal.ge</span>
-          <span class="tpl-go">Open live menu <span class="arr">→</span></span>
-        </span>
-      </a>
-
-      <a class="tpl-card rv d3" href="https://casual.betareal.ge/" target="_blank" rel="noopener">
-        <span class="tpl-shot">
-          <img src="./assets/templates/menu-casual.webp" width="780" height="1440" loading="lazy" decoding="async" alt="Fast casual burger menu design with dish photos and 3D">
-        </span>
-        <span class="tpl-body">
-          <span class="tpl-type">Fast casual</span>
-          <span class="tpl-host">casual.betareal.ge</span>
-          <span class="tpl-go">Open live menu <span class="arr">→</span></span>
-        </span>
-      </a>
-
-      <a class="tpl-card rv d4" href="https://social.betareal.ge/" target="_blank" rel="noopener">
-        <span class="tpl-shot">
-          <img src="./assets/templates/menu-social.webp" width="780" height="1440" loading="lazy" decoding="async" alt="Bar and shared plates menu design, bold and editorial">
-        </span>
-        <span class="tpl-body">
-          <span class="tpl-type">Bar &amp; social</span>
-          <span class="tpl-host">social.betareal.ge</span>
-          <span class="tpl-go">Open live menu <span class="arr">→</span></span>
-        </span>
-      </a>
-    </div>
-
-    <div style="text-align:center; margin-top:44px"><a class="btn btn-primary rv" href="#contact">Get this for your restaurant <span class="arr">→</span></a></div>
+    <div style="text-align:center; margin-top:52px"><a class="btn btn-primary rv" href="#contact">Get this for your restaurant <span class="arr">→</span></a></div>
   </div>
 </section>
 
@@ -1482,83 +1608,6 @@ body.in-ar main{ display:none !important; }          /* pause page 3D rendering 
 
 </main>
 
-<!-- ============ DEMO PICKER ============ -->
-<dialog id="demo-picker" aria-labelledby="demo-picker-title">
-  <div class="dp-head">
-    <h3 id="demo-picker-title">Which kind of place is yours?</h3>
-    <p>Pick the closest one. Each opens a real, working menu.</p>
-    <button class="dp-close" type="button" data-dp-close aria-label="Close">&times;</button>
-  </div>
-  <div class="dp-list">
-    <a class="dp-opt" href="https://luxury.betareal.ge/" target="_blank" rel="noopener">
-      <img src="./assets/templates/menu-luxury.webp" alt="" width="780" height="1440" loading="lazy" decoding="async">
-      <span class="dp-txt"><b>Fine dining</b><span>luxury.betareal.ge</span></span>
-      <span class="arr">&rarr;</span>
-    </a>
-    <a class="dp-opt" href="https://cafe.betareal.ge/" target="_blank" rel="noopener">
-      <img src="./assets/templates/menu-cafe.webp" alt="" width="780" height="1440" loading="lazy" decoding="async">
-      <span class="dp-txt"><b>Café</b><span>cafe.betareal.ge</span></span>
-      <span class="arr">&rarr;</span>
-    </a>
-    <a class="dp-opt" href="https://casual.betareal.ge/" target="_blank" rel="noopener">
-      <img src="./assets/templates/menu-casual.webp" alt="" width="780" height="1440" loading="lazy" decoding="async">
-      <span class="dp-txt"><b>Fast casual</b><span>casual.betareal.ge</span></span>
-      <span class="arr">&rarr;</span>
-    </a>
-    <a class="dp-opt" href="https://social.betareal.ge/" target="_blank" rel="noopener">
-      <img src="./assets/templates/menu-social.webp" alt="" width="780" height="1440" loading="lazy" decoding="async">
-      <span class="dp-txt"><b>Bar &amp; social</b><span>social.betareal.ge</span></span>
-      <span class="arr">&rarr;</span>
-    </a>
-  </div>
-</dialog>
-
-<script>
-// Wiring waits for DOMContentLoaded on purpose. This script sits next to the
-// markup it owns, which is before <footer> in the document — so binding
-// immediately would silently miss the footer's "Live demo" link, which is one
-// of the three triggers.
-function initDemoPicker(){
-  var dlg = document.getElementById('demo-picker');
-  // No <dialog> support: leave the triggers as ordinary links to #templates,
-  // which shows the same four options further down the page.
-  if (!dlg || typeof dlg.showModal !== 'function') return;
-
-  function open(e){
-    e.preventDefault();
-    dlg.showModal();
-    document.documentElement.classList.add('dp-open');
-    var first = dlg.querySelector('.dp-opt');
-    if (first) first.focus();
-  }
-  function close(){ if (dlg.open) dlg.close(); }
-
-  document.querySelectorAll('[data-demo-picker]').forEach(function(el){
-    el.addEventListener('click', open);
-  });
-  dlg.querySelectorAll('[data-dp-close]').forEach(function(el){
-    el.addEventListener('click', close);
-  });
-  // Click outside the panel. The dialog element fills the viewport as far as
-  // the event target is concerned, so a click landing on the dialog itself
-  // rather than on its contents is a backdrop click.
-  dlg.addEventListener('click', function(e){ if (e.target === dlg) close(); });
-  // Escape is handled natively; this only unlocks the page scroll afterwards.
-  dlg.addEventListener('close', function(){
-    document.documentElement.classList.remove('dp-open');
-  });
-  // Choosing an option opens a new tab — close the dialog behind it.
-  dlg.querySelectorAll('.dp-opt').forEach(function(a){
-    a.addEventListener('click', function(){ setTimeout(close, 60); });
-  });
-}
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initDemoPicker);
-} else {
-  initDemoPicker();
-}
-</script>
-
 <!-- ============ FOOTER ============ -->
 <footer>
   <div class="wrap">
@@ -1583,11 +1632,11 @@ if (document.readyState === 'loading') {
           <h5>Product</h5>
           <a href="#how">How it works</a>
           <a href="#product">Features</a>
-          <a href="#templates" data-demo-picker>Live demo</a>
+          <a href="#tenants">Live demo</a>
         </div>
         <div class="foot-col">
           <h5>Company</h5>
-          <a href="#video">Demo</a>
+          <a href="#tenants">Demo</a>
           <a href="#proof">Results</a>
           <a href="#offer">The offer</a>
         </div>
@@ -2499,12 +2548,54 @@ if (document.readyState === 'loading') {
   const AR_MENU = [
     { name:'Featured Burger', name_ka:'', price:'', ar_scale:1.0,
       model:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/druidi_balanced_30k_2k.glb', model_usdz:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/druidi_balanced_30k_2k.usdz' },
-    { name:'Hot Dog', name_ka:'', price:'', ar_scale:1.0,
-      model:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/hot_dog_draco.glb', model_usdz:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/hot_dog.usdz' },
-    { name:'Donut', name_ka:'', price:'', ar_scale:1.0,
-      model:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/donut_draco.glb', model_usdz:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/donut.usdz' },
-    { name:'Croissant', name_ka:'', price:'', ar_scale:1.0,
-      model:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/croissant_draco.glb', model_usdz:'https://pub-3c68559de18f4aee94d127e180937bdd.r2.dev/croissant.usdz' },
+    { name:'Benedict with Bacon and Cheese', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784565245600_eggs-benedict-with-ham-28cm.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784565253451_eggs-benedict-with-ham-28cm.usdz' },
+    { name:'Chia Pudding with Fruits', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784568034954_chia-pudding-with-fruit-10cm.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784568040220_chia-pudding-with-fruit-10cm.usdz' },
+    { name:'Tuna Sandwich', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1783171248044_intwork.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1783171259665_intwork.usdz' },
+    { name:'Chicken Wrap', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1783171297845_intwork1.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1783171563587_intwork1.usdz' },
+    { name:'Bagel with Avocado', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1783171659948_withplateavocadoes_draco_min.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1783171675489_withplateavocadoes_min.usdz' },
+    { name:'Beef Steak with Mushrooms and Cream Sauce', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784567265438_steak-with-mushroom-sauce-28cm.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784567271842_steak-with-mushroom-sauce-28cm.usdz' },
+    { name:'Beef Stroganoff', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784567548808_loaded-fries-with-pickles-30cm.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784567555015_loaded-fries-with-pickles-30cm.usdz' },
+    { name:'Gazpacho', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784567975846_tomato-soup-with-bread-30cm.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/monday-greens/1784567982900_tomato-soup-with-bread-30cm.usdz' },
+    { name:'Khinkali with Georgian Cheese Sauce', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789243494089_khinkali_draco.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789243505421_khinkali.usdz' },
+    { name:'Chicken Caesar', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789247113251_caesar_draco.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789247119647_caesar.usdz' },
+    { name:'Burrata Salad', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789242741669_burrata_salad_draco.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789242749160_burrata_salad.usdz' },
+    { name:'Acharuli Khachapuri', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789242649028_acharuliCornerByTabidze.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789242684314_acharuliCornerByTabidze.usdz' },
+    { name:'Boiled Pear or Quince with Walnuts and Cream', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789243577453_pear_draco.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/corner-by-eleven-main/1789243583957_pear.usdz' },
+    { name:'Burrata Salad', name_ka:'', price:'', ar_scale:0.15,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1787818013846_burrata_salad_opt.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1787818016905_burrata_salad.usdz' },
+    { name:'Chicken Balls in Shkmeruli Sauce', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789376359682_chicken_balls_shkmeruli_15pct.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789376333703_chicken_balls_shkmeruli_15pct.usdz' },
+    { name:'Unagi Philadelphia', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789299374691_sushi_half_compact.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789299364413_sushi_half_compact.usdz' },
+    { name:'Chef Burger', name_ka:'', price:'', ar_scale:0.5,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789127524895_FOodANDMARKETBURGER.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789246998910_market_burger_enhanced.usdz' },
+    { name:'Pulled BBQ Pork Taco', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789380206986_tacobetterwithAIIMO.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789376453816_tortillas_lime.usdz' },
+    { name:'Adjarian Khachapuri', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789294491888_khachapuri_enhanced_half_size.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789294515939_khachapuri_enhanced_half_size.usdz' },
+    { name:'Stir Fried Glass Noodles', name_ka:'', price:'', ar_scale:1.1,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789379891768_glass_noodles_50pct.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789379880273_glass_noodles_60pct_BAKED.usdz' },
+    { name:'Pad Thai Noodles', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789377415757_shrimp_noodles_50pct_compressed.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789377447371_shrimp_noodles_50pct_compressed.usdz' },
+    { name:'Crab Uramaki', name_ka:'', price:'', ar_scale:0.6,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789249071033_unagitestW_OSauce.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789249430329_unagitestW_OSauce.usdz' },
+    { name:'Spicy Salmon', name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789072760565_Sushi-repaired.glb', model_usdz:'' },
+    { name:"Chef's Burger with Fries", name_ka:'', price:'', ar_scale:1.0,
+      model:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789298753095_burger_fries_repaired_half_size.glb', model_usdz:'https://pub-b253d60df14c4c1f94bada002fa59596.r2.dev/food-market-main/1789298775265_burger_fries_repaired_half_size.usdz' },
   ];
   window.__menuItems = AR_MENU;
 

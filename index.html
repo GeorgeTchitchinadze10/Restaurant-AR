@@ -13265,7 +13265,7 @@
                     const data = fixture
                         ? fixture.menu_items
                         : await _supaSelect(
-                            `menu_items?select=*,categories(name_en,name_ka,name_ru)&restaurant_id=eq.${tenant.restaurant_id}&visible=eq.true&order=category_id,sort_order`
+                            `menu_items?select=*,categories(name_en,name_ka,name_ru,sort_order)&restaurant_id=eq.${tenant.restaurant_id}&visible=eq.true&order=category_id,sort_order`
                         );
                     if (data && data.length) {
                         items = data.map(r => ({
@@ -13276,6 +13276,7 @@
                             category:       _cleanText(r.categories?.name_en, 'Other'),
                             category_ka:    _cleanText(r.categories?.name_ka),
                             category_ru:    _cleanText(r.categories?.name_ru),
+                            category_sort_order: r.categories?.sort_order,
                             sort_order:     r.sort_order ?? 0,
                             visible:        r.visible !== false,
                             description:    _cleanText(r.description_en),
@@ -13354,20 +13355,31 @@
             // Fallback for a genuinely idle visitor (past the audit window): bring it to life anyway.
             setTimeout(_kickHeavy, 10000);
 
-            // Group by category, preserving source order. AR/3D-enabled means the same
-            // valid model-backed item that already receives a live 3D thumbnail + AR button.
+            // Group by category, then order the categories themselves by the
+            // admin panel's own category sort_order — not by first-appearance
+            // in the fetch (which is really just category_id, i.e. creation
+            // order). A category created later but given an earlier sort_order
+            // must still appear earlier: Array.prototype.sort is stable, so
+            // categories sharing a sort_order (or all lacking one) keep their
+            // original relative order, which is a no-op for tenants that have
+            // never touched the reorder feature.
             const categories = [];
             window.__categories = categories;
             const categoryMap = new Map();
             items.forEach((item, globalIdx) => {
                 const key = item.category || 'Other';
                 if (!categoryMap.has(key)) {
-                    const cat = { name: key, name_ka: item.category_ka || key, name_ru: item.category_ru || key, items: [] };
+                    const cat = {
+                        name: key, name_ka: item.category_ka || key, name_ru: item.category_ru || key,
+                        sortOrder: item.category_sort_order ?? Number.MAX_SAFE_INTEGER,
+                        items: [],
+                    };
                     categories.push(cat);
                     categoryMap.set(key, cat);
                 }
                 categoryMap.get(key).items.push({ item, globalIdx });
             });
+            categories.sort((a, b) => a.sortOrder - b.sortOrder);
 
             const list = document.getElementById('menu-list');
             let _pipesSearchTerm = '';

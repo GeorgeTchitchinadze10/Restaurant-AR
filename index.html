@@ -12614,6 +12614,36 @@
             return out;
         }
 
+        // Generic named menu-group split (opt-in via theme_config.menu_groups), for
+        // any tenant that needs more than the binary Food/Drinks switch above — e.g.
+        // Corner at Tabidze's Georgian/European pages. theme_config.menu_groups is a
+        // JSON object of groupKey -> [category names]; a category left out of every
+        // group is shown no matter which group is active (the "shared" categories,
+        // like drinks or a lunch menu, that belong on both pages). This is a wholly
+        // separate mechanism from drink_categories/Food & Market's kitchen split —
+        // neither of those is touched — so it can't regress an existing tenant.
+        function _parseMenuGroups(raw) {
+            const out = {};
+            if (!raw) return out;
+            let obj = raw;
+            if (typeof raw === 'string') {
+                try { obj = JSON.parse(raw); } catch (e) { return out; }
+            }
+            if (!obj || typeof obj !== 'object') return out;
+            Object.keys(obj).forEach(key => {
+                const names = Array.isArray(obj[key]) ? obj[key] : [];
+                const set = new Set(names.map(n => String(n).trim().toLowerCase()).filter(Boolean));
+                if (set.size) out[key] = set;
+            });
+            return out;
+        }
+        function _parseMenuGroupLabels(raw) {
+            if (!raw) return {};
+            if (typeof raw !== 'string') return (typeof raw === 'object' ? raw : {});
+            try { const obj = JSON.parse(raw); return (obj && typeof obj === 'object') ? obj : {}; }
+            catch (e) { return {}; }
+        }
+
         /* ── Monday Greens hero gallery ──────────────────────────────────────────
            theme_config.hero_images holds a JSON array (or comma/newline list) of photo
            URLs. With two or more photos the hero crossfades through them; with one or
@@ -13223,6 +13253,8 @@
                 // theme_config.drink_categories (JSON array or comma list). Non-empty →
                 // a top-level FOOD | DRINKS switch appears; empty/unset → menu unchanged.
                 window.__drinkCats = DRINK_SPLIT_ENABLED ? _parseDrinkCats(cfg.drink_categories) : new Set();
+                window.__menuGroups = _parseMenuGroups(cfg.menu_groups);
+                window.__menuGroupLabels = _parseMenuGroupLabels(cfg.menu_group_labels);
                 if (typeof window._applyMenuGroups === 'function') window._applyMenuGroups();
                 const heroLogo = document.getElementById('mg-hero-logo');
                 const heroLogoUrl = _safeAssetUrl(cfg.hero_logo_url) || logoUrl;
@@ -13457,8 +13489,15 @@
                 const value = new URLSearchParams(location.search).get('menu');
                 return _FM_KITCHEN_KEYS.includes(value) ? value : 'georgian';
             };
-            let _activeGroup = _isFoodMarketTenant() ? _fmGroupFromQuery() : ((window.__menuGroup === 'drink') ? 'drink' : 'food');
-            const _groupingOn = () => _isFoodMarketTenant() || !!(window.__drinkCats && window.__drinkCats.size);
+            const _namedGroupKeys = () => Object.keys(window.__menuGroups || {});
+            const _defaultNamedGroup = () => {
+                const keys = _namedGroupKeys();
+                return keys.includes(window.__menuGroup) ? window.__menuGroup : keys[0];
+            };
+            let _activeGroup = _isFoodMarketTenant() ? _fmGroupFromQuery()
+                : _namedGroupKeys().length ? _defaultNamedGroup()
+                : ((window.__menuGroup === 'drink') ? 'drink' : 'food');
+            const _groupingOn = () => _isFoodMarketTenant() || !!_namedGroupKeys().length || !!(window.__drinkCats && window.__drinkCats.size);
             const _groupOf = (catName) => {
                 if (_isFoodMarketTenant()) {
                     const prefix = String(catName || '').split('—')[0].trim();
@@ -13467,7 +13506,20 @@
                     if (prefix === 'Japanese') return 'japanese';
                     return 'georgian';
                 }
+                if (_namedGroupKeys().length) {
+                    const key = String(catName || '').toLowerCase();
+                    for (const group of _namedGroupKeys()) {
+                        if (window.__menuGroups[group].has(key)) return group;
+                    }
+                    return null; // not assigned to any group -> shown on every page
+                }
                 return (window.__drinkCats && window.__drinkCats.has(String(catName || '').toLowerCase())) ? 'drink' : 'food';
+            };
+            // null from _groupOf means "not exclusive to a group" (e.g. drinks/lunch
+            // shared across Corner's Georgian and European pages) — always a match.
+            const _groupMatches = (catName) => {
+                const g = _groupOf(catName);
+                return g === null || g === _activeGroup;
             };
             // For Food & Market: the items belonging to whichever kitchen is on
             // screen right now. Used to scope the 3D modal / AR carousel so a
@@ -13771,7 +13823,7 @@
                 // filter deliberately; that's exactly what caused 3D dishes to bleed
                 // across kitchens, so the exemption is gone.)
                 if (_groupingOn()) {
-                    arEntries = arEntries.filter(({ item }) => _groupOf(item.category) === _activeGroup);
+                    arEntries = arEntries.filter(({ item }) => _groupMatches(item.category));
                 }
                 return arEntries;
             }
@@ -13847,7 +13899,7 @@
                     // a 3D dish appears both in the virtual 3D block above and here. When
                     // grouping is on, only the active group's categories are shown.
                     categories.forEach(catEntry => {
-                        if (_groupingOn() && _groupOf(catEntry.name) !== _activeGroup) return;
+                        if (_groupingOn() && !_groupMatches(catEntry.name)) return;
                         const entries = catEntry.items.filter(({ item }) => _pipesMatchesSearch(item));
                         if (entries.length) list.appendChild(renderCategorySection(catEntry, entries, false));
                     });
@@ -13904,7 +13956,7 @@
             function _filterIsValid(cat) {
                 if (cat === AR_CAT) return _hasARForActiveGroup();
                 if (cat === FEATURED_CAT) return _mostOrderedEntries().length > 0;
-                if (cat && _groupingOn()) return _groupOf(cat) === _activeGroup;
+                if (cat && _groupingOn()) return _groupMatches(cat);
                 return true;
             }
 
@@ -13974,11 +14026,20 @@
 
             // ── Food / Drinks group switch ──────────────────────────────
             const groupsDiv = document.getElementById('menu-groups');
-            const _groupKeys = () => _isFoodMarketTenant() ? _FM_KITCHEN_KEYS : ['food', 'drink'];
+            const _groupKeys = () => _isFoodMarketTenant() ? _FM_KITCHEN_KEYS
+                : _namedGroupKeys().length ? _namedGroupKeys()
+                : ['food', 'drink'];
             const _groupLabels = (lang) => {
                 if (_isFoodMarketTenant()) return lang === 'ka'
                     ? { georgian: 'ქართული და სხვა', thai: 'ტაილანდური', japanese: 'იაპონური', drinks: 'სასმელები' }
                     : { georgian: 'Georgian & More', thai: 'Thai', japanese: 'Japanese', drinks: 'Drinks' };
+                if (_namedGroupKeys().length) {
+                    const labels = window.__menuGroupLabels || {};
+                    const suffix = lang === 'ka' ? '_ka' : lang === 'ru' ? '_ru' : '_en';
+                    const out = {};
+                    _namedGroupKeys().forEach(g => { out[g] = labels[g + suffix] || labels[g + '_en'] || g; });
+                    return out;
+                }
                 return lang === 'ka'
                     ? { food: 'საკვები', drink: 'სასმელები' }
                     : lang === 'ru'
@@ -14014,7 +14075,7 @@
                     } else if (c === AR_CAT) {
                         p.hidden = !_hasARForActiveGroup();
                     } else {
-                        p.hidden = _groupingOn() && _groupOf(c) !== _activeGroup;
+                        p.hidden = _groupingOn() && !_groupMatches(c);
                     }
                 });
                 if (!_filterIsValid(_activeFilter)) applyFilter('');
@@ -14083,6 +14144,7 @@
                 }
                 _activeGroup = _isFoodMarketTenant()
                     ? _fmGroupFromQuery()
+                    : _namedGroupKeys().length ? _defaultNamedGroup()
                     : ((window.__menuGroup === 'drink') ? 'drink' : 'food');
                 if (_isFoodMarketTenant()) {
                     document.documentElement.dataset.fmGroup = _activeGroup;

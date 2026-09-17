@@ -1040,6 +1040,14 @@
         [data-tenant="monday-greens"] .footer-copy,
         [data-tenant="monday-greens-staging"] .footer-email,
         [data-tenant="monday-greens-staging"] .footer-copy { color: #fff; }
+        /* Ikigai runs pure-black (theme_lock: night) -- same reasoning as Monday
+           Greens above: the dark-variant mark and --accent/--dim footer text read
+           poorly against true black, so use the white mark + white text instead. */
+        [data-tenant="ikigai-sushiroom-main"] .footer-logo-dark,
+        [data-tenant="ikigai-sushiroom-main"] .footer-logo-light { display: none; }
+        [data-tenant="ikigai-sushiroom-main"] .footer-logo-white { display: block; }
+        [data-tenant="ikigai-sushiroom-main"] .footer-email,
+        [data-tenant="ikigai-sushiroom-main"] .footer-copy { color: #fff; }
         .footer-email {
             font-family: 'Nunito', sans-serif;
             font-size: 0.82rem;

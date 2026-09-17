@@ -559,6 +559,13 @@
         .thumb-wrap.thumb-model-ready .thumb-img {
             visibility: hidden;
         }
+        /* Ikigai sits on a pure-black background (theme_lock: night) -- a small
+           contrast/saturation lift keeps food photos from reading flat/muddy
+           against #000 instead of the off-white card they were shot for. */
+        [data-tenant="ikigai-sushiroom-main"] .thumb-img,
+        [data-tenant="ikigai-sushiroom-main"] #lightbox-img {
+            filter: contrast(1.1) saturate(1.12) brightness(1.04);
+        }
 
         /* ── Fullscreen image lightbox (photo-only items) ── */
         #img-lightbox {
@@ -1033,6 +1040,14 @@
         [data-tenant="monday-greens"] .footer-copy,
         [data-tenant="monday-greens-staging"] .footer-email,
         [data-tenant="monday-greens-staging"] .footer-copy { color: #fff; }
+        /* Ikigai runs pure-black (theme_lock: night) -- same reasoning as Monday
+           Greens above: the dark-variant mark and --accent/--dim footer text read
+           poorly against true black, so use the white mark + white text instead. */
+        [data-tenant="ikigai-sushiroom-main"] .footer-logo-dark,
+        [data-tenant="ikigai-sushiroom-main"] .footer-logo-light { display: none; }
+        [data-tenant="ikigai-sushiroom-main"] .footer-logo-white { display: block; }
+        [data-tenant="ikigai-sushiroom-main"] .footer-email,
+        [data-tenant="ikigai-sushiroom-main"] .footer-copy { color: #fff; }
         .footer-email {
             font-family: 'Nunito', sans-serif;
             font-size: 0.82rem;
@@ -6963,6 +6978,22 @@
         #waiter-overlay-hint {
             margin-top: 16px; font-size: 0.85rem; color: #555; line-height: 1.4;
         }
+        /* Ikigai runs pure-black (theme_lock: night) -- the QR itself paints its
+           own white square via createSvgTag, so the surrounding card doesn't need
+           to be white too; darken it to match the rest of the tenant's theme. */
+        [data-tenant="ikigai-sushiroom-main"] #waiter-card {
+            background: #0a0a0a; color: #f7f0e6;
+            border: 1px solid rgba(232,137,140,0.22);
+        }
+        [data-tenant="ikigai-sushiroom-main"] #waiter-overlay-title {
+            color: #E8898C;
+        }
+        [data-tenant="ikigai-sushiroom-main"] #waiter-overlay-hint {
+            color: #a79b8d;
+        }
+        [data-tenant="ikigai-sushiroom-main"] #waiter-overlay-close {
+            color: #a79b8d;
+        }
 
         /* ══ Twin phone layout — opt-in per tenant via the admin Theme page
            (theme_config key `phone_layout` = "twin"). Two photo-forward cards
@@ -10793,12 +10824,14 @@
             'food-and-market-test2-main': ['ka', 'en'],
             'burger-planet-main': ['ka', 'en'],
             'corner-by-eleven-main': ['ka', 'en'],
-            'burger-bar-main': ['ka', 'en']
+            'burger-bar-main': ['ka', 'en'],
+            'ikigai-sushiroom-main': ['ka', 'en']
         };
         const _DEFAULT_LANGUAGE_BY_TENANT_SLUG = {
             'monday-greens': 'ka',
             'chero-main': 'ka',
             'food-market-main': 'ka',
+            'ikigai-sushiroom-main': 'ka',
             'food-and-market-test2-main': 'ka',
             'burger-planet-main': 'ka',
             'corner-by-eleven-main': 'ka',

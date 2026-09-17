@@ -559,6 +559,13 @@
         .thumb-wrap.thumb-model-ready .thumb-img {
             visibility: hidden;
         }
+        /* Ikigai sits on a pure-black background (theme_lock: night) -- a small
+           contrast/saturation lift keeps food photos from reading flat/muddy
+           against #000 instead of the off-white card they were shot for. */
+        [data-tenant="ikigai-sushiroom-main"] .thumb-img,
+        [data-tenant="ikigai-sushiroom-main"] #lightbox-img {
+            filter: contrast(1.1) saturate(1.12) brightness(1.04);
+        }
 
         /* ── Fullscreen image lightbox (photo-only items) ── */
         #img-lightbox {
@@ -10793,12 +10800,14 @@
             'food-and-market-test2-main': ['ka', 'en'],
             'burger-planet-main': ['ka', 'en'],
             'corner-by-eleven-main': ['ka', 'en'],
-            'burger-bar-main': ['ka', 'en']
+            'burger-bar-main': ['ka', 'en'],
+            'ikigai-sushiroom-main': ['ka', 'en']
         };
         const _DEFAULT_LANGUAGE_BY_TENANT_SLUG = {
             'monday-greens': 'ka',
             'chero-main': 'ka',
             'food-market-main': 'ka',
+            'ikigai-sushiroom-main': 'ka',
             'food-and-market-test2-main': 'ka',
             'burger-planet-main': 'ka',
             'corner-by-eleven-main': 'ka',

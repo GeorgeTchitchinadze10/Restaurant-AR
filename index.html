@@ -13153,7 +13153,11 @@
                             galleryTimer = setInterval(galleryStep, HOLD + FADE);
                         }
                     });
-                }, { threshold: 0.01 }).observe(vid);
+                // Watch the always-rendered photo layer, not the video: the video
+                // itself goes display:none while the gallery phase is showing, and
+                // observing it would then report isIntersecting:false the instant it
+                // hides, clearing the gallery timer the moment it starts.
+                }, { threshold: 0.01 }).observe(base);
             }
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) {

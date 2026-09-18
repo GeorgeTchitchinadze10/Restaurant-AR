@@ -13062,6 +13062,125 @@
             return true;
         }
 
+        /* ── Hero video → gallery → video sequence ──────────────────────────────
+           A tenant with BOTH a hero clip and an uploaded photo gallery (on a
+           gallery template) gets the two chained instead of the clip looping
+           forever alone: the video plays one pass, then the uploaded photos
+           crossfade through once, then the video plays again — repeating.
+           Kept as its own function so _startHeroVideo/_startHeroGallery, and
+           every tenant that only has one of the two, are untouched. */
+        function _startHeroVideoGallerySequence(cfg, urls) {
+            const src = _heroVideoSrc(cfg);
+            if (!src) return false;
+            const vid = document.getElementById('mg-hero-video');
+            if (!vid || !vid.canPlayType || !vid.canPlayType('video/mp4')) return false;
+            if (!_heroVideoWanted()) return false;
+
+            const base = document.querySelector('.mg-hero-photo');
+            const next = document.querySelector('.mg-hero-next');
+            if (!base || !next || urls.length < 2) return false;
+
+            urls.forEach(u => { const img = new Image(); img.decoding = 'async'; img.src = u; });
+
+            const FADE = 1200, HOLD = 5000;
+            let phase = 'video';
+            let galleryIdx = 0, galleryTimer = null;
+            let onscreen = true, videoReady = false;
+
+            vid.loop = false;
+            vid.muted = true;
+
+            function galleryStep() {
+                galleryIdx = (galleryIdx + 1) % urls.length;
+                const url = urls[galleryIdx];
+                next.style.backgroundImage = `url("${url}")`;
+                requestAnimationFrame(() => { next.style.opacity = '1'; });
+                setTimeout(() => {
+                    base.style.backgroundImage = `url("${url}")`;
+                    next.style.transition = 'none';
+                    next.style.opacity = '0';
+                    void next.offsetWidth;
+                    next.style.transition = '';
+                    // One full pass through every uploaded photo, then the clip returns.
+                    if (galleryIdx === urls.length - 1) {
+                        clearInterval(galleryTimer);
+                        galleryTimer = null;
+                        setTimeout(showVideo, HOLD);
+                    }
+                }, FADE);
+            }
+
+            function showGallery() {
+                phase = 'gallery';
+                document.documentElement.dataset.heroVideo = 'false';
+                galleryIdx = 0;
+                clearInterval(galleryTimer);
+                galleryTimer = (onscreen && !document.hidden) ? setInterval(galleryStep, HOLD + FADE) : null;
+            }
+
+            function showVideo() {
+                phase = 'video';
+                clearInterval(galleryTimer);
+                galleryTimer = null;
+                document.documentElement.dataset.heroVideo = videoReady ? 'true' : 'loading';
+                if (onscreen && !document.hidden) {
+                    vid.currentTime = 0;
+                    const p = vid.play();
+                    if (p && p.catch) p.catch(() => {});
+                }
+            }
+
+            vid.addEventListener('loadeddata', () => {
+                videoReady = true;
+                if (phase === 'video') document.documentElement.dataset.heroVideo = 'true';
+            });
+            vid.addEventListener('ended', () => { if (phase === 'video') showGallery(); });
+            vid.addEventListener('error', () => {
+                document.documentElement.dataset.heroVideo = 'failed';
+                if (phase === 'video') showGallery();
+            }, { once: true });
+
+            if ('IntersectionObserver' in window) {
+                new IntersectionObserver(entries => {
+                    entries.forEach(e => {
+                        onscreen = e.isIntersecting;
+                        if (!onscreen || document.hidden) {
+                            vid.pause();
+                            clearInterval(galleryTimer); galleryTimer = null;
+                        } else if (phase === 'video') {
+                            const p = vid.play(); if (p && p.catch) p.catch(() => {});
+                        } else if (!galleryTimer) {
+                            galleryTimer = setInterval(galleryStep, HOLD + FADE);
+                        }
+                    });
+                // Watch the always-rendered photo layer, not the video: the video
+                // itself goes display:none while the gallery phase is showing, and
+                // observing it would then report isIntersecting:false the instant it
+                // hides, clearing the gallery timer the moment it starts.
+                }, { threshold: 0.01 }).observe(base);
+            }
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    vid.pause();
+                    clearInterval(galleryTimer); galleryTimer = null;
+                } else if (onscreen) {
+                    if (phase === 'video') { const p = vid.play(); if (p && p.catch) p.catch(() => {}); }
+                    else if (!galleryTimer) galleryTimer = setInterval(galleryStep, HOLD + FADE);
+                }
+            });
+
+            const idle = window.requestIdleCallback || (cb => setTimeout(cb, 1));
+            idle(() => {
+                if (vid.dataset.mounted) return;
+                vid.dataset.mounted = '1';
+                vid.preload = 'auto';
+                vid.src = src;
+                vid.load();
+                showVideo();
+            }, { timeout: 2500 });
+            return true;
+        }
+
         // Fetch theme config from Supabase and apply as CSS overrides
         async function applyRemoteTheme() {
             // MINGLEYARD's editorial hero has a complete local fallback. Reveal and
@@ -13267,11 +13386,17 @@
                     const baomaHeroImg = document.querySelector('.baoma-hero-img');
                     if (baomaHeroImg) baomaHeroImg.src = heroShots[0];
                 }
-                // A configured clip takes the band over. The photos stay on as its poster
-                // and its fallback, but they do not also rotate underneath it — two
-                // crossfades running at once on the same element is just a flicker.
-                const heroVideoOn = !HERO_NATIVE_SHELL_TEMPLATES.has(templateKey) && _startHeroVideo(cfg);
-                if (!heroVideoOn && HERO_GALLERY_TEMPLATES.has(templateKey) && heroShots.length > 1) _startHeroGallery(heroShots);
+                // A configured clip takes the band over. On a gallery template with more
+                // than one uploaded photo, the clip and the photo gallery are chained
+                // (video once → gallery once → video again, repeating) instead of the
+                // clip looping alone; everywhere else this is unchanged from before.
+                const wantHeroGallery = HERO_GALLERY_TEMPLATES.has(templateKey) && heroShots.length > 1;
+                const heroVideoOn = !HERO_NATIVE_SHELL_TEMPLATES.has(templateKey) && (
+                    wantHeroGallery
+                        ? _startHeroVideoGallerySequence(cfg, heroShots)
+                        : _startHeroVideo(cfg)
+                );
+                if (!heroVideoOn && wantHeroGallery) _startHeroGallery(heroShots);
                 // Optional per-tenant hero height (e.g. "56.25vw" for a full 16:9 banner).
                 if (cfg.hero_min_h) {
                     document.documentElement.style.setProperty('--mg-hero-h', cfg.hero_min_h);

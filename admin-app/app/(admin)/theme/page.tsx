@@ -54,8 +54,15 @@ const HERO_VIDEO_KEYS = ['hero_video_url', 'hero_video_mobile_url', 'hero_video_
 // The real budget is ~1 MB; this is the wall, not the target.
 const HERO_VIDEO_MAX_MB = 6
 
+// One-off event/promo banner across the top of the customer menu (index.html's
+// _applyAnnouncement). Rendered generically for any tenant that sets these keys,
+// but the editor below is only shown for Corner at Tabidze for now — see
+// ANNOUNCEMENT_TENANT_SLUG.
+const ANNOUNCEMENT_KEYS = ['announcement_enabled', 'announcement_date', 'announcement_time', 'announcement_text', 'announcement_text_ka', 'announcement_photo_url'] as const
+const ANNOUNCEMENT_TENANT_SLUG = 'corner-by-eleven-main'
+
 // Content survives a template switch — it describes the restaurant, not the look.
-const BRANDING_KEYS = ['site_name', 'site_name_ka', 'logo_url', 'hero_logo_url', 'hero_image_url', 'hero_images', ...HERO_VIDEO_KEYS, ...CONTENT_KEYS]
+const BRANDING_KEYS = ['site_name', 'site_name_ka', 'logo_url', 'hero_logo_url', 'hero_image_url', 'hero_images', ...HERO_VIDEO_KEYS, ...CONTENT_KEYS, ...ANNOUNCEMENT_KEYS]
 
 // The hero gallery is stored in theme_config.hero_images as a JSON array of URLs.
 // Older rows may hold a comma/newline list, so accept that shape too.
@@ -110,7 +117,7 @@ const GOOGLE_FONTS = [
   'Source Sans 3', 'Oswald', 'PT Serif', 'Merriweather',
 ]
 
-type ThemeTabId = 'templates' | 'night' | 'day' | 'background' | 'fonts' | 'branding'
+type ThemeTabId = 'templates' | 'night' | 'day' | 'background' | 'fonts' | 'branding' | 'announcement'
 
 function isColor(v: string) {
   return /^#[0-9a-fA-F]{3,8}$/.test(v) || v.startsWith('rgb')
@@ -261,9 +268,16 @@ export default function ThemePage() {
   useEffect(() => { void Promise.resolve().then(load) }, [load])
   useEffect(() => {
     queueMicrotask(() => {
-      setTab(current => normalizeThemeTabForRole(current, plan.role) as ThemeTabId)
+      setTab(current => {
+        // The announcement tab isn't part of adminUx's role-based tab list — it's
+        // gated by tenant, not role — so normalizeThemeTabForRole doesn't know
+        // about it and would otherwise bounce a Corner-at-Tabidze editor back to
+        // the first tab every time plan.role settles in from its loading default.
+        if (current === 'announcement' && plan.restaurantSlug === ANNOUNCEMENT_TENANT_SLUG) return current
+        return normalizeThemeTabForRole(current, plan.role) as ThemeTabId
+      })
     })
-  }, [plan.role])
+  }, [plan.role, plan.restaurantSlug])
 
   // Leave guard #1 — warn on refresh / tab-close / external navigation.
   useEffect(() => {
@@ -530,11 +544,18 @@ export default function ThemePage() {
     background: T.tabBackground,
     fonts: T.tabFonts,
     branding: T.tabBranding,
+    announcement: T.tabAnnouncement,
   }
-  const tabs = themeTabsForRole(plan.role).map(item => ({
-    id: item.id as ThemeTabId,
-    label: tabLabels[item.id as ThemeTabId],
-  }))
+  const tabs = [
+    ...themeTabsForRole(plan.role).map(item => ({
+      id: item.id as ThemeTabId,
+      label: tabLabels[item.id as ThemeTabId],
+    })),
+    // Corner at Tabidze only, for now — see ANNOUNCEMENT_TENANT_SLUG.
+    ...(plan.restaurantSlug === ANNOUNCEMENT_TENANT_SLUG
+      ? [{ id: 'announcement' as ThemeTabId, label: tabLabels.announcement }]
+      : []),
+  ]
 
   if (!plan.loading && !plan.restaurantId) {
     return (
@@ -782,6 +803,35 @@ export default function ThemePage() {
               )}
             </>
           )}
+          {/* Corner at Tabidze only — see ANNOUNCEMENT_TENANT_SLUG. The banner itself
+              (index.html's _applyAnnouncement) already renders for any tenant that
+              sets these keys; this editor just isn't exposed everywhere yet. */}
+          {tab === 'announcement' && plan.restaurantSlug === ANNOUNCEMENT_TENANT_SLUG && (
+            <>
+              <div className="pt-2">
+                <div className="text-sm font-semibold" style={{ color: 'var(--gold)' }}>{T.announcementHeading}</div>
+                <div className="text-xs mt-1" style={{ color: 'var(--dim)' }}>{T.announcementHint}</div>
+              </div>
+              <ToggleRow label={T.announcementEnabled}
+                         checked={/^(1|true|on|yes)$/i.test((config.announcement_enabled ?? '').trim())}
+                         onChange={v => set('announcement_enabled', v ? 'true' : 'false')} />
+              <BrandRow label={T.announcementDate} value={config.announcement_date ?? ''}
+                        onChange={v => set('announcement_date', v)} />
+              <BrandRow label={T.announcementTime} value={config.announcement_time ?? ''}
+                        onChange={v => set('announcement_time', v)} />
+              <BrandRow label={T.announcementTextEn} value={config.announcement_text ?? ''}
+                        onChange={v => set('announcement_text', v)} />
+              <BrandRow label={T.announcementTextKa} value={config.announcement_text_ka ?? ''}
+                        onChange={v => set('announcement_text_ka', v)} />
+              <ImageUploadRow label={T.announcementPhoto} hint={T.announcementPhotoHint}
+                              value={config.announcement_photo_url ?? ''}
+                              uploading={uploadingKey === 'announcement_photo_url'}
+                              uploadLabel={T.uploadThumb} clearLabel={T.clearThumb}
+                              previewAlt={T.imagePreviewAlt}
+                              onPick={f => uploadImage('announcement_photo_url', f)}
+                              onClear={() => set('announcement_photo_url', '')} />
+            </>
+          )}
         </div>
       )}
 
@@ -1024,6 +1074,17 @@ function BrandRow({ label, value, onChange }: { label: string; value: string; on
       <div className="text-xs mb-2 uppercase tracking-widest" style={{ color: 'var(--dim)' }}>{label}</div>
       <input value={value} onChange={e => onChange(e.target.value)} />
     </div>
+  )
+}
+
+function ToggleRow({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <label className="p-3 rounded-xl flex items-center justify-between gap-3 cursor-pointer"
+           style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
+      <span className="text-xs uppercase tracking-widest" style={{ color: 'var(--dim)' }}>{label}</span>
+      <input type="checkbox" checked={checked} onChange={e => onChange(e.target.checked)}
+             style={{ width: 18, height: 18, accentColor: 'var(--gold)' }} />
+    </label>
   )
 }
 

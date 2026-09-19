@@ -14742,6 +14742,104 @@ document.getElementById('basket-items').addEventListener('click', e => {
         }
     </script>
     <script>
+        /* ── Solo AR link (?item=<menu_items.id>) ────────────────────────────
+           A single-dish "no website, no QR" entry point for NFC tags: tapping a
+           chip opens this exact URL (tenant + one item id) and, instead of the
+           full menu, shows just that dish with a big View-in-AR button —
+           nothing else, no header, no category list, no other dishes. Reuses
+           the same openAR() every menu card already calls, so both the iOS
+           Quick Look and Android WebXR paths are the exact tested code, not a
+           reimplementation. Fully opt-in: does nothing at all unless the URL
+           carries an `item` param, so every other tenant and every existing
+           link is completely unaffected. */
+        (function () {
+            const itemId = new URLSearchParams(location.search).get('item');
+            if (!itemId) return;
+
+            const overlay = document.createElement('div');
+            overlay.id = 'solo-ar-overlay';
+            overlay.style.cssText = [
+                'position:fixed', 'inset:0', 'z-index:999999',
+                'display:flex', 'flex-direction:column', 'align-items:center', 'justify-content:center',
+                'gap:18px', 'padding:32px 24px', 'text-align:center',
+                'background:var(--bg, #0e0a06)', 'color:var(--text, #f1e7d4)',
+                'font-family:inherit',
+            ].join(';');
+            overlay.innerHTML = '<div id="solo-ar-status" style="font-size:14px;opacity:.7;">Loading…</div>';
+            document.body.appendChild(overlay);
+            document.documentElement.style.overflow = 'hidden';
+
+            const isKa = () => window.__lang === 'ka';
+
+            function renderNotFound() {
+                overlay.innerHTML = '';
+                const msg = document.createElement('p');
+                msg.style.cssText = 'font-size:15px;opacity:.8;max-width:320px;line-height:1.5;';
+                msg.textContent = isKa()
+                    ? 'ეს კერძი ვერ მოიძებნა.'
+                    : 'This dish could not be found.';
+                const link = document.createElement('a');
+                const base = new URL(location.href);
+                base.searchParams.delete('item');
+                link.href = base.toString();
+                link.textContent = isKa() ? 'სრული მენიუს ნახვა' : 'View the full menu';
+                link.style.cssText = 'color:var(--accent, #d9b872); font-weight:600; text-decoration:underline;';
+                overlay.append(msg, link);
+            }
+
+            function renderItem(item) {
+                overlay.innerHTML = '';
+                const photo = document.createElement('div');
+                const src = (typeof _safeAssetUrl === 'function' ? _safeAssetUrl(item.thumbnail_url) : item.thumbnail_url) || '';
+                photo.style.cssText = [
+                    'width:min(78vw,320px)', 'aspect-ratio:4/3', 'border-radius:18px',
+                    'background:var(--card, #221a12) center/cover no-repeat',
+                    'box-shadow:0 18px 40px rgba(0,0,0,.45)',
+                ].join(';');
+                if (src) photo.style.backgroundImage = `url("${src}")`;
+
+                const name = document.createElement('h1');
+                name.style.cssText = 'font-size:22px; font-weight:700; margin:0; max-width:360px;';
+                name.textContent = (typeof t === 'function' ? t(item, 'name') : item.name) || item.name || '';
+
+                const sub = document.createElement('p');
+                sub.style.cssText = 'font-size:13px; opacity:.65; margin:0; letter-spacing:.04em; text-transform:uppercase;';
+                sub.textContent = isKa() ? 'ნახეთ 3D-ში' : 'View it in 3D, life-size';
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = isKa() ? 'ნახვა AR-ში' : 'View in AR';
+                btn.style.cssText = [
+                    'font-size:16px', 'font-weight:700', 'padding:14px 32px', 'border:none', 'border-radius:999px',
+                    'background:var(--accent, #d9b872)', 'color:var(--accent-text, #14100b)',
+                    'cursor:pointer', 'box-shadow:0 10px 24px rgba(0,0,0,.35)',
+                ].join(';');
+                btn.addEventListener('click', () => {
+                    if (typeof openAR === 'function') openAR(0, [item]);
+                });
+
+                const foot = document.createElement('div');
+                foot.style.cssText = 'position:fixed; bottom:18px; font-size:11px; opacity:.5; letter-spacing:.05em;';
+                foot.textContent = 'Powered by BetaReal';
+
+                overlay.append(photo, name, sub, btn, foot);
+            }
+
+            const startedAt = Date.now();
+            (function waitForItem() {
+                const items = window.__menuItems;
+                if (Array.isArray(items) && items.length) {
+                    const found = items.find(i => String(i.id) === String(itemId));
+                    if (found) { renderItem(found); return; }
+                    // Menu is loaded and the id genuinely isn't in it — stop polling.
+                    renderNotFound();
+                    return;
+                }
+                if (Date.now() - startedAt > 8000) { renderNotFound(); return; }
+                setTimeout(waitForItem, 150);
+            })();
+        })();
+
         if ('serviceWorker' in navigator) {
             // Auto-reload the page when a new SW takes over — otherwise users
             // would keep running the old cached HTML until they manually refresh.

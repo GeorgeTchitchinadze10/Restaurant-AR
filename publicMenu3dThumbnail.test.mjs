@@ -75,8 +75,15 @@ test('a hero video never costs the first paint, and always leaves a still behind
   assert.match(html, /vid\.addEventListener\('loadeddata'[\s\S]*?dataset\.heroVideo = 'true'/)
   assert.match(html, /vid\.addEventListener\('error'[\s\S]*?dataset\.heroVideo = 'failed'/)
 
-  // A clip and a photo rotation on the same band is a flicker, not a feature.
-  assert.match(html, /if \(!heroVideoOn && HERO_GALLERY_TEMPLATES\.has\(templateKey\) && heroShots\.length > 1\) _startHeroGallery\(heroShots\);/)
+  // A clip and a photo rotation on the same band at the same time is a flicker,
+  // not a feature — the standalone gallery only ever starts when no clip is
+  // taking the band. A tenant with BOTH a clip and a gallery on a gallery
+  // template instead gets them chained one at a time (video once → gallery
+  // once → video again) via _startHeroVideoGallerySequence, which disables
+  // the video's native loop so the two phases can never overlap.
+  assert.match(html, /const wantHeroGallery = HERO_GALLERY_TEMPLATES\.has\(templateKey\) && heroShots\.length > 1;/)
+  assert.match(html, /if \(!heroVideoOn && wantHeroGallery\) _startHeroGallery\(heroShots\);/)
+  assert.match(html, /function _startHeroVideoGallerySequence[\s\S]*?vid\.loop = false;/)
 
   const videoRule = cssRule('.mg-hero-video')
   assert.match(videoRule, /object-fit:\s*cover\b/)

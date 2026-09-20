@@ -9481,7 +9481,7 @@
 
             ctx.fillStyle = '#f0c040';
             ctx.font = 'bold 36px Arial, sans-serif';
-            ctx.fillText(item.price, 28, H - 20);
+            ctx.fillText(_priceDisplay(item.price), 28, H - 20);
 
             if (labelTexture) labelTexture.needsUpdate = true;
         }
@@ -11366,6 +11366,20 @@
             })[ch]);
         }
 
+        /* Ikigai's condiment/sauce items are priced "0 ₾" in the DB (bundled free
+           with the dish, not sold separately) -- showing "0 ₾" on the menu reads
+           like broken pricing, not "free". Swap in a localized "included" label
+           instead wherever a price renders. Scoped to this tenant only: a literal
+           0 ₾ is left alone everywhere else. */
+        function _priceDisplay(price) {
+            const cleaned = _cleanText(price);
+            const tenant = window.__tenant || _tenant || {};
+            if (cleaned && tenant.restaurant_slug === 'ikigai-sushiroom-main' && _parsePrice(cleaned) === 0) {
+                return _byLang('Included with meal', 'შედის კერძის ფასში');
+            }
+            return cleaned;
+        }
+
         /* Paint a price element, prefixing the struck-through previous price when the
            item is discounted. Built from text nodes rather than innerHTML so the
            values stay inert even though they are owner-authored free text. */
@@ -11379,7 +11393,7 @@
                 s.textContent = was;
                 el.appendChild(s);
             }
-            el.appendChild(document.createTextNode(_cleanText(price)));
+            el.appendChild(document.createTextNode(_priceDisplay(price)));
         }
 
         function _tenantBrandFallback() {
@@ -13823,7 +13837,7 @@
                 // price here, not the raw item.price (which may be a "16 / 70 ₾" string).
                 const _hasVariants = !!(item.variants && item.variants.length);
                 const _cardVi = _hasVariants ? _variantIndex(item, globalIdx) : -1;
-                const itemPriceHtml = _escapeHtml(_hasVariants ? (item.variants[_cardVi].price || '') : item.price);
+                const itemPriceHtml = _escapeHtml(_hasVariants ? (item.variants[_cardVi].price || '') : _priceDisplay(item.price));
                 // A discount belongs to the item's own price. Variant-priced items pick
                 // their price per variant, so the old price would be ambiguous there and
                 // is deliberately suppressed.

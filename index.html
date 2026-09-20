@@ -6944,6 +6944,41 @@
             display: flex; align-items: center; justify-content: space-between;
             width: 100%;
         }
+
+        /* ── Ikigai-only: order type (dine-in/takeaway/delivery) + service fee.
+           Visibility is toggled in JS (el.hidden), not CSS, so these rules are
+           purely cosmetic and safe to leave unscoped -- every other tenant's
+           basket never unhides them. ── */
+        .ikigai-order-type { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+        .ikigai-order-type-label {
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase;
+            color: var(--dim);
+        }
+        .ikigai-ot-row { display: flex; gap: 8px; width: 100%; }
+        .ikigai-ot-btn {
+            flex: 1;
+            padding: 9px 6px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.78rem; font-weight: 700;
+            color: var(--text);
+            background: var(--pill-bg, var(--card));
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+        }
+        .ikigai-ot-btn.active {
+            background: var(--pill-active-bg, var(--cta-bg));
+            color: var(--accent-text);
+            border-color: transparent;
+        }
+        .ikigai-subtotal-row, .ikigai-fee-row {
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.85rem;
+            color: var(--dim);
+        }
+        .ikigai-fee-row { color: var(--accent); }
         #basket-waiter-btn {
             width: 100%;
             display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -9239,6 +9274,25 @@
         </div>
         <div id="basket-items"></div>
         <div class="basket-footer">
+            <!-- Ikigai only: dine-in orders carry a 12% service fee, takeaway/
+                 delivery don't. Hidden by default; _renderBasketPanel() unhides
+                 this for ikigai-sushiroom-main only. -->
+            <div id="ikigai-order-type" class="ikigai-order-type" hidden>
+                <span id="ikigai-order-type-label" class="ikigai-order-type-label"></span>
+                <div class="ikigai-ot-row">
+                    <button type="button" class="ikigai-ot-btn" data-order-type="dinein"></button>
+                    <button type="button" class="ikigai-ot-btn" data-order-type="takeaway"></button>
+                    <button type="button" class="ikigai-ot-btn" data-order-type="delivery"></button>
+                </div>
+            </div>
+            <div id="ikigai-subtotal-row" class="basket-total-row ikigai-subtotal-row" hidden>
+                <span id="ikigai-subtotal-label"></span>
+                <span id="ikigai-subtotal">0 ₾</span>
+            </div>
+            <div id="ikigai-fee-row" class="basket-total-row ikigai-fee-row" hidden>
+                <span id="ikigai-fee-label"></span>
+                <span id="ikigai-fee-amount">0 ₾</span>
+            </div>
             <div class="basket-total-row">
                 <span id="basket-total-label">Total</span>
                 <span id="basket-total">0 ₾</span>
@@ -11214,6 +11268,12 @@
     basketTitle:  'Basket',
     emptyBasket:  'Your basket is empty',
     total:        'Total',
+    subtotal:     'Subtotal',
+    serviceFee:   'Service fee (12%)',
+    orderType:    'Order type',
+    dineIn:       'Dine-in',
+    takeaway:     'Takeaway',
+    delivery:     'Delivery',
     clearBasket:  'Clear',
     showWaiter:   'Show to staff',
     waiterHint:   'Staff scans this to get your order instantly',
@@ -11258,6 +11318,12 @@
     basketTitle:  'კალათა',
     emptyBasket:  'კალათა ცარიელია',
     total:        'სულ',
+    subtotal:     'შუალედური ჯამი',
+    serviceFee:   'მომსახურების საფასური (12%)',
+    orderType:    'შეკვეთის ტიპი',
+    dineIn:       'მაგიდასთან',
+    takeaway:     'წასაღები',
+    delivery:     'მიტანა',
     clearBasket:  'გასუფთავება',
     showWaiter:   'აჩვენეთ სერვისის თანამშრომელს',
     waiterHint:   'სერვისის თანამშრომელი დაასკანერებს და მყისვე მიიღებს შენს შეკვეთას',
@@ -14448,6 +14514,10 @@
 
         // ── Basket ─────────────────────────────────────────────────────
         const _basket = new Map(); // key -> { item, qty, aIdx, vIdx }
+        // Ikigai only: 'dinein' | 'takeaway' | 'delivery'. Dine-in carries a 12%
+        // service fee; the other two don't. Resets to dine-in on load, which
+        // matches how the rest of this app already works (it's a table-QR menu).
+        let _orderType = 'dinein';
         window._basket = _basket;
         window.__addonSel   = window.__addonSel   || {}; // globalIdx -> [selected add-on indices]
         window.__variantSel = window.__variantSel || {}; // globalIdx -> selected variant index
@@ -14503,6 +14573,22 @@
             let n = 0;
             _basket.forEach(({ qty }) => { n += qty; });
             return n;
+        }
+        function _isIkigaiTenant() {
+            return (window.__tenant && window.__tenant.restaurant_slug === 'ikigai-sushiroom-main')
+                || document.documentElement.dataset.tenant === 'ikigai-sushiroom-main';
+        }
+        // 12% on dine-in only; takeaway/delivery are 0%, same as the rest of the
+        // restaurant world (a service fee is for table service, not a bag handed
+        // over the counter or a courier delivery).
+        function _serviceFeeRate() {
+            return (_isIkigaiTenant() && _orderType === 'dinein') ? 0.12 : 0;
+        }
+        function _serviceFeeAmount() {
+            return _basketTotal() * _serviceFeeRate();
+        }
+        function _basketGrandTotal() {
+            return _basketTotal() + _serviceFeeAmount();
         }
 
         function _updateBasketBar() {
@@ -14567,6 +14653,38 @@
             if (document.getElementById('basket-panel').style.display !== 'none') _renderBasketPanel();
         }
 
+        // Ikigai only: paints the order-type buttons + subtotal/fee rows and
+        // keeps them in sync with _orderType. Every other tenant's elements
+        // stay `hidden` (set in the static HTML) and this is a no-op for them.
+        function _renderIkigaiOrderType(u) {
+            const wrap = document.getElementById('ikigai-order-type');
+            const subtotalRow = document.getElementById('ikigai-subtotal-row');
+            const feeRow = document.getElementById('ikigai-fee-row');
+            if (!wrap || !subtotalRow || !feeRow) return;
+            const show = _isIkigaiTenant();
+            wrap.hidden = !show;
+            subtotalRow.hidden = !show;
+            if (!show) { feeRow.hidden = true; return; }
+
+            document.getElementById('ikigai-order-type-label').textContent = u.orderType;
+            const labels = { dinein: u.dineIn, takeaway: u.takeaway, delivery: u.delivery };
+            wrap.querySelectorAll('.ikigai-ot-btn').forEach(btn => {
+                const type = btn.dataset.orderType;
+                btn.textContent = labels[type] || type;
+                btn.classList.toggle('active', type === _orderType);
+            });
+
+            document.getElementById('ikigai-subtotal-label').textContent = u.subtotal;
+            document.getElementById('ikigai-subtotal').textContent = _fmtPrice(_basketTotal());
+
+            const fee = _serviceFeeAmount();
+            feeRow.hidden = fee <= 0;
+            if (fee > 0) {
+                document.getElementById('ikigai-fee-label').textContent = u.serviceFee;
+                document.getElementById('ikigai-fee-amount').textContent = _fmtPrice(fee);
+            }
+        }
+
         function _renderBasketPanel() {
             const u   = UI[window.__lang];
             const box = document.getElementById('basket-items');
@@ -14576,6 +14694,7 @@
             document.getElementById('basket-close').textContent      = u.close;
             document.getElementById('basket-total-label').textContent = u.total;
             document.getElementById('basket-waiter-label').textContent = u.showWaiter;
+            _renderIkigaiOrderType(u);
             if (_basket.size === 0) {
                 box.innerHTML = `<p class="basket-empty">${u.emptyBasket}</p>`;
             } else {
@@ -14608,7 +14727,7 @@
                     box.appendChild(row);
                 });
             }
-            document.getElementById('basket-total').textContent = _fmtPrice(_basketTotal());
+            document.getElementById('basket-total').textContent = _fmtPrice(_basketGrandTotal());
         }
 
         function _openBasket() {
@@ -14655,6 +14774,12 @@
         document.getElementById('basket-close').addEventListener('click', _closeBasket);
         document.getElementById('basket-panel').addEventListener('click', e => {
             if (e.target === document.getElementById('basket-panel')) _closeBasket();
+        });
+        document.getElementById('ikigai-order-type').addEventListener('click', e => {
+            const btn = e.target.closest('.ikigai-ot-btn');
+            if (!btn) return;
+            _orderType = btn.dataset.orderType;
+            _renderBasketPanel();
         });
         document.getElementById('basket-clear').addEventListener('click', () => {
             if (_basket.size > 0) {

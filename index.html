@@ -793,6 +793,39 @@
             word-break: keep-all;
             hyphens: none;
         }
+        /* The nice photo -> name -> ingredients -> price vertical stack only
+           applies at the >=640px flex-layout breakpoint below; under that, the
+           base grid (grid-template-areas: "name right" "left right") puts the
+           name and ingredients on the same top row, with the photo underneath.
+           Ikigai wants that stacked order on phones too, so force the flex
+           layout at every width for this tenant. :not(.no-image) matches the
+           same scoping the base rule already uses for pictureless dishes. */
+        [data-tenant="ikigai-sushiroom-main"] .menu-item:not(.no-image) {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            overflow: hidden;
+        }
+        [data-tenant="ikigai-sushiroom-main"] .menu-item:not(.no-image) .item-left {
+            order: 1;
+            width: 100%;
+        }
+        [data-tenant="ikigai-sushiroom-main"] .menu-item:not(.no-image) .item-name {
+            order: 2;
+            padding: 10px 14px 4px;
+        }
+        [data-tenant="ikigai-sushiroom-main"] .menu-item:not(.no-image) .item-right {
+            order: 3;
+            padding: 4px 14px 14px;
+            flex: 1;
+        }
+        [data-tenant="ikigai-sushiroom-main"] .menu-item:not(.no-image) .item-left .thumb-wrap {
+            width: 100%;
+            height: 220px;
+            min-height: unset;
+            border-radius: 16px 16px 0 0;
+            border-bottom: none;
+        }
 
         /* Monday Greens and Food & Market keep long names in a full-width top row.
            The photo/details row remains unchanged underneath. :not(.no-image) avoids

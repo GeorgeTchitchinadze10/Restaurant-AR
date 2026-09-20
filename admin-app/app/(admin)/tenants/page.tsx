@@ -838,9 +838,16 @@ function AccountLog({
   onRemove: (account: AccountLogEntry) => void
 }) {
   const [T] = useLang()
+    const [expanded, setExpanded] = useState(false)
 
   return (
     <section className="mb-8">
+      <button
+        type="button"
+        onClick={() => setExpanded(value => !value)}
+        className="w-full flex flex-wrap items-center justify-between gap-3 text-left"
+        aria-expanded={expanded}
+      >
       <div className="flex flex-wrap items-end justify-between gap-3 mb-3">
         <div>
           <h2 className="text-base font-semibold" style={{ color: 'var(--text)' }}>{T.accountLog}</h2>
@@ -849,7 +856,10 @@ function AccountLog({
           </p>
         </div>
       </div>
-      <div className="table-scroll rounded-xl" style={{ border: '1px solid var(--border)' }}>
+              <span aria-hidden="true" style={{ color: 'var(--gold)' }}>{expanded ? '⌃' : '⌄'}</span>
+      </button>
+      {expanded && (
+<div className="table-scroll rounded-xl" style={{ border: '1px solid var(--border)' }}>
         <table className="w-full text-xs" style={{ minWidth: '1240px' }}>
           <thead>
             <tr style={{ background: 'var(--card2)', borderBottom: '1px solid var(--border)' }}>
@@ -935,7 +945,8 @@ function AccountLog({
           </tbody>
         </table>
       </div>
-    </section>
+          )}
+</section>
   )
 }
 

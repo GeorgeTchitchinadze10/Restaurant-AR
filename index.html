@@ -781,6 +781,18 @@
             overflow-wrap: break-word;
             word-break: break-word;
         }
+        /* Ikigai's Georgian dish names were splitting mid-word ("ფილადელფიას" ->
+           "ფილადელფ" / "ფიას") on narrow phones because break-word above allows a
+           hard break anywhere once a word doesn't fit. keep-all restricts wrapping
+           to actual word boundaries instead -- a long name wraps a whole word to
+           the next line rather than slicing through the middle of one. Scoped to
+           this tenant only: other tenants' long English names rely on the
+           overflow-safety break-word gives them. */
+        [data-tenant="ikigai-sushiroom-main"] .item-name {
+            overflow-wrap: normal;
+            word-break: keep-all;
+            hyphens: none;
+        }
 
         /* Monday Greens and Food & Market keep long names in a full-width top row.
            The photo/details row remains unchanged underneath. :not(.no-image) avoids
